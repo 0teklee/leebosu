@@ -7,13 +7,14 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
 	return (
-		<div className="grid min-h-dvh grid-rows-[auto_1fr_auto] bg-background">
+		<div className="grid min-h-dvh grid-rows-[auto_1fr_auto]">
 			<Header />
-			<main className="container-px">{children}</main>
-			<footer className="bg-background-secondary self-end border-t border-text-secondary">
-				<div className="container-px mx-auto max-w-4xl">
-					<p className="text-center text-text-secondary">
-						Leebosu.com <br />© {new Date().getFullYear()} All rights reserved.
+			<main>{children}</main>
+			<footer className="bg-background-secondary self-end py-4 sm:py-2 border-t border-text-secondary">
+				<div className="space-y-1 text-center text-text-secondary">
+					<p className="text-sm upper">Leebosu.com</p>
+					<p className="text-xs">
+						© {new Date().getFullYear()} All rights reserved.
 					</p>
 				</div>
 			</footer>

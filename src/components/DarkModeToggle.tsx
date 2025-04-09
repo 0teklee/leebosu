@@ -19,14 +19,12 @@ const DarkModeToggle: React.FC = () => {
 	});
 
 	useEffect(() => {
-		const root = window.document.documentElement;
+		const root = document.documentElement;
 		if (isDarkMode) {
-			root.style.setProperty("color-scheme", "dark");
+			root.classList.add("dark");
 		} else {
-			root.style.setProperty("color-scheme", "light");
+			root.classList.remove("dark");
 		}
-		// Persist preference to localStorage
-		localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
 	}, [isDarkMode]);
 
 	// Optional: Listen for system preference changes

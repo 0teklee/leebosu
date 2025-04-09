@@ -1,4 +1,5 @@
 import { ReactNode, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface DialogProps {
 	isOpen: boolean;
@@ -29,24 +30,30 @@ export function Dialog({
 
 	if (!isOpen) return null;
 
-	return (
+	return createPortal(
 		<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
 			<div
 				className="fixed inset-0 bg-black/10 animate-dialog-overlay"
 				onClick={onClose}
 				data-testid="dialog-backdrop"
 			/>
-			<div className="relative bg-background w-full max-w-md overflow-auto shadow-xl animate-dialog-content">
+			<div 
+				className="relative bg-background w-full max-w-md overflow-auto shadow-xl animate-dialog-content"
+				
+			>
 				{title && (
 					<header className="border-b border-text-secondary px-6 py-4">
 						<h2 className="text-xl font-semibold">{title}</h2>
 					</header>
 				)}
-				<div className="px-6 py-4">{children}</div>
+				<div className="bg-background px-6 py-4">{children}</div>
 				{footer && (
-					<div className="border-t border-primary px-6 py-4">{footer}</div>
+					<footer className="border-t border-primary px-6 py-4">
+						{footer}
+					</footer>
 				)}
 			</div>
-		</div>
+		</div>,
+		document.body
 	);
 }
