@@ -1,17 +1,21 @@
 @layer components {
-	.heading-1 {
+	.heading-1,
+	h1 {
 		@apply text-4xl font-bold text-primary md:text-5xl;
 	}
 
-	.heading-2 {
+	.heading-2,
+	h2 {
 		@apply text-3xl font-bold text-text-primary md:text-4xl;
 	}
 
-	.paragraph {
+	.paragraph,
+	p {
 		@apply text-2xl font-semibold text-text-secondary;
 	}
 
-	.link {
+	.link,
+	a {
 		@apply cursor-pointer text-primary hover:text-accent transition-all duration-200;
 	}
 

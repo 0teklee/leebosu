@@ -1,29 +1,35 @@
 @import "./animation.css";
+
+:root,
+:host {
+	--text-primary: #1c1c1c;
+	--text-secondary: #1f1f1f;
+	--background: #f8f8f8;
+	--background-secondary: #f0f0f0;
+}
+
+html.dark,
+:root.dark,
+:host(.dark) {
+	--text-primary: #f8f8f8;
+	--text-secondary: #f0f0f0;
+	--background: #353a42;
+	--background-secondary: #505051;
+}
+
 /* Color theme */
 @theme {
 	--font-family-sans: "Noto Sans KR", system-ui, sans-serif;
 
-	--color-text-primary: #1a1a1a;
-	--color-text-secondary: #2a2a2c;
 	--color-primary: #3b82f6;
 	--color-secondary: #6b7280;
 	--color-accent: #4b82f6;
 	--color-destructive: #db4343;
 
-	/* Light mode */
-	--color-background: #f8fafc;
-	--color-background-secondary: #fafafa;
-}
-
-/* Dark mode */
-:root[style*="color-scheme: dark"] {
-	--color-text-primary: var(--color-text-primary, #f8f8f8);
-	--color-text-secondary: var(--color-text-secondary, #f0f0f0);
-	--color-background: var(--color-background, hsl(217, 10.9%, 23.3%));
-	--color-background-secondary: var(
-		--color-background-secondary,
-		rgb(80, 80, 81)
-	);
+	--color-text-primary: var(--text-primary);
+	--color-text-secondary: var(--text-secondary);
+	--color-background: var(--background);
+	--color-background-secondary: var(--background-secondary);
 }
 
 /* Spacing theme */

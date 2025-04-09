@@ -138,36 +138,36 @@
 /* Combined animations */
 
 .slide-fade-in-x {
-	animation: slideInX , fadeIn ;
+	animation: slideInX, fadeIn;
 }
 
 .slide-fade-out-x {
-	animation: slideOutX , fadeOut ;
+	animation: slideOutX, fadeOut;
 }
 
 .slide-fade-in-y {
-	animation: slideInY , fadeIn ;
+	animation: slideInY, fadeIn;
 }
 
 .slide-fade-out-y {
-	animation: slideOutY , fadeOut ;
+	animation: slideOutY, fadeOut;
 }
 
 .fade-in {
-	animation: fadeIn ;
+	animation: fadeIn;
 }
 
 .fade-out {
-	animation: fadeOut ;
+	animation: fadeOut;
 }
 
 /* Reactive Classes */
 .hover-scale-up:hover {
-	animation: scaleUp 0.3s ease-out ;
+	animation: scaleUp 0.3s ease-out;
 }
 
 .hover-scale-down:hover {
-	animation: scaleDown 0.3s ease-out ;
+	animation: scaleDown 0.3s ease-out;
 }
 
 .hover-bounce:hover {
@@ -183,15 +183,15 @@
 }
 
 .hover-glow:hover {
-	animation: glow 0.3s ;
+	animation: glow 0.3s;
 }
 
 .focus-scale-up:focus {
-	animation: scaleUp 0.3s ease-out ;
+	animation: scaleUp 0.3s ease-out;
 }
 
 .focus-glow:focus {
-	animation: glow 0.3s ;
+	animation: glow 0.3s;
 }
 
 .animate-dialog-overlay {
@@ -199,5 +199,5 @@
 }
 
 .animate-dialog-content {
-	animation: 200ms dialog-content-show 250ms cubic-bezier(0.16, 1, 0.3, 1);
+	animation: 500ms dialog-content-show 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
