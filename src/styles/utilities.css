@@ -1,0 +1,42 @@
+/* Animation utilities */
+@layer utilities {
+	/* Utility class to remove animations */
+	.no-animation {
+		animation: none !important;
+	}
+
+	/* Dynamic delay for staggered animations using nth-child */
+	.animate-dynamic-delay {
+		--base-delay: 0.15s;
+	}
+
+	.animate-dynamic-delay > *:nth-child(1) {
+		animation-delay: calc(1 * var(--base-delay));
+	}
+
+	.animate-dynamic-delay > *:nth-child(2) {
+		animation-delay: calc(2 * var(--base-delay));
+	}
+
+	.animate-dynamic-delay > *:nth-child(n + 3) {
+		animation-delay: calc(3 * var(--base-delay));
+	}
+
+}
+
+/* Functional utilities for animation properties based on theme variables */
+@utility anim-duration-* {
+	animation-duration: --value(--anim-duration- *);
+}
+
+@utility anim-delay-* {
+	animation-delay: --value(--anim-delay- *);
+}
+
+@utility anim-timing-* {
+	animation-timing-function: --value(--anim-timing- *);
+}
+
+@utility anim-fill-* {
+	animation-fill-mode: --value(--anim-fill- *);
+}

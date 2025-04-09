@@ -1,0 +1,203 @@
+@keyframes slideInX {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideOutX {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes slideInY {
+	from {
+		transform: translateY(-100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideOutY {
+	from {
+		transform: translateY(0);
+	}
+	to {
+		transform: translateY(100%);
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+/* Reactive Animations */
+@keyframes scaleUp {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(1.1);
+	}
+}
+
+@keyframes scaleDown {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(0.9);
+	}
+}
+
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-5px);
+	}
+	75% {
+		transform: translateX(5px);
+	}
+}
+
+@keyframes glow {
+	0% {
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	}
+	100% {
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+	}
+}
+
+@keyframes dialog-overlay-show {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes dialog-content-show {
+	from {
+		opacity: 0;
+		transform: translateY(50%);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+}
+
+/* Combined animations */
+
+.slide-fade-in-x {
+	animation: slideInX , fadeIn ;
+}
+
+.slide-fade-out-x {
+	animation: slideOutX , fadeOut ;
+}
+
+.slide-fade-in-y {
+	animation: slideInY , fadeIn ;
+}
+
+.slide-fade-out-y {
+	animation: slideOutY , fadeOut ;
+}
+
+.fade-in {
+	animation: fadeIn ;
+}
+
+.fade-out {
+	animation: fadeOut ;
+}
+
+/* Reactive Classes */
+.hover-scale-up:hover {
+	animation: scaleUp 0.3s ease-out ;
+}
+
+.hover-scale-down:hover {
+	animation: scaleDown 0.3s ease-out ;
+}
+
+.hover-bounce:hover {
+	animation: bounce infinite;
+}
+
+.hover-pulse:hover {
+	animation: pulse 1s infinite;
+}
+
+.hover-shake:hover {
+	animation: shake 0.3s;
+}
+
+.hover-glow:hover {
+	animation: glow 0.3s ;
+}
+
+.focus-scale-up:focus {
+	animation: scaleUp 0.3s ease-out ;
+}
+
+.focus-glow:focus {
+	animation: glow 0.3s ;
+}
+
+.animate-dialog-overlay {
+	animation: dialog-overlay-show 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-dialog-content {
+	animation: 200ms dialog-content-show 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}

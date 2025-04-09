@@ -1,0 +1,104 @@
+@import "./animation.css";
+/* Color theme */
+@theme {
+	--font-family-sans: "Noto Sans KR", system-ui, sans-serif;
+
+	--color-text-primary: #1a1a1a;
+	--color-text-secondary: #2a2a2c;
+	--color-primary: #3b82f6;
+	--color-secondary: #6b7280;
+	--color-accent: #4b82f6;
+	--color-destructive: #db4343;
+
+	/* Light mode */
+	--color-background: #f8fafc;
+	--color-background-secondary: #fafafa;
+}
+
+/* Dark mode */
+:root[style*="color-scheme: dark"] {
+	--color-text-primary: var(--color-text-primary, #f8f8f8);
+	--color-text-secondary: var(--color-text-secondary, #f0f0f0);
+	--color-background: var(--color-background, hsl(217, 10.9%, 23.3%));
+	--color-background-secondary: var(
+		--color-background-secondary,
+		rgb(80, 80, 81)
+	);
+}
+
+/* Spacing theme */
+@theme {
+	--spacing-safe-top: env(safe-area-inset-top);
+	--spacing-safe-bottom: env(safe-area-inset-bottom);
+}
+
+/* Animation theme */
+@theme {
+	--animate-slide-fade-in-x: slideInX, fadeIn;
+	--animate-slide-fade-out-x: slideOutX, fadeOut;
+	--animate-slide-fade-in-y: slideInY, fadeIn;
+	--animate-slide-fade-out-y: slideOutY, fadeOut;
+	--animate-fade-in: fadeIn;
+	--animate-fade-out: fadeOut;
+
+	/* Reactive Classes */
+	--animate-hover-scale-up: scaleUp 0.3s ease-out;
+	--animate-hover-scale-down: scaleDown 0.3s ease-out;
+	--animate-hover-bounce: bounce 0.5s ease-in-out infinite;
+	--animate-hover-pulse: pulse 1s ease-in-out infinite;
+	--animate-hover-shake: shake 0.3s ease-in-out;
+	--animate-hover-glow: glow 0.3s ease-in-out;
+	--animate-focus-scale-up: scaleUp 0.3s ease-out;
+	--animate-focus-glow: glow 0.3s ease-in-out;
+	--animate-dialog-overlay: dialog-overlay-show 200ms
+		cubic-bezier(0.16, 1, 0.3, 1);
+	--animate-dialog-content: 200ms dialog-content-show 250ms
+		cubic-bezier(0.16, 1, 0.3, 1);
+
+	--anim-duration-50: 50ms;
+	--anim-duration-100: 100ms;
+	--anim-duration-150: 150ms;
+	--anim-duration-200: 200ms;
+	--anim-duration-250: 250ms;
+	--anim-duration-300: 300ms;
+	--anim-duration-350: 350ms;
+	--anim-duration-400: 400ms;
+	--anim-duration-500: 500ms;
+	--anim-duration-700: 700ms;
+	--anim-duration-1000: 1000ms;
+	--anim-duration-1500: 1500ms;
+	--anim-duration-2000: 2000ms;
+	--anim-duration-3000: 3000ms;
+	--anim-duration-4000: 4000ms;
+	--anim-duration-5000: 5000ms;
+
+	--anim-delay-50: 50ms;
+	--anim-delay-100: 100ms;
+	--anim-delay-150: 150ms;
+	--anim-delay-200: 200ms;
+	--anim-delay-250: 250ms;
+	--anim-delay-300: 300ms;
+	--anim-delay-350: 350ms;
+	--anim-delay-400: 400ms;
+	--anim-delay-500: 500ms;
+	--anim-delay-700: 700ms;
+	--anim-delay-1000: 1000ms;
+	--anim-delay-1500: 1500ms;
+	--anim-delay-2000: 2000ms;
+	--anim-delay-3000: 3000ms;
+	--anim-delay-4000: 4000ms;
+	--anim-delay-5000: 5000ms;
+
+	--anim-timing-linear: linear;
+	--anim-timing-ease: ease;
+	--anim-timing-ease-in: ease-in;
+	--anim-timing-ease-out: ease-out;
+	--anim-timing-ease-in-out: ease-in-out;
+
+	--anim-fill-none: none;
+	--anim-fill-forwards: forwards;
+	--anim-fill-backwards: backwards;
+	--anim-fill-both: both;
+
+	--anim-iteration-infinite: infinite;
+}

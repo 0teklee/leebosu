@@ -1,0 +1,31 @@
+@layer components {
+	.heading-1 {
+		@apply text-4xl font-bold text-primary md:text-5xl;
+	}
+
+	.heading-2 {
+		@apply text-3xl font-bold text-text-primary md:text-4xl;
+	}
+
+	.paragraph {
+		@apply text-2xl font-semibold text-text-secondary;
+	}
+
+	.link {
+		@apply cursor-pointer text-primary hover:text-accent transition-all duration-200;
+	}
+
+	/* Form styles */
+	input[type="date"]::-webkit-calendar-picker-indicator {
+		background: transparent;
+		bottom: 0;
+		color: transparent;
+		cursor: pointer;
+		height: auto;
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: auto;
+	}
+}
