@@ -1,0 +1,24 @@
+{
+	"extends": "./tsconfig.node.json",
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"lib": ["ES2023", "dom"],
+		"types": ["node", "jest", "@testing-library/jest-dom"],
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"isolatedModules": false, // Allow non-module test files
+		"noEmit": true // Jest/ts-jest handles emission
+	},
+	"include": [
+		"jest.setup.ts",
+		"src/**/*.test.ts",
+		"src/**/*.test.tsx",
+		"src/**/*.spec.ts", // Include spec files as well
+		"src/**/*.spec.tsx"
+		// You might need to include other source files if your tests
+		// import types directly or rely on project-wide type inference.
+		// "src/**/*.ts",
+		// "src/**/*.tsx"
+	],
+	"exclude": ["node_modules"]
+}
