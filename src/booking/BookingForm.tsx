@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { SERVICES } from "../constants/services";
-import { TEXT } from "../constants/text";
-import { useFormState } from "../hooks/useFormState";
-import { useStepNavigation } from "../hooks/useStepNavigation";
-import { Button } from "./Button";
-import { DatePicker } from "./DatePicker";
-import { FormField } from "./FormField";
-import { Input } from "./Input";
-import { PriceDisplay } from "./PriceDisplay";
-import { Select } from "./Select";
-import { StepIndicator } from "./StepIndicator";
+import {useState} from "react";
+import {SERVICES} from "./services.ts";
+import {TEXT} from "../constants/text.ts";
+import {useFormState} from "../hooks/useFormState.ts";
+import {useStepNavigation} from "../hooks/useStepNavigation.ts";
+import {Button} from "../components/atom/Button.tsx";
+import {DatePicker} from "../components/atom/DatePicker.tsx";
+import {FormField} from "../components/atom/FormField.tsx";
+import {Input} from "../components/atom/Input.tsx";
+import {PriceDisplay} from "./PriceDisplay.tsx";
+import {Select} from "../components/atom/Select.tsx";
+import {StepIndicator} from "./StepIndicator.tsx";
 
 interface BookingFormProps {
 	onClose: () => void;

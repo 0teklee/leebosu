@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { PageLayout } from "../components/PageLayout";
+import {Link} from "react-router-dom";
+import {PageLayout} from "../components/layout/PageLayout.tsx";
 
 export function NotFoundPage() {
 	return (

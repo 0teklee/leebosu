@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { PageLayout } from "../components/PageLayout";
-import { documentPropsError } from "../utils/pageMetadata";
+import {Link} from "react-router-dom";
+import {PageLayout} from "../components/layout/PageLayout.tsx";
+import {documentPropsError} from "../utils/pageMetadata";
 
 export function Page({ error }: { error?: Error }) {
 	return (
