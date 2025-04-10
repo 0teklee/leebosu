@@ -1,5 +1,7 @@
-import React, {useEffect} from "react";
-import {useLocalStorage} from "../../hooks/useLocalStorage.ts";
+import { MoonIconPath, SunIconPath } from "@/utils/icon-paths.ts";
+import React, { useEffect } from "react";
+import { useLocalStorage } from "../../hooks/useLocalStorage.ts";
+import MorphIcon from "../atom/MorphIcon.tsx";
 
 const DarkModeToggle: React.FC = () => {
 	const [isDarkMode, setIsDarkMode] = useLocalStorage("darkMode", false);
@@ -37,7 +39,13 @@ const DarkModeToggle: React.FC = () => {
 			className="p-2 rounded bg-background text-primary transition-colors"
 			aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
 		>
-			{isDarkMode ? "🌞" : "🌙"}
+			<MorphIcon
+				from={MoonIconPath}
+				to={SunIconPath}
+				isOpen={isDarkMode}
+				duration={400}
+				className="stroke-2 w-6 h-6"
+			/>
 		</button>
 	);
 };

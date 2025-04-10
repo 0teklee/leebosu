@@ -1,12 +1,15 @@
-import React, {useRef, useState} from "react";
-import {Link} from "react-router-dom";
-import {useBooking} from "../../App.tsx";
+import { StackIconPath, XIconPath } from "@/utils/icon-paths.ts";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { useBooking } from "../../App.tsx";
 import useAnimateDelay from "../../hooks/useAnimateDelay.ts";
 import useOutsideClick from "../../hooks/useOutsideClick.ts";
+import { Button } from "../atom/Button.tsx";
+import MorphIcon from "../atom/MorphIcon.tsx";
 
 const MobileNav: React.FC = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [isAnimating, setAnimate] = useAnimateDelay(200);
+	const [isAnimating, setAnimate] = useAnimateDelay(100);
 	const navRef = useRef<HTMLElement>(null);
 
 	const handleClose = () => {
@@ -35,37 +38,20 @@ const MobileNav: React.FC = () => {
 	return (
 		<div className="md:hidden z-10">
 			{/* Hide on medium screens and up */}
-			<button
+			<Button
+				variant="ghost"
 				onClick={toggleMenu}
-				className="p-2 text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary cursor-pointer"
 				aria-label="Open main menu"
 				aria-expanded={isOpen}
 			>
-				{/* Basic Hamburger Icon */}
-				<svg
-					className="h-6 w-6"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					{isOpen ? (
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					) : (
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M4 6h16M4 12h16m-7 6h7"
-						/>
-					)}
-				</svg>
-			</button>
-			{/* Flyout Menu (basic example) */}
+				<MorphIcon
+					from={StackIconPath}
+					to={XIconPath}
+					isOpen={isOpen}
+					duration={400}
+					className="stroke-2 w-6 h-6"
+				/>
+			</Button>
 			{isOpen && (
 				<nav
 					ref={navRef}
@@ -75,22 +61,16 @@ const MobileNav: React.FC = () => {
 				bg-background 
 				rounded-md shadow-lg 
 				ring-1 ring-background-secondary
-				anim-duration-200
+				anim-duration-300
 				anim-fill-both
 				${isAnimating ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"}
 				 `}
 				>
 					<div className="py-1 *:block *:px-4 *:py-2 *:text-sm *:text-primary *:hover:bg-background-secondary">
-						<Link
-							to="/"
-							onClick={() => setIsOpen(false)}
-						>
+						<Link to="/" onClick={() => setIsOpen(false)}>
 							홈
 						</Link>
-						<Link
-							to="/about"
-							onClick={() => setIsOpen(false)}
-						>
+						<Link to="/about" onClick={() => setIsOpen(false)}>
 							소개
 						</Link>
 						<button

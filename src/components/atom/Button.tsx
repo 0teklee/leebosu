@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 // Define own props separately and make it generic
 type ButtonOwnProps<T extends ElementType = ElementType> = {
-	variant?: "primary" | "secondary" | "outline";
+	variant?: "primary" | "secondary" | "outline" | "ghost";
 	size?: "sm" | "md" | "lg";
 	fullWidth?: boolean;
 	as?: T;
@@ -37,6 +37,8 @@ export function Button<T extends ElementType = "button">({
 			"bg-theme/50 text-background hover:bg-theme/90 focus:ring-theme/50",
 		outline:
 			"border border-secondary bg-transparent hover:bg-background-secondary focus:ring-secondary/50",
+		ghost:
+			"bg-transparent hover:bg-background-secondary focus:ring-secondary/50",
 	};
 
 	const sizeStyles = {
