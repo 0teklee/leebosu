@@ -1,6 +1,7 @@
 import { MoonIconPath, SunIconPath } from "@/utils/icon-paths.ts";
 import React, { useEffect } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage.ts";
+import { Button } from "../atom/Button.tsx";
 import MorphIcon from "../atom/MorphIcon.tsx";
 
 const DarkModeToggle: React.FC = () => {
@@ -34,19 +35,20 @@ const DarkModeToggle: React.FC = () => {
 	};
 
 	return (
-		<button
+		<Button
+			variant="ghost"
 			onClick={toggleDarkMode}
-			className="p-2 rounded bg-background text-primary transition-colors"
 			aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+			className="dark:hover:text-orange-300 hover:text-theme transition-colors duration-400"
 		>
 			<MorphIcon
 				from={MoonIconPath}
 				to={SunIconPath}
 				isOpen={isDarkMode}
-				duration={400}
+				duration={500}
 				className="stroke-2 w-6 h-6"
 			/>
-		</button>
+		</Button>
 	);
 };
 

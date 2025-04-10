@@ -13,13 +13,11 @@
 	--color-background-secondary: #f0f0f0;
 }
 
-@media (prefers-color-scheme: dark) {
-	@theme {
-		--color-primary: #f8f8f8;
-		--color-secondary: #f0f0f0;
-		--color-background: #353a42;
-		--color-background-secondary: #505051;
-	}
+:where(.dark, .dark *) {
+	--color-primary: #f8f8f8;
+	--color-secondary: #f0f0f0;
+	--color-background: #353a42;
+	--color-background-secondary: #505051;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
