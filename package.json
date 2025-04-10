@@ -16,6 +16,7 @@
 		"autoprefixer": "^10.4.21",
 		"compression": "^1.8.0",
 		"express": "^5.1.0",
+		"flubber": "^0.4.2",
 		"install": "^0.13.0",
 		"postcss": "^8.5.3",
 		"react": "^19.0.0",

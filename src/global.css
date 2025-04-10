@@ -17,6 +17,19 @@
 	}
 
 	body {
-		@apply bg-background text-text-primary;
+		@apply bg-background text-primary;
+	}
+
+	dialog {
+		@apply text-primary bg-background;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100dvw;
+		height: 100dvh;
+		display: grid;
+		place-items: center;
+		background-color: transparent;
+		overflow: hidden;
 	}
 }

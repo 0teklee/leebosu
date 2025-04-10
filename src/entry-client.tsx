@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import App from "./App";
-import { TransitionProvider } from "./hooks/useAppTransition";
 import "./global.css";
 
 // Client-side render
@@ -17,9 +16,7 @@ if (typeof window !== "undefined") {
 		root,
 		<React.StrictMode>
 			<BrowserRouter>
-				<TransitionProvider>
 					<App />
-				</TransitionProvider>
 			</BrowserRouter>
 		</React.StrictMode>
 	);
