@@ -1,36 +1,28 @@
 @import "./animation.css";
 
-:root,
-:host {
-	--text-primary: #1c1c1c;
-	--text-secondary: #1f1f1f;
-	--background: #f8f8f8;
-	--background-secondary: #f0f0f0;
-}
-
-html.dark,
-:root.dark,
-:host(.dark) {
-	--text-primary: #f8f8f8;
-	--text-secondary: #f0f0f0;
-	--background: #353a42;
-	--background-secondary: #505051;
-}
-
 /* Color theme */
 @theme {
 	--font-family-sans: "Noto Sans KR", system-ui, sans-serif;
 
-	--color-primary: #3b82f6;
-	--color-secondary: #6b7280;
-	--color-accent: #4b82f6;
+	--color-theme: #3b82f6;
 	--color-destructive: #db4343;
 
-	--color-text-primary: var(--text-primary);
-	--color-text-secondary: var(--text-secondary);
-	--color-background: var(--background);
-	--color-background-secondary: var(--background-secondary);
+	--color-primary: #1c1c1c;
+	--color-secondary: #1f1f1f;
+	--color-background: #f8f8f8;
+	--color-background-secondary: #f0f0f0;
 }
+
+@media (prefers-color-scheme: dark) {
+	@theme {
+		--color-primary: #f8f8f8;
+		--color-secondary: #f0f0f0;
+		--color-background: #353a42;
+		--color-background-secondary: #505051;
+	}
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Spacing theme */
 @theme {
@@ -42,24 +34,35 @@ html.dark,
 @theme {
 	--animate-slide-fade-in-x: slideInX, fadeIn;
 	--animate-slide-fade-out-x: slideOutX, fadeOut;
-	--animate-slide-fade-in-y: slideInY, fadeIn;
-	--animate-slide-fade-out-y: slideOutY, fadeOut;
+	--animate-slide-fade-in-down: slideInFromDown, fadeIn;
+	--animate-slide-fade-out-down: slideOutToDown, fadeOut;
+	--animate-slide-fade-in-up: slideInFromUp, fadeIn;
+	--animate-slide-fade-out-up: slideOutToUp, fadeOut;
 	--animate-fade-in: fadeIn;
 	--animate-fade-out: fadeOut;
+	--animate-glow: glow;
+	--animate-bounce: bounce;
+	--animate-pulse: pulse;
+	--animate-shake: shake;
+	--animate-scale-up: scaleUp;
+	--animate-scale-down: scaleDown;
 
-	/* Reactive Classes */
-	--animate-hover-scale-up: scaleUp 0.3s ease-out;
-	--animate-hover-scale-down: scaleDown 0.3s ease-out;
-	--animate-hover-bounce: bounce 0.5s ease-in-out infinite;
-	--animate-hover-pulse: pulse 1s ease-in-out infinite;
-	--animate-hover-shake: shake 0.3s ease-in-out;
-	--animate-hover-glow: glow 0.3s ease-in-out;
-	--animate-focus-scale-up: scaleUp 0.3s ease-out;
-	--animate-focus-glow: glow 0.3s ease-in-out;
-	--animate-dialog-overlay: dialog-overlay-show 200ms
-		cubic-bezier(0.16, 1, 0.3, 1);
-	--animate-dialog-content: 200ms dialog-content-show 250ms
-		cubic-bezier(0.16, 1, 0.3, 1);
+	--anim-timing-linear: linear;
+	--anim-timing-ease: ease;
+	--anim-timing-ease-in: ease-in;
+	--anim-timing-ease-out: ease-out;
+	--anim-timing-ease-in-out: ease-in-out;
+
+	--anim-direction-reverse: reverse;
+	--anim-direction-alternate-reverse: alternate-reverse;
+	--anim-direction-normal: normal;
+	--anim-direction-alternate: alternate;
+	--anim-fill-none: none;
+	--anim-fill-forwards: forwards;
+	--anim-fill-backwards: backwards;
+	--anim-fill-both: both;
+
+	--anim-iteration-infinite: infinite;
 
 	--anim-duration-50: 50ms;
 	--anim-duration-100: 100ms;
@@ -94,17 +97,4 @@ html.dark,
 	--anim-delay-3000: 3000ms;
 	--anim-delay-4000: 4000ms;
 	--anim-delay-5000: 5000ms;
-
-	--anim-timing-linear: linear;
-	--anim-timing-ease: ease;
-	--anim-timing-ease-in: ease-in;
-	--anim-timing-ease-out: ease-out;
-	--anim-timing-ease-in-out: ease-in-out;
-
-	--anim-fill-none: none;
-	--anim-fill-forwards: forwards;
-	--anim-fill-backwards: backwards;
-	--anim-fill-both: both;
-
-	--anim-iteration-infinite: infinite;
 }

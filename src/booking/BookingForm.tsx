@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Button } from "./Button";
-import { FormField } from "./FormField";
-import { Select } from "./Select";
-import { DatePicker } from "./DatePicker";
-import { Input } from "./Input";
-import { StepIndicator } from "./StepIndicator";
-import { PriceDisplay } from "./PriceDisplay";
-import { useFormState } from "../hooks/useFormState";
-import { useStepNavigation } from "../hooks/useStepNavigation";
 import { SERVICES } from "../constants/services";
 import { TEXT } from "../constants/text";
+import { useFormState } from "../hooks/useFormState";
+import { useStepNavigation } from "../hooks/useStepNavigation";
+import { Button } from "./Button";
+import { DatePicker } from "./DatePicker";
+import { FormField } from "./FormField";
+import { Input } from "./Input";
+import { PriceDisplay } from "./PriceDisplay";
+import { Select } from "./Select";
+import { StepIndicator } from "./StepIndicator";
 
 interface BookingFormProps {
 	onClose: () => void;
@@ -142,7 +142,7 @@ export function BookingForm({ onClose }: BookingFormProps) {
 				<h3 className="mb-4 text-xl font-semibold text-primary">
 					예약이 완료되었습니다!
 				</h3>
-				<p className="mb-6 text-text-primary">{TEXT.booking.confirmation}</p>
+				<p className="mb-6 text-primary">{TEXT.booking.confirmation}</p>
 				<Button onClick={onClose}>닫기</Button>
 			</div>
 		);

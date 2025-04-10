@@ -14,7 +14,7 @@ export function FormField({ label, htmlFor, error, children }: FormFieldProps) {
 				{label}
 			</label>
 			{children}
-			{error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+			{error && <p className="mt-1 text-sm text-destructive">{error}</p>}
 		</div>
 	);
 }

@@ -21,7 +21,6 @@
 	.animate-dynamic-delay > *:nth-child(n + 3) {
 		animation-delay: calc(3 * var(--base-delay));
 	}
-
 }
 
 /* Functional utilities for animation properties based on theme variables */
@@ -37,6 +36,14 @@
 	animation-timing-function: --value(--anim-timing- *);
 }
 
+@utility anim-iteration-* {
+	animation-iteration-count: --value(--anim-iteration- *);
+}
+
 @utility anim-fill-* {
 	animation-fill-mode: --value(--anim-fill- *);
+}
+
+@utility anim-direction-* {
+	animation-direction: --value(--anim-direction- *);
 }

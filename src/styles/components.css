@@ -6,17 +6,17 @@
 
 	.heading-2,
 	h2 {
-		@apply text-3xl font-bold text-text-primary md:text-4xl;
+		@apply text-3xl font-bold text-primary md:text-4xl;
 	}
 
 	.paragraph,
 	p {
-		@apply text-2xl font-semibold text-text-secondary;
+		@apply text-2xl font-semibold text-secondary;
 	}
 
 	.link,
 	a {
-		@apply cursor-pointer text-primary hover:text-accent transition-all duration-200;
+		@apply cursor-pointer text-primary hover:text-theme transition-all duration-200;
 	}
 
 	/* Form styles */

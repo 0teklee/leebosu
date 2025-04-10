@@ -1,22 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect} from "react";
+import {useLocalStorage} from "../../hooks/useLocalStorage.ts";
 
 const DarkModeToggle: React.FC = () => {
-	const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-		// 1. Check localStorage
-		const storedPreference = localStorage.getItem("darkMode");
-		if (storedPreference !== null) {
-			return JSON.parse(storedPreference);
-		}
-		// 2. Check system preference
-		if (
-			window.matchMedia &&
-			window.matchMedia("(prefers-color-scheme: dark)").matches
-		) {
-			return true;
-		}
-		// 3. Default to light mode
-		return false;
-	});
+	const [isDarkMode, setIsDarkMode] = useLocalStorage("darkMode", false);
 
 	useEffect(() => {
 		const root = document.documentElement;
@@ -48,7 +34,7 @@ const DarkModeToggle: React.FC = () => {
 	return (
 		<button
 			onClick={toggleDarkMode}
-			className="p-2 rounded bg-background text-text-primary transition-colors"
+			className="p-2 rounded bg-background text-primary transition-colors"
 			aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
 		>
 			{isDarkMode ? "🌞" : "🌙"}

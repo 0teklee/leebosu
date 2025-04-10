@@ -1,32 +1,35 @@
-import DarkModeToggle from "./DarkModeToggle";
-import MobileNav from "./MobileNav";
-import { TransitionLink } from "./TransitionLink";
+import {Link} from "react-router-dom";
+import {useBooking} from "../../App.tsx";
+import DarkModeToggle from "./DarkModeToggle.tsx";
+import MobileNav from "./MobileNav.tsx";
 
 export function Header() {
+	const { openBooking } = useBooking();
+
 	return (
 		<header className="px-4 py-2 sm:px-6 sm:py-4 bg-background border-b border-secondary z-10">
 			<div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center justify-between">
-					<TransitionLink to="/" className="link heading-1">
+					<Link to="/" className="text-theme heading-1">
 						LEEBOSU
-					</TransitionLink>
+					</Link>
 					<div className="flex items-center gap-4 md:gap-6">
 						<nav className="hidden md:block">
 							<ul className="flex gap-6">
 								<li>
-									<TransitionLink to="/" className="link">
+									<Link to="/" className="link">
 										홈
-									</TransitionLink>
+									</Link>
 								</li>
 								<li>
-									<TransitionLink to="/about" className="link">
+									<Link to="/about" className="link">
 										소개
-									</TransitionLink>
+									</Link>
 								</li>
 								<li>
-									<TransitionLink to="/book" className="link">
+									<button onClick={openBooking} className="link">
 										예약
-									</TransitionLink>
+									</button>
 								</li>
 							</ul>
 						</nav>
