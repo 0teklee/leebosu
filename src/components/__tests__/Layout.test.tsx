@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { Layout } from "../Layout";
-import { TransitionProvider } from "../../hooks/useAppTransition.tsx";
-import { MemoryRouter } from "react-router-dom";
+import {render, screen} from "@testing-library/react";
+import {MemoryRouter} from "react-router-dom";
+import {TransitionProvider} from "../../components/TransitionProvider";
+import {Layout} from "../layout/Layout.tsx";
 
 describe("Layout", () => {
 	const renderWithProviders = (ui: React.ReactElement) => {
@@ -16,7 +16,7 @@ describe("Layout", () => {
 		renderWithProviders(<Layout>Test Content</Layout>);
 
 		// Check for logo
-		expect(screen.getByText("이보수")).toBeInTheDocument();
+		expect(screen.getByText("LEEBOSU")).toBeInTheDocument();
 		// Check if logo is a link to home (might need more specific selector)
 		// expect(screen.getByText("이보수")).toHaveAttribute("href", "/");
 
@@ -46,9 +46,7 @@ describe("Layout", () => {
 
 	it("renders footer with copyright", () => {
 		renderWithProviders(<Layout>Test Content</Layout>);
-		const currentYear = new Date().getFullYear();
-		expect(
-			screen.getByText(`© ${currentYear} 이보수. 모든 권리 보유.`)
-		).toBeInTheDocument();
+		expect(screen.getByText("Leebosu.com")).toBeInTheDocument();
+		expect(screen.getByText(/All rights reserved/)).toBeInTheDocument();
 	});
 });

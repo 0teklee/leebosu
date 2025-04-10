@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { Dialog } from "../Dialog";
+import {fireEvent, render, screen} from "@testing-library/react";
+import {Dialog} from "../atom/Dialog.tsx";
 
 describe("Dialog", () => {
 	const mockOnClose = jest.fn();

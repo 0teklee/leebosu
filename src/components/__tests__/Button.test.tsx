@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { Button } from "../Button";
+import {fireEvent, render, screen} from "@testing-library/react";
+import {Button} from "../atom/Button.tsx";
 
 describe("Button", () => {
 	it("renders children correctly", () => {
