@@ -1,15 +1,15 @@
-import {useState} from "react";
-import {SERVICES} from "./services.ts";
-import {TEXT} from "../constants/text.ts";
-import {useFormState} from "../hooks/useFormState.ts";
-import {useStepNavigation} from "../hooks/useStepNavigation.ts";
-import {Button} from "../components/atom/Button.tsx";
-import {DatePicker} from "../components/atom/DatePicker.tsx";
-import {FormField} from "../components/atom/FormField.tsx";
-import {Input} from "../components/atom/Input.tsx";
-import {PriceDisplay} from "./PriceDisplay.tsx";
-import {Select} from "../components/atom/Select.tsx";
-import {StepIndicator} from "./StepIndicator.tsx";
+import { useState } from "react";
+import { Button } from "../components/atom/Button.tsx";
+import { DatePicker } from "../components/atom/DatePicker.tsx";
+import { FormField } from "../components/atom/FormField.tsx";
+import { Input } from "../components/atom/Input.tsx";
+import { Select } from "../components/atom/Select.tsx";
+import { useFormState } from "../hooks/useFormState.ts";
+import { useStepNavigation } from "../hooks/useStepNavigation.ts";
+import { PriceDisplay } from "./PriceDisplay.tsx";
+import { SERVICES } from "./services.ts";
+import { StepIndicator } from "./StepIndicator.tsx";
+import { BOOKING_TEXT } from "./text.ts";
 
 interface BookingFormProps {
 	onClose: () => void;
@@ -46,7 +46,7 @@ export function BookingForm({ onClose }: BookingFormProps) {
 	};
 
 	const handleNextStep = () => {
-		if (currentStep === TEXT.booking.steps.length - 1) {
+		if (currentStep === BOOKING_TEXT.steps.length - 1) {
 			handleSubmit();
 		} else {
 			goToNextStep();
@@ -110,7 +110,7 @@ export function BookingForm({ onClose }: BookingFormProps) {
 						<Input
 							id="location"
 							type="text"
-							placeholder={TEXT.booking.locationPlaceholder}
+							placeholder={BOOKING_TEXT.locationPlaceholder}
 							value={form.location}
 							onChange={(e) => setLocation(e.target.value)}
 						/>
@@ -122,7 +122,7 @@ export function BookingForm({ onClose }: BookingFormProps) {
 						<Input
 							id="contact"
 							type="tel"
-							placeholder={TEXT.booking.contactPlaceholder}
+							placeholder={BOOKING_TEXT.contactPlaceholder}
 							value={form.contact}
 							onChange={(e) => setContact(e.target.value)}
 							pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}"
@@ -142,7 +142,7 @@ export function BookingForm({ onClose }: BookingFormProps) {
 				<h3 className="mb-4 text-xl font-semibold text-primary">
 					예약이 완료되었습니다!
 				</h3>
-				<p className="mb-6 text-primary">{TEXT.booking.confirmation}</p>
+				<p className="mb-6 text-primary">{BOOKING_TEXT.confirmation}</p>
 				<Button onClick={onClose}>닫기</Button>
 			</div>
 		);
@@ -154,7 +154,7 @@ export function BookingForm({ onClose }: BookingFormProps) {
 
 	return (
 		<form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-			<StepIndicator steps={TEXT.booking.steps} currentStep={currentStep} />
+			<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
 
 			{renderStepContent()}
 
@@ -175,7 +175,7 @@ export function BookingForm({ onClose }: BookingFormProps) {
 					onClick={handleNextStep}
 					disabled={!canGoNext || isSubmitting}
 				>
-					{currentStep === TEXT.booking.steps.length - 1 ? "예약하기" : "다음"}
+					{currentStep === BOOKING_TEXT.steps.length - 1 ? "예약하기" : "다음"}
 				</Button>
 			</div>
 		</form>
