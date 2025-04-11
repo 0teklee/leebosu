@@ -1,5 +1,5 @@
-import {Link} from "react-router-dom";
-import {useBooking} from "../../App.tsx";
+import { Link } from "react-router-dom";
+import { useBooking } from "../../booking/BookingContext";
 import DarkModeToggle from "./DarkModeToggle.tsx";
 import MobileNav from "./MobileNav.tsx";
 
@@ -27,7 +27,7 @@ export function Header() {
 									</Link>
 								</li>
 								<li>
-									<button onClick={openBooking} className="link">
+									<button onClick={() => openBooking()} className="link">
 										예약
 									</button>
 								</li>

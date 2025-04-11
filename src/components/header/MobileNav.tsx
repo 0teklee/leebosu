@@ -1,7 +1,7 @@
 import { StackIconPath, XIconPath } from "@/utils/icon-paths.ts";
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useBooking } from "../../App.tsx";
+import { useBooking } from "../../booking/BookingContext";
 import useAnimateDelay from "../../hooks/useAnimateDelay.ts";
 import useOutsideClick from "../../hooks/useOutsideClick.ts";
 import { Button } from "../atom/Button.tsx";
