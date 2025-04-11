@@ -175,19 +175,22 @@ export default function BookingDialog() {
 							variant="outline"
 							onClick={handlePrevStep}
 							disabled={isPending}
+							size="md"
 						>
 							이전
 						</Button>
 					)}
 
 					<Button
+						variant="primary"
 						className={`
-							anim-duration-300 anim-fill-both anim-timing-ease-in-out
+							anim-duration-300 anim-fill-alternate anim-timing-ease-in-out
 							${isFirstStep ? slideTransition : ""}`}
 						type={isLastStep ? "submit" : "button"}
 						disabled={Boolean(state.validationErrors) || isPending}
 						onClick={isLastStep ? undefined : handleNextStep}
 						fullWidth={isFirstStep}
+						size="md"
 					>
 						{isLastStep ? BOOKING_TEXT.submit : "다음"}
 					</Button>

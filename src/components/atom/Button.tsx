@@ -28,15 +28,14 @@ export function Button<T extends ElementType = "button">({
 	const Tag = as || "button";
 
 	const baseStyles = `
-		rounded font-medium transition-colors cursor-pointer
-		focus:outline-none focus:ring-2 focus:ring-offset-2`;
+		rounded font-medium transition-colors cursor-pointer`;
 
 	const variants = {
 		primary: "bg-theme text-white hover:bg-theme/90 focus:ring-theme/50",
 		secondary:
 			"bg-theme/50 text-background hover:bg-theme/90 focus:ring-theme/50",
 		outline:
-			"border border-secondary bg-transparent hover:bg-background-secondary focus:ring-secondary/50",
+			"ring-1 ring-secondary bg-transparent hover:bg-background-secondary focus:ring-secondary/50",
 		ghost:
 			"bg-transparent hover:bg-background-secondary focus:ring-secondary/50",
 	};
@@ -47,6 +46,12 @@ export function Button<T extends ElementType = "button">({
 		lg: "px-6 py-3 text-lg",
 	};
 
+	const focusStyles = {
+		primary: "focus:ring-theme/50",
+		secondary: "focus:ring-theme/50",
+		outline: "focus:ring-secondary/50",
+		ghost: "focus:ring-secondary/50",
+	};
 	return (
 		<Tag
 			className={`${baseStyles} ${variants[variant]} ${sizeStyles[size]} ${
