@@ -5,7 +5,7 @@ interface StepIndicatorProps {
 
 export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
 	return (
-		<div className="mb-6">
+		<div className="mb-6 w-full">
 			<div className="flex justify-between">
 				{steps.map((step, index) => {
 					const [isCurrentStep, isPreviousStep, isNextStep] = [
