@@ -30,14 +30,11 @@ export function Button<T extends ElementType = "button">({
 	const baseStyles = `
 		rounded font-medium transition-colors cursor-pointer`;
 
-	const variants = {
-		primary: "bg-theme text-white hover:bg-theme/90 focus:ring-theme/50",
-		secondary:
-			"bg-theme/50 text-background hover:bg-theme/90 focus:ring-theme/50",
-		outline:
-			"ring-1 ring-secondary bg-transparent hover:bg-background-secondary focus:ring-secondary/50",
-		ghost:
-			"bg-transparent hover:bg-background-secondary focus:ring-secondary/50",
+	const variantStyles = {
+		primary: "bg-theme text-white",
+		secondary: "bg-theme/50 text-background",
+		outline: "ring-1 ring-secondary bg-transparent",
+		ghost: "bg-transparent",
 	};
 
 	const sizeStyles = {
@@ -52,11 +49,21 @@ export function Button<T extends ElementType = "button">({
 		outline: "focus:ring-secondary/50",
 		ghost: "focus:ring-secondary/50",
 	};
+
+	const hoverStyles = {
+		primary: "hover:bg-theme/90",
+		secondary: "hover:bg-theme/90",
+		outline: "hover:bg-background-secondary",
+		ghost: "hover:bg-background-secondary",
+	};
+
 	return (
 		<Tag
-			className={`${baseStyles} ${variants[variant]} ${sizeStyles[size]} ${
-				fullWidth ? "w-full" : ""
-			} ${className}`}
+			className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} 
+			${focusStyles[variant]}
+			${hoverStyles[variant]}
+			disabled:opacity-50 disabled:cursor-not-allowed
+			${fullWidth ? "w-full" : ""} ${className || ""}`}
 			{...props}
 		>
 			{children}
