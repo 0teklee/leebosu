@@ -5,7 +5,7 @@
 	--font-family-sans: "Noto Sans KR", system-ui, sans-serif;
 
 	--color-theme: #3b82f6;
-	--color-destructive: #db4343;
+	--color-destructive:#fa6a42;
 
 	--color-primary: #1c1c1c;
 	--color-secondary: #1f1f1f;
@@ -30,12 +30,7 @@
 
 /* Animation theme */
 @theme {
-	--animate-slide-fade-in-x: slideInX, fadeIn;
-	--animate-slide-fade-out-x: slideOutX, fadeOut;
-	--animate-slide-fade-in-down: slideInFromDown, fadeIn;
-	--animate-slide-fade-out-down: slideOutToDown, fadeOut;
-	--animate-slide-fade-in-up: slideInFromUp, fadeIn;
-	--animate-slide-fade-out-up: slideOutToUp, fadeOut;
+
 	--animate-fade-in: fadeIn;
 	--animate-fade-out: fadeOut;
 	--animate-glow: glow;
@@ -44,6 +39,26 @@
 	--animate-shake: shake;
 	--animate-scale-up: scaleUp;
 	--animate-scale-down: scaleDown;
+	--animate-scale-y-up: scaleYUp;
+	--animate-scale-y-down: scaleYDown;
+	/* slide animation */
+	--animate-slide-in-left: slideInLeft;
+	--animate-slide-out-left: slideOutLeft;
+	--animate-slide-in-right: slideInRight;
+	--animate-slide-out-right: slideOutRight;
+	--animate-slide-in-down: slideInFromDown;
+	--animate-slide-out-down: slideOutToDown;
+	--animate-slide-in-up: slideInFromUp;
+	--animate-slide-out-up: slideOutToUp;
+	--animate-slide-fade-in-left: slideInLeft, fadeIn;
+	--animate-slide-fade-out-left: slideOutLeft, fadeOut;
+	--animate-slide-fade-in-right: slideInRight, fadeIn;
+	--animate-slide-fade-out-right: slideOutRight, fadeOut;
+	--animate-slide-fade-in-down: slideInFromDown, fadeIn;
+	--animate-slide-fade-out-down: slideOutToDown, fadeOut;
+	--animate-slide-fade-in-up: slideInFromUp, fadeIn;
+	--animate-slide-fade-out-up: slideOutToUp, fadeOut;
+
 
 	--anim-timing-linear: linear;
 	--anim-timing-ease: ease;

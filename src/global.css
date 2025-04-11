@@ -32,4 +32,16 @@
 		background-color: transparent;
 		overflow: hidden;
 	}
+
+	::-webkit-scrollbar {
+		@apply w-1;
+	}
+
+	::-webkit-scrollbar-track {
+		@apply bg-background-secondary;
+	}
+
+	::-webkit-scrollbar-thumb {
+		@apply bg-primary/50 rounded-full;
+	}
 }

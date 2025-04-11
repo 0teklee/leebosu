@@ -1,4 +1,4 @@
-@keyframes slideInX {
+@keyframes slideInLeft {
 	from {
 		transform: translateX(-100%);
 	}
@@ -7,7 +7,25 @@
 	}
 }
 
-@keyframes slideOutX {
+@keyframes slideOutLeft {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes slideInRight {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideOutRight {
 	from {
 		transform: translateX(0);
 	}
@@ -86,6 +104,24 @@
 	}
 	to {
 		transform: scale(0.9);
+	}
+}
+
+@keyframes scaleYUp {
+	from {
+		transform: scaleY(0);
+	}
+	to {
+		transform: scaleY(1);
+	}
+}
+
+@keyframes scaleYDown {
+	from {
+		transform: scaleY(1);
+	}
+	to {
+		transform: scaleY(0);
 	}
 }
 
