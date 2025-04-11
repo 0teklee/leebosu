@@ -5,13 +5,16 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ className = "", error, ...props }, ref) => {
+	({ className = "", error, defaultValue, ...props }, ref) => {
 		return (
 			<div className="w-full">
 				<input
 					ref={ref}
-					className={`w-full rounded border border-secondary px-3 py-2 text-lg placeholder-text-secondary
-            focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary
+					className={`
+						w-full px-3 py-2
+						text-lg placeholder-text-secondary
+           				rounded ring-1 ring-secondary focus:ring-theme 
+						hover:bg-theme/10 focus:bg-theme/10
             ${error ? "border-destructive" : ""}
             ${className}`}
 					{...props}

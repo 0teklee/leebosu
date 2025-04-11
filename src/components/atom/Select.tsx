@@ -1,3 +1,4 @@
+import { ChevronDownIconPath } from "@/utils/icon-paths";
 import { forwardRef, SelectHTMLAttributes } from "react";
 
 interface Option {
@@ -15,13 +16,16 @@ interface SelectProps
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 	({ className = "", options, error, onChange, ...props }, ref) => {
 		return (
-			<div className="w-full">
+			<div className="relative w-full">
 				<select
 					ref={ref}
-					className={`w-full rounded border border-secondary px-3 py-2 text-lg bg-background
-            focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary
-            ${error ? "border-destructive" : ""}
-            ${className}`}
+					className={`
+						w-full px-3 py-2 text-lg bg-background
+						rounded ring ring-secondary focus:ring-theme 
+						appearance-none
+						hover:bg-theme/10
+           				 ${error ? "ring-destructive" : ""}
+           				 ${className}`}
 					onChange={(e) => onChange?.(e.target.value)}
 					{...props}
 				>
@@ -34,6 +38,18 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 						</option>
 					))}
 				</select>
+				<svg
+					className="absolute right-2 top-1/2 -translate-y-1/2 text-primary"
+					width={24}
+					height={24}
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth={2}
+					strokeLinecap="round"
+				>
+					<path d={ChevronDownIconPath} />
+				</svg>
 				{error && <p className="mt-1 text-sm text-destructive">{error}</p>}
 			</div>
 		);

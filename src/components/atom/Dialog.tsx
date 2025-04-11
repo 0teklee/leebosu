@@ -1,22 +1,38 @@
-import {ReactNode, useEffect} from "react";
-import {createPortal} from "react-dom";
+import {
+	createContext,
+	PropsWithChildren,
+	ReactNode,
+	useContext,
+	useEffect,
+} from "react";
+import { createPortal } from "react-dom";
 import useAnimateDelay from "../../hooks/useAnimateDelay.ts";
+import { XIconPath } from "../../utils/icon-paths.ts";
+import { Button } from "./Button.tsx";
+
+interface DialogContextType {
+	isOpen: boolean;
+	onClose: () => void;
+}
+
+const DialogContext = createContext<DialogContextType | null>(null);
+
+const useDialogContext = () => {
+	const context = useContext(DialogContext);
+	if (!context) {
+		throw new Error("Dialog components must be used within a Dialog");
+	}
+	return context;
+};
 
 interface DialogProps {
 	isOpen: boolean;
 	onClose: () => void;
-	title?: string;
 	children: ReactNode;
-	footer?: ReactNode;
+	className?: string;
 }
-// Refactor to use react create portal
-export function Dialog({
-	isOpen,
-	onClose,
-	title,
-	children,
-	footer,
-}: DialogProps) {
+
+function Dialog({ isOpen, onClose, children }: DialogProps) {
 	const [isAnimating, setAnimate] = useAnimateDelay(200);
 
 	const handleClose = () => {
@@ -34,52 +50,96 @@ export function Dialog({
 	}, [isOpen]);
 
 	return createPortal(
-		<dialog
-			open={isOpen}
-			className={`${isOpen ? "fixed" : "hidden"} 
-			`}
-		>
-			<div
-				className={`
-					fixed inset-0
-					 bg-black/50
-					 anim-duration-200
-					 anim-fill-both
-					 anim-timing-ease-in-out
-					 ${isAnimating ? "animate-fade-out" : "animate-fade-in"}`}
-				onClick={handleClose}
-				data-testid="dialog-backdrop"
-				aria-hidden={!isOpen}
-				aria-label="Dialog backdrop"
-			/>
-			<div
-				aria-label="Dialog content"
-				className={`
-					relative 
-					self-end sm:self-center
-					w-full max-w-md
-					min-h-[70vh] sm:min-h-none 
-					bg-background shadow-xl
-					rounded-t-lg sm:rounded-lg
-					anim-duration-200
-					anim-fill-backwards
-					anim-timing-ease-in-out
-					${isAnimating ? "animate-slide-fade-out-down" : "animate-slide-fade-in-down"} 
-				`}
-			>
-				{title && (
-					<header className="border-b border-text-secondary px-6 py-4">
-						<h2 className="text-xl font-semibold">{title}</h2>
-					</header>
-				)}
-				<div className="bg-background px-6 py-4">{children}</div>
-				{footer && (
-					<footer className="border-t border-primary px-6 py-4">
-						{footer}
-					</footer>
-				)}
-			</div>
-		</dialog>,
+		<DialogContext.Provider value={{ isOpen, onClose }}>
+			<dialog open={isOpen} className={`${isOpen ? "fixed" : "hidden"}`}>
+				<div
+					className={`
+						fixed inset-0
+						 bg-black/50
+						 anim-duration-200
+						 anim-fill-both
+						 anim-timing-ease-in-out
+						 ${isAnimating ? "animate-fade-out" : "animate-fade-in"}`}
+					onClick={handleClose}
+					data-testid="dialog-backdrop"
+					aria-hidden={!isOpen}
+					aria-label="Dialog backdrop"
+				/>
+				<div
+					aria-label="Dialog content"
+					className={`
+						relative 
+						self-end sm:self-center
+						w-full max-w-md
+						overflow-x-hidden
+						sm:overflow-y-hidden
+						bg-background shadow-xl
+						rounded-t-lg sm:rounded-lg
+						*:px-4 *:not-first:pt-6 *:not-first:pb-8
+					`}
+				>
+					{children}
+				</div>
+			</dialog>
+		</DialogContext.Provider>,
 		document.body
 	);
 }
+
+interface DialogContentProps extends PropsWithChildren {
+	className?: string;
+}
+
+function DialogHeader({ children, className }: DialogContentProps) {
+	const { onClose } = useDialogContext();
+
+	return (
+		<header className={`relative space-y-4 pt-6 ${className || ""}`}>
+			{children}
+			<Button
+				variant="ghost"
+				size="sm"
+				onClick={onClose}
+				aria-label="Close dialog"
+				className={`absolute top-2 right-2 p-0 hover:text-destructive`}
+			>
+				<svg
+					className="h-6 w-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth={2}
+						d={XIconPath}
+					/>
+				</svg>
+			</Button>
+		</header>
+	);
+}
+
+function DialogContent({ children, className }: DialogContentProps) {
+	return (
+		<div
+			className={`bg-background h-[40dvh] overflow-y-auto ${className || ""}`}
+		>
+			{children}
+		</div>
+	);
+}
+
+function DialogFooter({ children, className }: DialogContentProps) {
+	return (
+		<footer className={`border-primary ${className || ""}`}>{children}</footer>
+	);
+}
+
+// Attach subcomponents to Dialog
+Dialog.Header = DialogHeader;
+Dialog.Content = DialogContent;
+Dialog.Footer = DialogFooter;
+
+export { Dialog };
