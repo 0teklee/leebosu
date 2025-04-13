@@ -1,11 +1,11 @@
-import { StackIconPath, XIconPath } from "@/utils/icon-paths.ts";
+import { StackIconPath, XIconPath } from "@/utils/icon-paths";
+import { Button } from "@components/atom/Button";
+import MorphIcon from "@components/atom/MorphIcon";
+import useAnimateDelay from "@hooks/useAnimateDelay";
+import { useBooking } from "@hooks/useBooking";
+import useOutsideClick from "@hooks/useOutsideClick";
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useBooking } from "../../booking/BookingContext";
-import useAnimateDelay from "../../hooks/useAnimateDelay.ts";
-import useOutsideClick from "../../hooks/useOutsideClick.ts";
-import { Button } from "../atom/Button.tsx";
-import MorphIcon from "../atom/MorphIcon.tsx";
 
 const MobileNav: React.FC = () => {
 	const [isOpen, setIsOpen] = useState(false);

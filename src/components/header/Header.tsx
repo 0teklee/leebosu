@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useBooking } from "../../booking/BookingContext";
+import { useBooking } from "@hooks/useBooking";
 import DarkModeToggle from "./DarkModeToggle.tsx";
 import MobileNav from "./MobileNav.tsx";
 

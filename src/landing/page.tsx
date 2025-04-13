@@ -1,6 +1,6 @@
-import { useBooking } from "../booking/BookingContext";
-import { Button } from "../components/atom/Button.tsx";
-import { PageLayout } from "../components/layout/PageLayout.tsx";
+import { useBooking } from "@hooks/useBooking";
+import { Button } from "@components/atom/Button";
+import { PageLayout } from "@components/layout/PageLayout";
 
 function LandingPage() {
 	const { openBooking } = useBooking();

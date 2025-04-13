@@ -1,6 +1,5 @@
-import { BookingProvider } from "./booking/BookingContext";
 import { ErrorBoundary } from "./components/ErrorBoundary";
-import { Layout } from "./components/layout/Layout.tsx";
+import { Layout } from "./components/layout/Layout";
 import "./global.css";
 import { Router } from "./router";
 
@@ -8,13 +7,11 @@ import { Router } from "./router";
 
 function App() {
 	return (
-		<BookingProvider>
-			<Layout>
-				<ErrorBoundary>
-					<Router />
-				</ErrorBoundary>
-			</Layout>
-		</BookingProvider>
+		<Layout>
+			<ErrorBoundary>
+				<Router />
+			</ErrorBoundary>
+		</Layout>
 	);
 }
 
