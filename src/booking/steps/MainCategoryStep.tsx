@@ -1,11 +1,13 @@
 import { FormField } from "../../components/atom/FormField";
 import { Select } from "../../components/atom/Select";
-import { SERVICES } from "../text";
+import { SERVICES, VALIDATION_ERRORS } from "../constants";
 import { StepProps } from "../types";
+import { getStepFromUrl } from "../utils";
 
 export function MainCategoryStep({ state, isPending }: StepProps) {
+	const mainStep = getStepFromUrl();
 	return (
-		<FormField label="대분류 선택" htmlFor="mainCategory">
+		<FormField className="group" label="대분류 선택" htmlFor="mainCategory">
 			<Select
 				id="mainCategory"
 				name="mainCategory"
@@ -15,12 +17,11 @@ export function MainCategoryStep({ state, isPending }: StepProps) {
 					value,
 					label: name,
 				}))}
+				required
 			/>
-			{state.validationErrors?.mainCategory && (
-				<p className="text-destructive text-sm mt-1">
-					{state.validationErrors.mainCategory}
-				</p>
-			)}
+			<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-300 text-destructive text-xs">
+				{VALIDATION_ERRORS[mainStep]}
+			</p>
 		</FormField>
 	);
 }

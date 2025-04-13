@@ -1,21 +1,18 @@
 import { DatePicker } from "../../components/atom/DatePicker";
-import { FormField } from "../../components/atom/FormField";
 import { StepProps } from "../types";
 
 export function DateStep({ state, isPending }: StepProps) {
 	return (
-		<FormField label="날짜 선택" htmlFor="date">
+		<div className="flex flex-col">
 			<DatePicker
-				id="date"
+				label="방문 희망 날짜"
 				name="date"
-				value={state.date}
+				id="booking-date"
+				aria-required="true"
 				disabled={isPending}
+				onChange={(date) => (state.date = date)}
+				value={state.date}
 			/>
-			{state.validationErrors?.date && (
-				<p className="text-destructive text-sm mt-1">
-					{state.validationErrors.date}
-				</p>
-			)}
-		</FormField>
+		</div>
 	);
 }

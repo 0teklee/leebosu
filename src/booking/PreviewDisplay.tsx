@@ -1,17 +1,21 @@
-import { useBooking } from "./BookingContext";
-import { SERVICES } from "./text";
-import { StepState } from "./types";
+import { SERVICES } from "./constants";
+import { FormState } from "./types";
 
-interface PriceDisplayProps {
-	currentFormData: StepState;
+interface PreviewDisplayProps {
+	currentStep: number;
+	currentFormData: FormState;
+	estimatedPrice?: number;
 }
 
-export function PriceDisplay({ currentFormData }: PriceDisplayProps) {
-	// Format price with Korean currency
-	const { currentStep } = useBooking();
-	const formattedPrice = currentFormData.estimatedPrice.toLocaleString("ko-KR");
+export function PreviewDisplay({
+	currentStep,
+	currentFormData,
+	estimatedPrice = 0,
+}: PreviewDisplayProps) {
 	const { mainCategory, subCategory, date, location, contact } =
 		currentFormData;
+
+	const formattedPrice = estimatedPrice?.toLocaleString("ko-KR");
 
 	return (
 		<div className="mt-4 p-4 bg-background-secondary rounded-lg">
@@ -20,10 +24,10 @@ export function PriceDisplay({ currentFormData }: PriceDisplayProps) {
 				<p className="text-xl font-bold text-theme">약 {formattedPrice}원~</p>
 			</div>
 			<div className="space-y-1 *:text-xs text-secondary">
-				{currentStep > 0 && mainCategory && (
+				{mainCategory && (
 					<p>대분류 : {SERVICES[mainCategory as keyof typeof SERVICES].name}</p>
 				)}
-				{currentStep > 1 && subCategory && (
+				{subCategory && (
 					<p>
 						소분류 :{" "}
 						{
@@ -33,11 +37,9 @@ export function PriceDisplay({ currentFormData }: PriceDisplayProps) {
 						}
 					</p>
 				)}
-				{currentStep > 2 && date && (
-					<p>날짜 : {new Date(date).toLocaleDateString()}</p>
-				)}
-				{currentStep > 3 && location && <p>지역 : {location}</p>}
-				{currentStep > 4 && contact && <p>연락처 : {contact}</p>}
+				{date && <p>날짜 : {new Date(date).toLocaleDateString()}</p>}
+				{location && <p>지역 : {location}</p>}
+				{contact && <p>연락처 : {contact}</p>}
 			</div>
 			<p className="mt-1 text-xs text-destructive/80">
 				* 실제 비용은 현장 상황에 따라 달라질 수 있습니다.
