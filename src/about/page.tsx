@@ -1,38 +1,68 @@
-import { useBooking } from "@hooks/useBooking";
+import { PriceTable } from "@/about/PriceTable";
 import { Button } from "@components/atom/Button";
 import { PageLayout } from "@components/layout/PageLayout";
+import { useBooking } from "@hooks/useBooking";
+import { ABOUT_TEXT } from "./constants";
 
 function AboutPage() {
 	const { openBooking } = useBooking();
 
 	return (
-		<PageLayout title="이보수 소개">
+		<PageLayout>
+			{/* Top CTA Section */}
+			<section className="justify-self-center mb-8">
+				<h1 className="text-theme mb-4">{ABOUT_TEXT.subtitle}</h1>
+			</section>
+			<section className="justify-self-center mb-8">
+				<Button onClick={() => openBooking()} size="lg">
+					{ABOUT_TEXT.cta}
+				</Button>
+			</section>
+
+			<section className="mb-12">
+				<PriceTable
+					title={ABOUT_TEXT.price_table.title}
+					description={ABOUT_TEXT.price_table.description}
+					items={ABOUT_TEXT.price_table.items}
+				/>
+			</section>
+
 			{/* Bio Section */}
 			<section className="mb-12">
 				<h2 className="text-xl sm:text-2xl font-semibold mb-4">경력</h2>
-				<p className="text-lg mb-4">
-					25년간 안양 지역에서 주거 수리 및 인테리어를 전문으로 일해왔습니다.
-				</p>
+				<p className="text-lg mb-4">{ABOUT_TEXT.bio}</p>
 			</section>
+
+			{/* Price Table Section */}
 
 			{/* Pricing Section */}
 			<section className="mb-12">
 				<h2 className="text-xl sm:text-2xl font-semibold mb-4">가격 안내</h2>
-				<p className="text-lg mb-4">
-					작업별 기본 가격을 투명하게 공개합니다. 실제 비용은 면적과 난이도에
-					따라 달라질 수 있습니다.
-				</p>
+				<p className="text-lg mb-4">{ABOUT_TEXT.pricing}</p>
 			</section>
 
-			{/* CTA Section */}
-			<section className="text-center">
-				<Button
-					onClick={() => openBooking()}
-					className="sm:max-w-sm"
-					size="lg"
-					fullWidth
-				>
-					예약하러 가기
+			{/* Expertise Section */}
+			<section className="mb-12">
+				<h2 className="text-xl sm:text-2xl font-semibold mb-4">전문 분야</h2>
+				<p className="text-lg mb-4">{ABOUT_TEXT.expertise}</p>
+			</section>
+
+			{/* Service Area Section */}
+			<section className="mb-12">
+				<h2 className="text-xl sm:text-2xl font-semibold mb-4">서비스 지역</h2>
+				<p className="text-lg mb-4">{ABOUT_TEXT.service_area}</p>
+			</section>
+
+			{/* Guarantee Section */}
+			<section className="mb-12">
+				<h2 className="text-xl sm:text-2xl font-semibold mb-4">품질 보증</h2>
+				<p className="text-lg mb-4">{ABOUT_TEXT.guarantee}</p>
+			</section>
+
+			{/* Bottom CTA Section */}
+			<section className="justify-self-center mb-8">
+				<Button onClick={() => openBooking()} size="lg">
+					{ABOUT_TEXT.cta}
 				</Button>
 			</section>
 		</PageLayout>
