@@ -44,9 +44,10 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 	useEffect(() => {
 		if (isOpen) {
 			document.body.style.setProperty("overflow", "hidden");
-		} else {
-			document.body.style.setProperty("overflow", "");
 		}
+		return () => {
+			document.body.style.setProperty("overflow", "");
+		};
 	}, [isOpen]);
 
 	return createPortal(

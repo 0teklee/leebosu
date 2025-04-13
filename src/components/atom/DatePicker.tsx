@@ -209,13 +209,11 @@ function DatePickerPopup({
 								disabled={date < today}
 								className={`w-8 h-8 rounded-full flex items-center justify-center text-sm
 											${
-												date.getDate() === selectedDate.getDate() &&
-												date.getMonth() === selectedDate.getMonth() &&
-												date.getFullYear() === selectedDate.getFullYear()
-													? "bg-theme text-primary font-bold"
+												date.toISOString() === selectedDate.toISOString()
+													? "bg-theme text-white font-bold"
 													: date < today
 													? "text-secondary/50 cursor-not-allowed"
-													: "hover:bg-theme/50 cursor-pointer"
+													: "hover:bg-theme/50 hover:text-primary cursor-pointer"
 											}`}
 							>
 								{date.getDate()}
