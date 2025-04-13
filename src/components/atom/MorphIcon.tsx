@@ -94,7 +94,7 @@ export default function MorphIcon({
 			strokeWidth={1.5}
 			strokeLinecap="round"
 			strokeLinejoin="round"
-			className={`w-6 h-6 ${className || ""}`}
+			className={`w-6 h-6${className || ""}`}
 		>
 			<path ref={pathRef} />
 		</svg>

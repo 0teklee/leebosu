@@ -33,7 +33,7 @@ interface DialogProps {
 }
 
 function Dialog({ isOpen, onClose, children }: DialogProps) {
-	const [isAnimating, setAnimate] = useAnimateDelay(200);
+	const [isAnimating, setAnimate] = useAnimateDelay(300);
 
 	const handleClose = () => {
 		setAnimate(() => {
@@ -50,13 +50,13 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 	}, [isOpen]);
 
 	return createPortal(
-		<DialogContext.Provider value={{ isOpen, onClose }}>
+		<DialogContext.Provider value={{ isOpen, onClose: handleClose }}>
 			<dialog open={isOpen} className={`${isOpen ? "fixed" : "hidden"}`}>
 				<div
 					className={`
 						fixed inset-0
 						 bg-black/50
-						 anim-duration-200
+						 anim-duration-300
 						 anim-fill-both
 						 anim-timing-ease-in-out
 						 ${isAnimating ? "animate-fade-out" : "animate-fade-in"}`}
@@ -75,7 +75,10 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 						sm:overflow-y-hidden
 						bg-background shadow-xl
 						rounded-t-lg sm:rounded-lg
-						*:px-4 *:not-first:pt-6 *:not-first:pb-8
+						anim-duration-300
+						anim-fill-both
+						anim-timing-ease-in-out
+						${isAnimating ? "animate-slide-fade-out-down" : "animate-slide-fade-in-down"}
 					`}
 				>
 					{children}
@@ -94,7 +97,7 @@ function DialogHeader({ children, className }: DialogContentProps) {
 	const { onClose } = useDialogContext();
 
 	return (
-		<header className={`relative space-y-4 pt-6 ${className || ""}`}>
+		<header className={`relative space-y-4 px-4 pt-6 ${className || ""}`}>
 			{children}
 			<Button
 				variant="ghost"
@@ -124,7 +127,9 @@ function DialogHeader({ children, className }: DialogContentProps) {
 function DialogContent({ children, className }: DialogContentProps) {
 	return (
 		<div
-			className={`bg-background h-[40dvh] overflow-y-auto ${className || ""}`}
+			className={`bg-background h-[40dvh] px-4 pb-8 overflow-y-auto ${
+				className || ""
+			}`}
 		>
 			{children}
 		</div>
@@ -133,7 +138,9 @@ function DialogContent({ children, className }: DialogContentProps) {
 
 function DialogFooter({ children, className }: DialogContentProps) {
 	return (
-		<footer className={`border-primary ${className || ""}`}>{children}</footer>
+		<footer className={`border-primary px-4 pt-6 pb-8 ${className || ""}`}>
+			{children}
+		</footer>
 	);
 }
 

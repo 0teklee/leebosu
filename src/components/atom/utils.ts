@@ -1,12 +1,7 @@
 export function generateCalendarData(selectedDate: Date | null) {
 	const today = new Date();
-	const todayStart = new Date(
-		today.getFullYear(),
-		today.getMonth(),
-		today.getDate()
-	);
 
-	const currentDate = selectedDate || today;
+	const currentDate = selectedDate ? selectedDate : today;
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth();
 
@@ -14,17 +9,20 @@ export function generateCalendarData(selectedDate: Date | null) {
 	const startingDay = firstDay.getDay();
 	const totalDays = new Date(year, month + 1, 0).getDate();
 
+	const validStartingDay = Math.max(0, Math.min(6, startingDay));
+
 	const daysArray = [
-		...Array(startingDay).fill(null),
+		...Array(validStartingDay).fill(null),
 		...Array.from(
 			{ length: totalDays },
 			(_, i) => new Date(year, month, i + 1)
 		),
 	];
 
+	console.log("daysArray", daysArray);
+
 	return {
 		today,
-		todayStart,
 		year,
 		month,
 		daysArray,

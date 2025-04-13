@@ -19,7 +19,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ${className}`}
 					{...props}
 				/>
-				{error && <p className="mt-1 text-sm text-destructive">{error}</p>}
 			</div>
 		);
 	}

@@ -25,7 +25,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 						appearance-none
 						hover:bg-theme/10
            				 ${error ? "ring-destructive" : ""}
-           				 ${className}`}
+           				 ${className }`}
 					onChange={(e) => onChange?.(e.target.value)}
 					{...props}
 				>
