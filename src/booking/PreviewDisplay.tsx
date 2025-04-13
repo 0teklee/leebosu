@@ -8,7 +8,6 @@ interface PreviewDisplayProps {
 }
 
 export function PreviewDisplay({
-	currentStep,
 	currentFormData,
 	estimatedPrice = 0,
 }: PreviewDisplayProps) {
