@@ -1,7 +1,7 @@
 import useAnimateDelay from "@/hooks/useAnimateDelay";
 import useOutsideClick from "@/hooks/useOutsideClick";
-import { ChevronDownIconPath } from "@/utils/icon-paths";
-import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
+import { InputHTMLAttributes, useRef, useState } from "react";
+import { ChevronIcon } from "../icons/ChevronIcon";
 import { Button } from "./Button";
 import { dayNames, monthNames } from "./constants";
 import { Input } from "./Input";
@@ -10,36 +10,37 @@ import { generateCalendarData } from "./utils";
 interface DatePickerProps
 	extends Omit<
 		InputHTMLAttributes<HTMLInputElement>,
-		"type" | "onChange" | "value"
+		"type" | "onChange" | "value" | "defaultValue"
 	> {
 	label?: string;
 	error?: string;
-	value: string | null;
-	onChange: (date: string) => void;
+	defaultValue?: string | null;
 }
 
 export function DatePicker({
 	className = "",
 	error,
-	value,
+	defaultValue,
 	label,
-	onChange,
 	...props
 }: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedDate, setSelectedDate] = useState(
-		value ? new Date(value) : new Date()
+	const [selectedDate, setSelectedDate] = useState<Date | null>(
+		defaultValue ? new Date(defaultValue) : null
 	);
-	const inputRef = useRef<HTMLInputElement>(null);
-	const calendarRef = useRef<HTMLDivElement>(null);
 
-	const [isAnimate, triggerAnimate, animDuration] = useAnimateDelay(300);
-
-	const animStyle = `anim-duration-${animDuration} anim-ease-in-out anim-fill-both`;
+	const [isAnimate, triggerAnimate, duration] = useAnimateDelay(300);
+	const animStyle = `anim-duration-${duration} anim-ease-in-out anim-fill-both`;
 
 	const changeMonth = (delta: number) => {
 		setSelectedDate(
-			new Date(selectedDate.getFullYear(), selectedDate.getMonth() + delta, 1)
+			selectedDate
+				? new Date(
+						selectedDate.getFullYear(),
+						selectedDate.getMonth() + delta,
+						1
+				  )
+				: null
 		);
 	};
 
@@ -60,10 +61,6 @@ export function DatePicker({
 		});
 	};
 
-	useEffect(() => {
-		onChange?.(selectedDate.toLocaleDateString("ko-KR") || "");
-	}, [selectedDate, onChange]);
-
 	return (
 		<div className={`w-full relative`}>
 			{label && (
@@ -74,13 +71,6 @@ export function DatePicker({
 					{label}
 				</label>
 			)}
-			<input
-				ref={inputRef}
-				value={selectedDate.toLocaleDateString("ko-KR")}
-				type="date"
-				className="hidden"
-				{...props}
-			/>
 			<div
 				id="display-date"
 				className={`
@@ -91,16 +81,15 @@ export function DatePicker({
 					`}
 			>
 				<Input
-					id={"date-picker-display"}
 					readOnly
-					value={selectedDate.toLocaleDateString("ko-KR")}
+					value={selectedDate ? selectedDate.toLocaleDateString("ko-KR") : ""}
 					className={`
 							cursor-pointer  
 							bg-background
 							invalid:ring-destructive
 							${className}
 							`}
-					placeholder="날짜 선택"
+					placeholder="클릭하여 날짜를 선택해주세요"
 					onClick={() => {
 						triggerAnimate(() => {
 							setIsOpen(true);
@@ -108,38 +97,34 @@ export function DatePicker({
 					}}
 					aria-expanded={isOpen}
 					disabled={props.disabled}
+					{...props}
 				/>
-				<svg
-					className="absolute w-6 h-6 right-2 top-1/2 -translate-y-1/2 text-primary"
-					width={24}
-					height={24}
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth={2}
-					strokeLinecap="round"
-				>
-					<path d={ChevronDownIconPath} />
-				</svg>
+				<ChevronIcon
+					direction="down"
+					className="absolute right-2 top-1/2 -translate-y-1/2"
+				/>
 			</div>
 			{isOpen && (
 				<DatePickerPopup
-					calendarRef={calendarRef}
+					selectedDate={selectedDate}
 					animStyle={animStyle}
 					isAnimate={isAnimate}
 					changeMonth={changeMonth}
 					handleOutSideClick={handleOutsideClick}
-					selectedDate={selectedDate}
 					handleDateSelect={handleDateSelect}
 				/>
 			)}
-			{error && <p className="text-sm text-destructive mt-1">{error}</p>}
+			<label
+				htmlFor={props.id || "date"}
+				className="opacity-0 invalid:opacity-100 text-sm text-destructive mt-1"
+			>
+				{error}
+			</label>
 		</div>
 	);
 }
 
 function DatePickerPopup({
-	calendarRef,
 	animStyle,
 	isAnimate,
 	changeMonth,
@@ -147,18 +132,19 @@ function DatePickerPopup({
 	handleDateSelect,
 	handleOutSideClick,
 }: {
-	calendarRef: React.RefObject<HTMLDivElement | null>;
 	animStyle: string;
 	isAnimate: boolean;
 	changeMonth: (delta: number) => void;
-	selectedDate: Date;
+	selectedDate: Date | null;
 	handleDateSelect: (date: Date, today: Date) => void;
 	handleOutSideClick: () => void;
 }) {
+	const calendarRef = useRef<HTMLDivElement>(null);
+
+	const { today, year, month, daysArray } = generateCalendarData(selectedDate);
 	useOutsideClick(calendarRef, () => {
 		handleOutSideClick();
 	});
-	const { today, year, month, daysArray } = generateCalendarData(selectedDate);
 
 	return (
 		<div
@@ -177,7 +163,7 @@ function DatePickerPopup({
 					type="button"
 					onClick={() => changeMonth(-1)}
 				>
-					&lt;
+					<ChevronIcon direction="left" />
 				</Button>
 				<div className="font-medium">
 					{year}년 {monthNames[month]}
@@ -188,7 +174,7 @@ function DatePickerPopup({
 					type="button"
 					onClick={() => changeMonth(1)}
 				>
-					&gt;
+					<ChevronIcon direction="right" />
 				</Button>
 			</div>
 			<div className="grid grid-cols-7 gap-1 mb-1">
@@ -209,6 +195,7 @@ function DatePickerPopup({
 								disabled={date < today}
 								className={`w-8 h-8 rounded-full flex items-center justify-center text-sm
 											${
+												selectedDate &&
 												date.toISOString() === selectedDate.toISOString()
 													? "bg-theme text-white font-bold"
 													: date < today

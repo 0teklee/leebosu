@@ -7,7 +7,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import useAnimateDelay from "../../hooks/useAnimateDelay.ts";
-import { XIconPath } from "../../utils/icon-paths.ts";
+import { XIconPath } from "../icons/icon-paths.ts";
 import { Button } from "./Button.tsx";
 
 interface DialogContextType {

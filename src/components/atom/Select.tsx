@@ -1,4 +1,4 @@
-import { ChevronDownIconPath } from "@/utils/icon-paths";
+import { ChevronDownIconPath } from "@/components/icons/icon-paths";
 import { forwardRef, SelectHTMLAttributes } from "react";
 
 interface Option {
@@ -25,7 +25,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 						appearance-none
 						hover:bg-theme/10
            				 ${error ? "ring-destructive" : ""}
-           				 ${className }`}
+           				 ${className}`}
 					onChange={(e) => onChange?.(e.target.value)}
 					{...props}
 				>

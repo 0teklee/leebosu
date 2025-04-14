@@ -19,8 +19,6 @@ export function generateCalendarData(selectedDate: Date | null) {
 		),
 	];
 
-	console.log("daysArray", daysArray);
-
 	return {
 		today,
 		year,
