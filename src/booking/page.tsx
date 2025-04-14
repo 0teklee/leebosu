@@ -21,13 +21,19 @@ export default function BookingDialog() {
 
 	const [formState, formAction] = useActionState<FormState, FormData>(
 		(prevState, formData) => {
+			const direction = formData.get("direction");
 			const updateKey = getCurrentKey();
 			const updateValue = extractFormData(formData);
+
 			const nextState = {
 				...prevState,
 				[updateKey]: updateValue,
 			};
-			handleNextStep(); // 다음 단계로 이동
+			if (direction === "next") {
+				handleNextStep();
+			} else {
+				handlePrevStep();
+			}
 
 			return nextState;
 		},
@@ -38,7 +44,7 @@ export default function BookingDialog() {
 
 	const [isPending, startTransition] = useTransition();
 	const [isAnimating, triggerAnim, animDuration] = useAnimateDelay(400);
-	const [direction, setDirection] = useState<"forward" | "backward">("forward");
+	const [direction, setDirection] = useState<"prev" | "next">("next");
 
 	const animStyle = `anim-duration-${animDuration} anim-ease-in-out anim-fill-both`;
 
@@ -48,7 +54,7 @@ export default function BookingDialog() {
 	const currentStep = getStepFromUrl();
 
 	function handleNextStep(): void {
-		setDirection("forward");
+		setDirection("next");
 		triggerAnim(() => {
 			startTransition(() => {
 				setStep(currentStep + 1);
@@ -57,7 +63,7 @@ export default function BookingDialog() {
 	}
 
 	function handlePrevStep(): void {
-		setDirection("backward");
+		setDirection("prev");
 		triggerAnim(() => {
 			startTransition(() => {
 				setStep(currentStep - 1);
@@ -80,11 +86,11 @@ export default function BookingDialog() {
 
 	// 현재 단계와 이전 단계의 비교로 이동 방향 결정
 	const enteringTransition =
-		direction === "backward"
+		direction === "prev"
 			? "animate-slide-fade-in-left"
 			: "animate-slide-fade-in-right";
 	const exitingTransition =
-		direction === "backward"
+		direction === "prev"
 			? "animate-slide-fade-out-right"
 			: "animate-slide-fade-out-left";
 
@@ -127,31 +133,37 @@ export default function BookingDialog() {
 					{isError && <ErrorStep />}
 				</Dialog.Content>
 				<Dialog.Footer className="self-end flex justify-between w-full border-t border-secondary">
-					{currentStep > 0 && (
-						<Button
-							type="button"
-							variant="outline"
-							onClick={handlePrevStep}
-							size="md"
-						>
-							이전
-						</Button>
-					)}
-
 					{!isSuccess && !isError && (
-						<Button
-							variant="primary"
-							className={`
+						<>
+							{currentStep > 0 && (
+								<Button
+									name="direction"
+									value="prev"
+									data-direction="backward"
+									type="submit"
+									variant="outline"
+									size="md"
+								>
+									이전
+								</Button>
+							)}
+							<Button
+								variant="primary"
+								name="direction"
+								value="next"
+								data-direction="forward"
+								className={`
 								${animStyle}
 								${isFirstStep ? slideTransition : ""}
 							`}
-							type="submit"
-							disabled={isPending}
-							fullWidth={isFirstStep}
-							size="md"
-						>
-							{isLastStep ? BOOKING_TEXT.submit : "다음"}
-						</Button>
+								type="submit"
+								disabled={isPending}
+								fullWidth={isFirstStep}
+								size="md"
+							>
+								{isLastStep ? BOOKING_TEXT.submit : "다음"}
+							</Button>
+						</>
 					)}
 					{isSuccess && (
 						<Button fullWidth type="button" onClick={closeBooking}>
