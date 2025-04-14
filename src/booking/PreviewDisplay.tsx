@@ -1,20 +1,44 @@
+import { useEffect, useState } from "react";
 import { SERVICES } from "./constants";
 import { FormState } from "./types";
+import { calculateEstimatedPrice } from "./utils";
 
 interface PreviewDisplayProps {
-	currentStep: number;
-	currentFormData: FormState;
-	estimatedPrice?: number;
+	formState: FormState;
+	formRef: React.RefObject<HTMLFormElement | null>;
 }
 
-export function PreviewDisplay({
-	currentFormData,
-	estimatedPrice = 0,
-}: PreviewDisplayProps) {
-	const { mainCategory, subCategory, date, location, contact } =
-		currentFormData;
+export function PreviewDisplay({ formState, formRef }: PreviewDisplayProps) {
+	const [previewForm, setPreviewForm] = useState<FormState>(formState);
 
-	const formattedPrice = estimatedPrice?.toLocaleString("ko-KR");
+	useEffect(() => {
+		const formEl = formRef.current;
+		if (!formEl) return;
+
+		const handleChange = (e: Event) => {
+			const target = e.target as HTMLInputElement;
+			console.log("target", target);
+			const value = target.value;
+			const name = target.name;
+			console.log("name-value", name, value);
+			setPreviewForm((prev) => ({ ...prev, [name]: value }));
+		};
+
+		formEl.addEventListener("change", handleChange);
+		formEl.addEventListener("input", handleChange);
+
+		return () => {
+			formEl.removeEventListener("change", handleChange);
+			formEl.removeEventListener("input", handleChange);
+		};
+	}, [formRef]);
+
+	const { mainCategory, subCategory, date, location, contact } = previewForm;
+
+	const formattedPrice = calculateEstimatedPrice(
+		mainCategory as string,
+		subCategory as string
+	)?.toLocaleString("ko-KR");
 
 	return (
 		<div className="mt-4 p-4 bg-background-secondary rounded-lg">
@@ -25,7 +49,9 @@ export function PreviewDisplay({
 			<div className="space-y-1 *:text-xs text-secondary">
 				<p className="mb-2 text-theme font-semibold">선택하신 예약 정보</p>
 				{mainCategory && (
-					<p>대분류 : {SERVICES[mainCategory as keyof typeof SERVICES].name}</p>
+					<p>
+						대분류 : {SERVICES[mainCategory as keyof typeof SERVICES]?.name}
+					</p>
 				)}
 				{subCategory && (
 					<p>
@@ -33,11 +59,11 @@ export function PreviewDisplay({
 						{
 							SERVICES[
 								mainCategory as keyof typeof SERVICES
-							].subCategories.find((sub) => sub.id === subCategory)?.name
+							]?.subCategories.find((sub) => sub.id === subCategory)?.name
 						}
 					</p>
 				)}
-				{date && <p>날짜 : {new Date(date).toLocaleDateString()}</p>}
+				{date && <p>날짜 : {new Date(date as string).toLocaleDateString()}</p>}
 				{location && <p>지역 : {location}</p>}
 				{contact && <p>연락처 : {contact}</p>}
 			</div>

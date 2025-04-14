@@ -8,10 +8,10 @@ export function DateStep({ state, isPending }: StepProps) {
 		<FormField className="group" label="예약 날짜" htmlFor="date">
 			<DatePicker
 				name="date"
-				id="booking-date"
-				aria-required="true"
-				disabled={isPending}
+				id="date"
+				pattern="\d{4}\.\s\d{1,2}\.\s\d{1,2}\."
 				defaultValue={state.date}
+				disabled={isPending}
 			/>
 
 			<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-200 text-destructive text-xs">

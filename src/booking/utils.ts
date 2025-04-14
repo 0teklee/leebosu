@@ -12,6 +12,11 @@ export function extractFormData(formData: FormData): string {
 	return formData.get(currentKey) as string;
 }
 
+export function extractFormDataAll(formData: FormData): Record<string, string> {
+	const entries = Object.fromEntries(formData.entries());
+	return entries as Record<string, string>;
+}
+
 export function getStepFromUrl() {
 	const stepParam = new URLSearchParams(location.search).get("step");
 	return Number(stepParam) || 0;

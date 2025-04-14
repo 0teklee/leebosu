@@ -1,7 +1,7 @@
 import useAnimateDelay from "@/hooks/useAnimateDelay";
 import { Dialog } from "@components/atom/Dialog";
 import { useBooking } from "@hooks/useBooking";
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useRef, useState, useTransition } from "react";
 import { Button } from "../components/atom/Button";
 import { BOOKING_TEXT, INIT_STATE } from "./constants";
 import { PreviewDisplay } from "./PreviewDisplay";
@@ -14,12 +14,7 @@ import { LocationStep } from "./steps/LocationStep";
 import { MainCategoryStep } from "./steps/MainCategoryStep";
 import { SubCategoryStep } from "./steps/SubCategoryStep";
 import { FormState } from "./types";
-import {
-	calculateEstimatedPrice,
-	extractFormData,
-	getCurrentKey,
-	getStepFromUrl,
-} from "./utils";
+import { extractFormData, getCurrentKey, getStepFromUrl } from "./utils";
 
 export default function BookingDialog() {
 	const { closeBooking, setStep } = useBooking();
@@ -47,10 +42,7 @@ export default function BookingDialog() {
 
 	const animStyle = `anim-duration-${animDuration} anim-ease-in-out anim-fill-both`;
 
-	const estimatedPrice = calculateEstimatedPrice(
-		formState.mainCategory,
-		formState.subCategory
-	);
+	const formRef = useRef<HTMLFormElement>(null);
 
 	const isOpen = location.pathname === "/booking";
 	const currentStep = getStepFromUrl();
@@ -100,7 +92,7 @@ export default function BookingDialog() {
 
 	return (
 		<Dialog isOpen={isOpen} onClose={closeBooking}>
-			<form action={formAction} className="overflow-x-hidden">
+			<form ref={formRef} action={formAction} className="overflow-x-hidden">
 				<Dialog.Header>
 					<h2 className="text-xl font-semibold">예약하기</h2>
 					<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
@@ -128,11 +120,7 @@ export default function BookingDialog() {
 							{currentStep === 4 && (
 								<ContactStep state={formState} isPending={isPending} />
 							)}
-							<PreviewDisplay
-								currentStep={currentStep}
-								currentFormData={formState}
-								estimatedPrice={estimatedPrice}
-							/>
+							<PreviewDisplay formState={formState} formRef={formRef} />
 						</>
 					)}
 					{isSuccess && <CompleteStep />}

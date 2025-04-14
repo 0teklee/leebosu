@@ -1,36 +1,42 @@
 import useAnimateDelay from "@/hooks/useAnimateDelay";
 import useOutsideClick from "@/hooks/useOutsideClick";
-import { InputHTMLAttributes, useRef, useState } from "react";
+import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
 import { ChevronIcon } from "../icons/ChevronIcon";
 import { Button } from "./Button";
 import { dayNames, monthNames } from "./constants";
 import { Input } from "./Input";
 import { generateCalendarData } from "./utils";
 
-interface DatePickerProps
-	extends Omit<
-		InputHTMLAttributes<HTMLInputElement>,
-		"type" | "onChange" | "value" | "defaultValue"
-	> {
+interface DatePickerProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	error?: string;
-	defaultValue?: string | null;
+	defaultValue?: string;
 }
 
 export function DatePicker({
 	className = "",
 	error,
-	defaultValue,
 	label,
 	...props
 }: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedDate, setSelectedDate] = useState<Date | null>(
-		defaultValue ? new Date(defaultValue) : null
+		props.defaultValue ? new Date(props.defaultValue) : null
 	);
+
+	const formattedDate = formatDate(selectedDate);
+
+	const inputRef = useRef<HTMLInputElement>(null);
+	const displayRef = useRef<HTMLInputElement>(null);
 
 	const [isAnimate, triggerAnimate, duration] = useAnimateDelay(300);
 	const animStyle = `anim-duration-${duration} anim-ease-in-out anim-fill-both`;
+
+	const handleClick = () => {
+		triggerAnimate(() => {
+			setIsOpen(true);
+		});
+	};
 
 	const changeMonth = (delta: number) => {
 		setSelectedDate(
@@ -61,6 +67,14 @@ export function DatePicker({
 		});
 	};
 
+	useEffect(() => {
+		if (inputRef.current && formattedDate) {
+			inputRef.current.value = formattedDate;
+			const event = new Event("change", { bubbles: true, cancelable: true });
+			inputRef.current.dispatchEvent(event);
+		}
+	}, [formattedDate, inputRef]);
+
 	return (
 		<div className={`w-full relative`}>
 			{label && (
@@ -81,28 +95,35 @@ export function DatePicker({
 					`}
 			>
 				<Input
+					ref={displayRef}
+					type="text"
+					name="display-date"
+					value={formattedDate}
 					readOnly
-					value={selectedDate ? selectedDate.toLocaleDateString("ko-KR") : ""}
-					className={`
-							cursor-pointer  
-							bg-background
-							invalid:ring-destructive
-							${className}
-							`}
+					className={`cursor-pointer bg-background caret-transparent ${className}`}
 					placeholder="클릭하여 날짜를 선택해주세요"
-					onClick={() => {
-						triggerAnimate(() => {
-							setIsOpen(true);
-						});
-					}}
-					aria-expanded={isOpen}
-					disabled={props.disabled}
+					onClick={handleClick}
+				/>
+				<input
+					type="date"
+					ref={inputRef}
+					name={props.name}
+					id={props.id}
+					value={formattedDate}
+					className="sr-only -z-10 peer"
+					required
 					{...props}
 				/>
 				<ChevronIcon
 					direction="down"
 					className="absolute right-2 top-1/2 -translate-y-1/2"
 				/>
+				<label
+					htmlFor={props.id || "date"}
+					className="opacity-0 peer-invalid:opacity-100 text-sm text-destructive mt-1"
+				>
+					{error}
+				</label>
 			</div>
 			{isOpen && (
 				<DatePickerPopup
@@ -114,12 +135,6 @@ export function DatePicker({
 					handleDateSelect={handleDateSelect}
 				/>
 			)}
-			<label
-				htmlFor={props.id || "date"}
-				className="opacity-0 invalid:opacity-100 text-sm text-destructive mt-1"
-			>
-				{error}
-			</label>
 		</div>
 	);
 }
@@ -213,4 +228,12 @@ function DatePickerPopup({
 			</div>
 		</div>
 	);
+}
+// 날짜가 없으면 "" 반환
+function formatDate(date: Date | null): string | "" {
+	if (!date) return "";
+	return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+		2,
+		"0"
+	)}-${String(date.getDate()).padStart(2, "0")}`;
 }
