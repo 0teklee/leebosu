@@ -23,6 +23,7 @@ export function PreviewDisplay({
 				<p className="text-xl font-bold text-theme">약 {formattedPrice}원~</p>
 			</div>
 			<div className="space-y-1 *:text-xs text-secondary">
+				<p className="mb-2 text-theme font-semibold">선택하신 예약 정보</p>
 				{mainCategory && (
 					<p>대분류 : {SERVICES[mainCategory as keyof typeof SERVICES].name}</p>
 				)}
