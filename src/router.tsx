@@ -6,11 +6,11 @@ import { IndexPage } from "./pages/index.page";
 export function Router() {
 	const location = useLocation();
 	const state = location.state as { backgroundLocation?: Location };
-
 	return (
 		<>
 			<Routes location={state?.backgroundLocation || location}>
 				<Route path="/" element={<IndexPage />} />
+				<Route path="/demo/leebosu/index.html" element={<IndexPage />} />
 				<Route path="/about" element={<AboutPage />} />
 				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
