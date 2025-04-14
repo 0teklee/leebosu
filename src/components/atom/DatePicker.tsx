@@ -109,7 +109,6 @@ export function DatePicker({
 					ref={inputRef}
 					name={props.name}
 					id={props.id}
-					value={formattedDate}
 					className="sr-only -z-10 peer"
 					required
 					{...props}
