@@ -5,9 +5,8 @@ import { DatePicker } from "@components/atom/DatePicker";
 import { FormField } from "@components/atom/FormField";
 export function DateStep({ state, isPending }: StepProps) {
 	return (
-		<FormField className="group" label="소분류 선택" htmlFor="subCategory">
+		<FormField className="group" label="예약 날짜" htmlFor="date">
 			<DatePicker
-				label="방문 희망 날짜"
 				name="date"
 				id="booking-date"
 				aria-required="true"
