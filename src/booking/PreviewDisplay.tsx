@@ -17,10 +17,8 @@ export function PreviewDisplay({ formState, formRef }: PreviewDisplayProps) {
 
 		const handleChange = (e: Event) => {
 			const target = e.target as HTMLInputElement;
-			console.log("target", target);
 			const value = target.value;
 			const name = target.name;
-			console.log("name-value", name, value);
 			setPreviewForm((prev) => ({ ...prev, [name]: value }));
 		};
 
