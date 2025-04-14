@@ -1,18 +1,23 @@
-import { DatePicker } from "../../components/atom/DatePicker";
-import { StepProps } from "../types";
-
+import { VALIDATION_ERRORS } from "@/booking/constants";
+import { StepProps } from "@/booking/types";
+import { getStepFromUrl } from "@/booking/utils";
+import { DatePicker } from "@components/atom/DatePicker";
+import { FormField } from "@components/atom/FormField";
 export function DateStep({ state, isPending }: StepProps) {
 	return (
-		<div className="flex flex-col">
+		<FormField className="group" label="소분류 선택" htmlFor="subCategory">
 			<DatePicker
 				label="방문 희망 날짜"
 				name="date"
 				id="booking-date"
 				aria-required="true"
 				disabled={isPending}
-				onChange={(date) => (state.date = date)}
-				value={state.date}
+				defaultValue={state.date}
 			/>
-		</div>
+
+			<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-200 text-destructive text-xs">
+				{VALIDATION_ERRORS[getStepFromUrl()]}
+			</p>
+		</FormField>
 	);
 }

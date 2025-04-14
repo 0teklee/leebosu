@@ -1,5 +1,5 @@
 import { BOOKING_TEXT } from "@/booking/constants";
-import { CheckIconPath } from "@/utils/icon-paths";
+import { CheckIconPath } from "@/components/icons/icon-paths";
 
 export function CompleteStep() {
 	return (

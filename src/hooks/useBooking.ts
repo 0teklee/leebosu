@@ -21,11 +21,12 @@ export function useBooking() {
 	const setStep = (step: number) => {
 		navigate(
 			{
-				pathname: location.pathname,
+				// pathname: location.pathname,
 				search: `?step=${step}`,
 			},
 			{
 				state: location.state,
+				replace: true,
 			}
 		);
 	};

@@ -100,14 +100,14 @@ export default function BookingDialog() {
 
 	return (
 		<Dialog isOpen={isOpen} onClose={closeBooking}>
-			<form className="overflow-x-hidden" action={formAction}>
+			<form action={formAction} className="overflow-x-hidden">
 				<Dialog.Header>
 					<h2 className="text-xl font-semibold">예약하기</h2>
 					<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
 				</Dialog.Header>
 				<Dialog.Content
-					className={`relative overflow-x-hidden 
-						${animStyle}
+					className={`relative
+						${animStyle} anim-duration-400
 						${slideTransition}
 						`}
 				>
