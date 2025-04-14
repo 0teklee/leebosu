@@ -1,10 +1,10 @@
-import { FormField } from "../../components/atom/FormField";
-import { Input } from "../../components/atom/Input";
+import { FormField } from "@components/atom/FormField";
+import { Input } from "@components/atom/Input";
 import { BOOKING_TEXT, VALIDATION_ERRORS } from "../constants";
 import { StepProps } from "../types";
 import { getStepFromUrl } from "../utils";
 
-export function LocationStep({ state }: StepProps) {
+export default function StepLocation({ state }: StepProps) {
 	return (
 		<FormField className="group" label="지역 입력" htmlFor="location">
 			<Input

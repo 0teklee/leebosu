@@ -3,7 +3,8 @@ import { StepProps } from "@/booking/types";
 import { getStepFromUrl } from "@/booking/utils";
 import { DatePicker } from "@components/atom/DatePicker";
 import { FormField } from "@components/atom/FormField";
-export function DateStep({ state, isPending }: StepProps) {
+
+export default function StepDate({ state, isPending }: StepProps) {
 	return (
 		<FormField className="group" label="예약 날짜" htmlFor="date">
 			<DatePicker

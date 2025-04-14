@@ -1,7 +1,7 @@
 import { BOOKING_TEXT } from "@/booking/constants";
 import { CheckIconPath } from "@/components/icons/icon-paths";
 
-export function CompleteStep() {
+export default function StepComplete() {
 	return (
 		<div className="text-center">
 			<svg

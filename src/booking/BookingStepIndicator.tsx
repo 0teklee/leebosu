@@ -3,7 +3,7 @@ interface StepIndicatorProps {
 	currentStep: number;
 }
 
-export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
+export default function BookingStepIndicator({ steps, currentStep }: StepIndicatorProps) {
 	return (
 		<div className="mb-6 w-full">
 			<div className="flex justify-between">

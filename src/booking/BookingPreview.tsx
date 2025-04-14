@@ -8,7 +8,7 @@ interface PreviewDisplayProps {
 	formRef: React.RefObject<HTMLFormElement | null>;
 }
 
-export function PreviewDisplay({ formState, formRef }: PreviewDisplayProps) {
+export default function BookingPreview({ formState, formRef }: PreviewDisplayProps) {
 	const [previewForm, setPreviewForm] = useState<FormState>(formState);
 
 	useEffect(() => {

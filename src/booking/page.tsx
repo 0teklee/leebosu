@@ -3,16 +3,16 @@ import { Dialog } from "@components/atom/Dialog";
 import { useBooking } from "@hooks/useBooking";
 import { useActionState, useRef, useState, useTransition } from "react";
 import { Button } from "../components/atom/Button";
+import BookingPreview from "./BookingPreview";
+import BookingStepIndicator from "./BookingStepIndicator";
 import { BOOKING_TEXT, INIT_STATE } from "./constants";
-import { PreviewDisplay } from "./PreviewDisplay";
-import { StepIndicator } from "./StepIndicator";
-import { CompleteStep } from "./steps/Complete";
-import { ContactStep } from "./steps/ContactStep";
-import { DateStep } from "./steps/DateStep";
-import { ErrorStep } from "./steps/Error";
-import { LocationStep } from "./steps/LocationStep";
-import { MainCategoryStep } from "./steps/MainCategoryStep";
-import { SubCategoryStep } from "./steps/SubCategoryStep";
+import StepComplete from "./steps/StepComplete";
+import StepContact from "./steps/StepContact";
+import StepDate from "./steps/StepDate";
+import StepError from "./steps/StepError";
+import StepLocation from "./steps/StepLocation";
+import StepMainCategory from "./steps/StepMainCategory";
+import StepSubCategory from "./steps/StepSubCategory";
 import { FormState } from "./types";
 import { extractFormData, getCurrentKey, getStepFromUrl } from "./utils";
 
@@ -83,6 +83,8 @@ export default function BookingDialog() {
 		currentStep === 0,
 		currentStep === BOOKING_TEXT.steps.length - 1,
 	];
+	// TODO : Refactor 페이지 스텝 맵핑 + 선언적 방식
+	const STEPS_MAP = [];
 
 	// 현재 단계와 이전 단계의 비교로 이동 방향 결정
 	const enteringTransition =
@@ -101,7 +103,10 @@ export default function BookingDialog() {
 			<form ref={formRef} action={formAction} className="overflow-x-hidden">
 				<Dialog.Header>
 					<h2 className="text-xl font-semibold">예약하기</h2>
-					<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
+					<BookingStepIndicator
+						steps={BOOKING_TEXT.steps}
+						currentStep={currentStep}
+					/>
 				</Dialog.Header>
 				<Dialog.Content
 					className={`relative
@@ -112,25 +117,25 @@ export default function BookingDialog() {
 					{!isSuccess && !isError && (
 						<>
 							{currentStep === 0 && (
-								<MainCategoryStep state={formState} isPending={isPending} />
+								<StepMainCategory state={formState} isPending={isPending} />
 							)}
 							{currentStep === 1 && (
-								<SubCategoryStep state={formState} isPending={isPending} />
+								<StepSubCategory state={formState} isPending={isPending} />
 							)}
 							{currentStep === 2 && (
-								<DateStep state={formState} isPending={isPending} />
+								<StepDate state={formState} isPending={isPending} />
 							)}
 							{currentStep === 3 && (
-								<LocationStep state={formState} isPending={isPending} />
+								<StepLocation state={formState} isPending={isPending} />
 							)}
 							{currentStep === 4 && (
-								<ContactStep state={formState} isPending={isPending} />
+								<StepContact state={formState} isPending={isPending} />
 							)}
-							<PreviewDisplay formState={formState} formRef={formRef} />
+							<BookingPreview formState={formState} formRef={formRef} />
 						</>
 					)}
-					{isSuccess && <CompleteStep />}
-					{isError && <ErrorStep />}
+					{isSuccess && <StepComplete />}
+					{isError && <StepError />}
 				</Dialog.Content>
 				<Dialog.Footer className="self-end flex justify-between w-full border-t border-secondary">
 					{!isSuccess && !isError && (

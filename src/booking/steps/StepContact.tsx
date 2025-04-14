@@ -1,10 +1,10 @@
-import { FormField } from "../../components/atom/FormField";
-import { Input } from "../../components/atom/Input";
+import { FormField } from "@components/atom/FormField";
+import { Input } from "@components/atom/Input";
 import { BOOKING_TEXT, VALIDATION_ERRORS } from "../constants";
 import { StepProps } from "../types";
 import { getStepFromUrl } from "../utils";
 
-export function ContactStep({ state, isPending }: StepProps) {
+export default function StepContact({ state, isPending }: StepProps) {
 	function formatPhoneNumber(raw: string) {
 		const digitsOnly = raw.replace(/\D/g, "").slice(0, 11);
 

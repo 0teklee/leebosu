@@ -1,6 +1,6 @@
 import { BOOKING_TEXT } from "../constants";
 
-export function ErrorStep() {
+export default function StepError() {
 	return (
 		<div className="text-center">
 			<h3 className="text-xl font-semibold text-destructive">

@@ -1,10 +1,10 @@
-import { FormField } from "../../components/atom/FormField";
-import { Select } from "../../components/atom/Select";
+import { FormField } from "@components/atom/FormField";
+import { Select } from "@components/atom/Select";
 import { SERVICES, VALIDATION_ERRORS } from "../constants";
 import { StepProps } from "../types";
 import { getStepFromUrl } from "../utils";
 
-export function MainCategoryStep({ state, isPending }: StepProps) {
+export default function StepMainCategory({ state, isPending }: StepProps) {
 	const mainStep = getStepFromUrl();
 	return (
 		<FormField className="group" label="대분류 선택" htmlFor="mainCategory">

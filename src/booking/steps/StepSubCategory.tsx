@@ -1,10 +1,10 @@
-import { FormField } from "../../components/atom/FormField";
-import { Select } from "../../components/atom/Select";
+import { FormField } from "@components/atom/FormField";
+import { Select } from "@components/atom/Select";
 import { SERVICES, VALIDATION_ERRORS } from "../constants";
 import { StepProps } from "../types";
 import { getStepFromUrl } from "../utils";
 
-export function SubCategoryStep({ state }: StepProps) {
+export default function StepSubCategory({ state }: StepProps) {
 	const category = SERVICES[state.mainCategory as keyof typeof SERVICES];
 	const options =
 		category?.subCategories.map(({ id, name }) => ({
