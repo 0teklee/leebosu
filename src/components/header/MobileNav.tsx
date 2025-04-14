@@ -1,4 +1,4 @@
-import { StackIconPath, XIconPath } from "@/utils/icon-paths";
+import { StackIconPath, XIconPath } from "@/components/icons/icon-paths";
 import { Button } from "@components/atom/Button";
 import MorphIcon from "@components/atom/MorphIcon";
 import useAnimateDelay from "@hooks/useAnimateDelay";
@@ -28,6 +28,9 @@ const MobileNav: React.FC = () => {
 
 	const handleBookingClick = () => {
 		openBooking();
+		setAnimate(() => {
+			setIsOpen(false);
+		});
 	};
 
 	// NOTE: 외부 클릭 이벤트 처리

@@ -1,4 +1,4 @@
-import { MoonIconPath, SunIconPath } from "@/utils/icon-paths.ts";
+import { MoonIconPath, SunIconPath } from "@/components/icons/icon-paths.ts";
 import React, { useEffect } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage.ts";
 import { Button } from "../atom/Button.tsx";
