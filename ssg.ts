@@ -3,7 +3,6 @@ import "ignore-styles";
 
 import fs from "fs";
 import module from "module";
-import moduleAlias from "module-alias";
 import path from "path";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
@@ -12,44 +11,27 @@ import "tsconfig-paths/register";
 // 전역으로 require 정의
 const require = module.createRequire(import.meta.url);
 
+// 외부 라이브러리(flubber) 모킹 설정
+console.info("[1-모킹_설정]: flubber 모듈 모킹 설정 시작...");
+
+// 훨씬 간단한 접근법: 노드 모듈 캐시에 직접 모의 구현 삽입
+require.cache["node_modules/flubber/index.js"] = {
+	id: "node_modules/flubber/index.js",
+	filename: "node_modules/flubber/index.js",
+	loaded: true,
+	exports: {
+		interpolateAll: () => () => "",
+		splitPathString: (path: string) => [path],
+		// 필요한 경우 다른 flubber 함수 추가
+	},
+} as unknown as NodeJS.Module;
+
+console.info("[1-모킹_설정_완료]: ✅ flubber 모듈 모킹 설정 완료.");
+
 async function main() {
-	// 이 모듈 컨텍스트에 맞는 require 함수 생성
 	const projectRoot = process.cwd();
 
 	console.info("[0-SSG_시작]: 📦 SSG 빌드 스크립트 시작...", projectRoot);
-
-	// --- module-alias를 사용한 모킹 설정 ---
-	const mockFlubberPath = path.join(projectRoot, "mock-flubber.js");
-	fs.writeFileSync(
-		mockFlubberPath,
-		`
-// flubber에 대한 모의 구현
-exports.interpolateAll = function mockInterpolateAll() {
-  return () => ""; // 빈 문자열을 반환하는 더미 함수 반환
-};
-
-exports.splitPathString = function mockSplitPathString(path) {
-  return [path]; // 입력을 배열로 반환
-};
-// 필요한 경우 다른 flubber export 추가
-`
-	);
-
-	// 'flubber'에서 모의 파일로의 별칭 추가
-
-	moduleAlias.addAlias("flubber", mockFlubberPath);
-
-	// 페이지 컴포넌트를 require하기 *전에* 별칭 적용
-	try {
-		moduleAlias(); // Initialize aliases
-		console.info("[1-모듈_별칭_설정]: ✅ 'flubber' 모듈 별칭 설정 완료.");
-	} catch (error: unknown) {
-		console.error(
-			"❌ Error initializing module-alias:",
-			error instanceof Error ? error.message : String(error)
-		);
-		process.exit(1); // Exit if alias setup fails
-	}
 
 	// --- 페이지 정의 (경로 사용) ---
 	const pages = [
@@ -176,20 +158,12 @@ main()
 		process.exit(1);
 	})
 	.finally(() => {
-		// 모듈 별칭 초기화 - flubber가 실제 라이브러리를 사용하도록 복원
+		// 모킹 정리
 		try {
-			// Module-alias는 직접적인 removeAlias 메서드를 제공하지 않으므로 다른 방법으로 처리
-			// 노드의 모듈 캐시에서 flubber 관련 항목 제거
-			// 다음 require('flubber')는 실제 패키지를 찾게 됨
-			Object.keys(require.cache).forEach((cacheKey) => {
-				if (cacheKey.includes("flubber") || cacheKey.includes("mock-flubber")) {
-					delete require.cache[cacheKey];
-					console.info(`[4-캐시_제거]: 모듈 캐시 제거: ${cacheKey}`);
-				}
-			});
-
+			// 모듈 캐시에서 flubber 모킹 제거
+			delete require.cache["node_modules/flubber/index.js"];
 			console.info(
-				"[4-모듈_초기화]: ✅ 'flubber' 모듈 초기화 완료. 실제 라이브러리 사용 가능."
+				"[4-모킹_정리]: ✅ flubber 모듈 캐시 정리 완료. 실제 라이브러리 사용 가능."
 			);
 
 			// 패키지 의존성 확인
@@ -209,40 +183,8 @@ main()
 			}
 		} catch (error) {
 			console.warn(
-				"⚠️ 모듈 초기화 중 오류:",
+				"⚠️ 모듈 정리 중 오류:",
 				error instanceof Error ? error.message : String(error)
 			);
 		}
-
-		// 기존 정리 작업 유지
-		cleanUpMockFile();
 	});
-
-/** util 함수 */
-
-function generateScriptTags(vendorJsFile?: string) {
-	let scriptTags = "";
-	if (vendorJsFile) {
-		scriptTags += `<script type="module" src="/assets/${vendorJsFile}"></script>`;
-	}
-	// Always use main.js
-	scriptTags += `<script type="module" src="/assets/main.js"></script>`;
-	return scriptTags;
-}
-
-function cleanUpMockFile() {
-	// Clean up the mock file
-	try {
-		const projectRoot = process.cwd();
-		const mockFlubberPath = path.resolve(projectRoot, "mock-flubber.js");
-		fs.unlinkSync(mockFlubberPath);
-		console.info(
-			`[5-모의_파일_정리]: 🧹 모의 파일 정리 완료: ${mockFlubberPath}`
-		);
-	} catch (error: unknown) {
-		console.warn(
-			"⚠️ Could not clean up mock file:",
-			error instanceof Error ? error.message : String(error)
-		);
-	}
-}
