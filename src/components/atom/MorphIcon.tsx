@@ -10,13 +10,8 @@ type Props = {
 	duration?: number;
 };
 
-export default function MorphIcon({
-	from,
-	to,
-	isOpen,
-	className,
-	duration = 300,
-}: Props) {
+// 기본 MorphIcon 컴포넌트 정의
+function MorphIcon({ from, to, isOpen, className, duration = 300 }: Props) {
 	const pathRef = useRef<SVGPathElement>(null);
 
 	useEffect(() => {
@@ -27,7 +22,7 @@ export default function MorphIcon({
 			pathRef.current.setAttribute("d", fromToArr[0]);
 		}
 
-		const rawPaths = fromToArr.map(splitPathString);
+		const rawPaths = fromToArr.map((p) => splitPathString(p));
 		const maxLength = Math.max(rawPaths[0].length, rawPaths[1].length);
 
 		/**
@@ -86,6 +81,7 @@ export default function MorphIcon({
 		};
 	}, [from, to, isOpen, duration]);
 
+	// SVG 마크업만 반환하고, ClientOnly 래퍼는 HOC에서 처리
 	return (
 		<svg
 			viewBox="0 0 24 24"
@@ -100,3 +96,5 @@ export default function MorphIcon({
 		</svg>
 	);
 }
+
+export default MorphIcon;

@@ -5,7 +5,6 @@ import useAnimateDelay from "@hooks/useAnimateDelay";
 import { useBooking } from "@hooks/useBooking";
 import useOutsideClick from "@hooks/useOutsideClick";
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
 const MobileNav: React.FC = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -70,12 +69,12 @@ const MobileNav: React.FC = () => {
 				 `}
 				>
 					<div className="py-1 *:block *:px-4 *:py-2 *:text-sm *:text-primary *:hover:bg-background-secondary">
-						<Link to="/" onClick={() => setIsOpen(false)}>
+						<a href="/" onClick={() => setIsOpen(false)}>
 							홈
-						</Link>
-						<Link to="/about" onClick={() => setIsOpen(false)}>
+						</a>
+						<a href="/about" onClick={() => setIsOpen(false)}>
 							소개
-						</Link>
+						</a>
 						<button
 							onClick={handleBookingClick}
 							className="block w-full text-left px-4 py-2 text-sm text-primary dark:text-secondary hover:bg-background-secondary dark:hover:bg-background"

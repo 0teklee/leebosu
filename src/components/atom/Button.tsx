@@ -1,7 +1,8 @@
+import clsx from "clsx";
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
 // Define own props separately and make it generic
-type ButtonOwnProps<T extends ElementType = ElementType> = {
+export type ButtonOwnProps<T extends ElementType = ElementType> = {
 	variant?: "primary" | "secondary" | "outline" | "ghost";
 	size?: "sm" | "md" | "lg";
 	fullWidth?: boolean;
@@ -12,7 +13,7 @@ type ButtonOwnProps<T extends ElementType = ElementType> = {
 };
 
 // Combine own props with props from the actual element type T, omitting overlaps
-type ButtonProps<T extends ElementType> = ButtonOwnProps<T> &
+export type ButtonProps<T extends ElementType> = ButtonOwnProps<T> &
 	Omit<ComponentPropsWithoutRef<T>, keyof ButtonOwnProps<T>>;
 
 // Make the component generic, defaulting T to 'button'
@@ -28,7 +29,7 @@ export function Button<T extends ElementType = "button">({
 	const Tag = as || "button";
 
 	const baseStyles = `
-		rounded font-medium transition-colors cursor-pointer`;
+		rounded font-medium transition-all cursor-pointer`;
 
 	const variantStyles = {
 		primary: "bg-theme text-white",
@@ -57,13 +58,20 @@ export function Button<T extends ElementType = "button">({
 		ghost: "hover:bg-background-secondary",
 	};
 
+	const disabledStyles = "disabled:opacity-50 disabled:cursor-not-allowed";
+
 	return (
 		<Tag
-			className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} 
-			${focusStyles[variant]}
-			${hoverStyles[variant]}
-			disabled:opacity-50 disabled:cursor-not-allowed
-			${fullWidth ? "w-full" : ""} ${className || ""}`}
+			className={clsx(
+				baseStyles,
+				variantStyles[variant],
+				sizeStyles[size],
+				focusStyles[variant],
+				hoverStyles[variant],
+				disabledStyles,
+				fullWidth && "w-full",
+				className
+			)}
 			{...props}
 		>
 			{children}
