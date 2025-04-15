@@ -6,20 +6,19 @@ import mpaPlus from "vite-plugin-mpa-plus";
 import { mpaPlusConfig } from "./vite.mpa";
 export default defineConfig({
 	base: "./",
-	ssr: {
-		noExternal: true, // flubber 이외의 모든 의존성을 내장
-		external: ["flubber"], // SSR 빌드에서도 flubber 제외
-	},
 	build: {
 		outDir: "dist",
 		emptyOutDir: true,
-
+		dynamicImportVarsOptions: {
+			warnOnError: true,
+		},
 		rollupOptions: {
-			external: ["flubber"],
 			input: {
 				main: path.resolve(__dirname, "src/entry-client.tsx"),
 			},
 			output: {
+				inlineDynamicImports: false,
+				dynamicImportInCjs: true,
 				entryFileNames: "assets/main.js",
 				chunkFileNames: "assets/main.js",
 				assetFileNames(chunkInfo) {
@@ -62,4 +61,7 @@ export default defineConfig({
 			pages: mpaPlusConfig,
 		}),
 	],
+	optimizeDeps: {
+		include: ["flubber"],
+	},
 });

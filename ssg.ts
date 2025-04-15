@@ -9,9 +9,11 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import "tsconfig-paths/register";
 
+// 전역으로 require 정의
+const require = module.createRequire(import.meta.url);
+
 async function main() {
 	// 이 모듈 컨텍스트에 맞는 require 함수 생성
-	const require = module.createRequire(import.meta.url);
 	const projectRoot = process.cwd();
 
 	console.info("[0-SSG_시작]: 📦 SSG 빌드 스크립트 시작...", projectRoot);
@@ -174,6 +176,45 @@ main()
 		process.exit(1);
 	})
 	.finally(() => {
+		// 모듈 별칭 초기화 - flubber가 실제 라이브러리를 사용하도록 복원
+		try {
+			// Module-alias는 직접적인 removeAlias 메서드를 제공하지 않으므로 다른 방법으로 처리
+			// 노드의 모듈 캐시에서 flubber 관련 항목 제거
+			// 다음 require('flubber')는 실제 패키지를 찾게 됨
+			Object.keys(require.cache).forEach((cacheKey) => {
+				if (cacheKey.includes("flubber") || cacheKey.includes("mock-flubber")) {
+					delete require.cache[cacheKey];
+					console.info(`[4-캐시_제거]: 모듈 캐시 제거: ${cacheKey}`);
+				}
+			});
+
+			console.info(
+				"[4-모듈_초기화]: ✅ 'flubber' 모듈 초기화 완료. 실제 라이브러리 사용 가능."
+			);
+
+			// 패키지 의존성 확인
+			const packageJsonPath = path.resolve(process.cwd(), "package.json");
+			if (fs.existsSync(packageJsonPath)) {
+				const packageJson = JSON.parse(
+					fs.readFileSync(packageJsonPath, "utf-8")
+				);
+				if (
+					!packageJson.dependencies?.flubber &&
+					!packageJson.devDependencies?.flubber
+				) {
+					console.warn(
+						"⚠️ 'flubber' 패키지가 dependencies에 없습니다. 'yarn add flubber'로 설치하세요."
+					);
+				}
+			}
+		} catch (error) {
+			console.warn(
+				"⚠️ 모듈 초기화 중 오류:",
+				error instanceof Error ? error.message : String(error)
+			);
+		}
+
+		// 기존 정리 작업 유지
 		cleanUpMockFile();
 	});
 
