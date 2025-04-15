@@ -5,7 +5,8 @@ export const mpaPlusConfig: Pages = {
 		template: "public/index.html",
 		inject: {
 			data: {
-				title: "이보수 - 홈",
+				title: "LEEBOSU - 안양 집수리",
+				description: "안양 지역 집수리 전문 업체, 이보수입니다.",
 			},
 		},
 	},
@@ -14,16 +15,18 @@ export const mpaPlusConfig: Pages = {
 		template: "public/index.html",
 		inject: {
 			data: {
-				title: "이보수 소개",
+				title: "LEEBOSU - 안양 지역 집수리",
+				description: "안양 지역 집수리 전문 업체, 이보수입니다.",
 			},
 		},
 	},
-	"404": {
+	notFound: {
 		filename: "404.html",
 		template: "public/index.html",
 		inject: {
 			data: {
-				title: "페이지를 찾을 수 없습니다",
+				title: "LEEBOSU",
+				description: "페이지를 찾을 수 없습니다.",
 			},
 		},
 	},
@@ -32,7 +35,8 @@ export const mpaPlusConfig: Pages = {
 		template: "public/index.html",
 		inject: {
 			data: {
-				title: "오류 발생",
+				title: "LEEBOSU",
+				description: "오류가 발생했습니다.",
 			},
 		},
 	},
