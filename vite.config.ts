@@ -2,18 +2,49 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { defineConfig } from "vite";
-import { ViteMcp } from "vite-plugin-mcp";
-
-// https://vite.dev/config/
+import mpaPlus from "vite-plugin-mpa-plus";
+import { mpaPlusConfig } from "./vite.mpa";
 export default defineConfig({
-	server: {
-		port: 5173,
-		strictPort: false, // Allow fallback if port is in use
+	base: "./",
+	build: {
+		outDir: "dist",
+		emptyOutDir: true,
+		dynamicImportVarsOptions: {
+			warnOnError: true,
+		},
+		rollupOptions: {
+			input: {
+				main: path.resolve(__dirname, "src/entry-client.tsx"),
+			},
+			output: {
+				inlineDynamicImports: false,
+				dynamicImportInCjs: true,
+				entryFileNames: "assets/main.js",
+				chunkFileNames: "assets/main.js",
+				assetFileNames(chunkInfo) {
+					if (chunkInfo.type === "asset") {
+						const hasCSS =
+							chunkInfo.name?.endsWith(".css") ||
+							chunkInfo.names?.some((name) => name.endsWith(".css")) ||
+							false;
+						if (hasCSS) {
+							return "assets/global.css";
+						}
+					}
+					return `assets/main.js`;
+				},
+				manualChunks() {
+					return "assets/main.js";
+				},
+			},
+		},
 	},
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
 			"@components": path.resolve(__dirname, "./src/components"),
+			"@atoms": path.resolve(__dirname, "./src/components/atom"),
+			"@layout": path.resolve(__dirname, "./src/components/layout"),
 			"@pages": path.resolve(__dirname, "./src/pages"),
 			"@hooks": path.resolve(__dirname, "./src/hooks"),
 			"@utils": path.resolve(__dirname, "./src/utils"),
@@ -24,11 +55,13 @@ export default defineConfig({
 	},
 	plugins: [
 		react(),
-		ViteMcp({
-			port: 5173,
-			printUrl: true,
-			updateCursorMcpJson: true,
-		}),
 		tailwindcss(),
+		mpaPlus({
+			entry: "src/entry-client.tsx",
+			pages: mpaPlusConfig,
+		}),
 	],
+	optimizeDeps: {
+		include: ["flubber"],
+	},
 });

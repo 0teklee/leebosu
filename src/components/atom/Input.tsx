@@ -18,8 +18,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ${error ? "border-destructive" : ""}
             ${className}`}
 					{...props}
+					defaultValue={defaultValue}
 				/>
-				{error && <p className="mt-1 text-sm text-destructive">{error}</p>}
 			</div>
 		);
 	}

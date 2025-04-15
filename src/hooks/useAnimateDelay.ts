@@ -2,9 +2,9 @@ import { useRef, useState } from "react";
 
 const useAnimateDelay = (
 	delay = 500
-): [boolean, (action: () => void) => void] => {
+): [boolean, (action: () => void) => void, number] => {
 	const [isAnimate, setIsAnimate] = useState(false);
-	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const startAnimate = (action: () => void) => {
 		if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -16,7 +16,7 @@ const useAnimateDelay = (
 		}, delay);
 	};
 
-	return [isAnimate, startAnimate];
+	return [isAnimate, startAnimate, delay];
 };
 
 export default useAnimateDelay;

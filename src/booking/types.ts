@@ -1,19 +1,19 @@
-export interface StepState {
-	currentStep: number;
+export interface FormState {
 	mainCategory: string;
 	subCategory: string;
 	date: string;
 	location: string;
 	contact: string;
-	estimatedPrice: number;
-	validationErrors: Record<string, string> | null;
-	lastCompletedStep: number;
 	lastSaved?: string;
-	isSubmitted?: boolean;
+	isSuccess: boolean;
+	isError: boolean;
 }
 
+export type FormStateKey = keyof FormState;
+export type FormStateValue = FormState[FormStateKey];
+
 export interface StepProps {
-	state: StepState;
+	state: FormState;
 	formAction?: (formData: FormData) => Promise<void> | void;
 	isPending: boolean;
 }

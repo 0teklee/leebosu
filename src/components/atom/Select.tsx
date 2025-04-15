@@ -1,4 +1,4 @@
-import { ChevronDownIconPath } from "@/utils/icon-paths";
+import { ChevronDownIconPath } from "@/components/icons/icon-paths";
 import { forwardRef, SelectHTMLAttributes } from "react";
 
 interface Option {

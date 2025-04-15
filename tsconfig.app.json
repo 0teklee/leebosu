@@ -28,6 +28,8 @@
 		"paths": {
 			"@/*": ["src/*"],
 			"@components/*": ["src/components/*"],
+			"@atoms/*": ["src/components/atom/*"],
+			"@layout/*": ["src/components/layout/*"],
 			"@pages/*": ["src/pages/*"],
 			"@hooks/*": ["src/hooks/*"],
 			"@utils/*": ["src/utils/*"],

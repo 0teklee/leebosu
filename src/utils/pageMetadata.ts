@@ -5,12 +5,10 @@ export const documentProps404 = {
 };
 
 export const documentPropsAbout = {
-	title: "이보수 소개 - 20년 경력의 주거 수리 전문가",
+	title: "이보수 소개 - 30년 경력의 주거 수리 전문가",
 	description:
-		"20년간 안양 지역에서 주거 수리 및 인테리어를 전문으로 해온 이보수를 소개합니다. 투명한 가격 정책과 전문적인 서비스를 제공합니다.",
+		"30년간 안양 지역에서 주거 수리 및 인테리어를 전문으로 해온 이보수를 소개합니다. 투명한 가격 정책과 전문적인 서비스를 제공합니다.",
 };
-
-export const clientOnlyBooking = true;
 
 export const documentPropsBooking = {
 	title: "이보수 예약하기 - 간편한 주거 수리 예약",
@@ -25,7 +23,7 @@ export const documentPropsError = {
 };
 
 export const documentPropsIndex = {
-	title: "이보수 - 안양 지역 20년 경력 주거 보수 전문가",
+	title: "이보수 - 안양 지역 30년 경력 주거 보수 전문가",
 	description:
-		"안양 지역에서 20년 경력을 가진 주거 보수 전문가 이보수입니다. 타일 교체, 보수 공사 등 다양한 주거 수리 서비스를 제공합니다.",
+		"안양 지역에서 30년 경력을 가진 주거 보수 전문가 이보수입니다. 타일 교체, 보수 공사 등 다양한 주거 수리 서비스를 제공합니다.",
 };

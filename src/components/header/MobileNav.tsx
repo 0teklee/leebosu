@@ -1,11 +1,10 @@
-import { StackIconPath, XIconPath } from "@/utils/icon-paths.ts";
+import { StackIconPath, XIconPath } from "@/components/icons/icon-paths";
+import { Button } from "@components/atom/Button";
+import MorphIcon from "@components/atom/MorphIcon";
+import useAnimateDelay from "@hooks/useAnimateDelay";
+import { useBooking } from "@hooks/useBooking";
+import useOutsideClick from "@hooks/useOutsideClick";
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { useBooking } from "../../booking/BookingContext";
-import useAnimateDelay from "../../hooks/useAnimateDelay.ts";
-import useOutsideClick from "../../hooks/useOutsideClick.ts";
-import { Button } from "../atom/Button.tsx";
-import MorphIcon from "../atom/MorphIcon.tsx";
 
 const MobileNav: React.FC = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +27,9 @@ const MobileNav: React.FC = () => {
 
 	const handleBookingClick = () => {
 		openBooking();
+		setAnimate(() => {
+			setIsOpen(false);
+		});
 	};
 
 	// NOTE: 외부 클릭 이벤트 처리
@@ -67,12 +69,12 @@ const MobileNav: React.FC = () => {
 				 `}
 				>
 					<div className="py-1 *:block *:px-4 *:py-2 *:text-sm *:text-primary *:hover:bg-background-secondary">
-						<Link to="/" onClick={() => setIsOpen(false)}>
+						<a href="/" onClick={() => setIsOpen(false)}>
 							홈
-						</Link>
-						<Link to="/about" onClick={() => setIsOpen(false)}>
+						</a>
+						<a href="/about" onClick={() => setIsOpen(false)}>
 							소개
-						</Link>
+						</a>
 						<button
 							onClick={handleBookingClick}
 							className="block w-full text-left px-4 py-2 text-sm text-primary dark:text-secondary hover:bg-background-secondary dark:hover:bg-background"

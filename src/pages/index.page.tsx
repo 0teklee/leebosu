@@ -1,8 +1,11 @@
-import LandingPage from "../landing/page.tsx";
+// import "@/global.css";
+import LandingPage from "@/landing/page";
+import { Layout } from "@layout/Layout";
 
-export function IndexPage() {
-    
+export default function IndexPage() {
 	return (
-		<LandingPage/>
+		<Layout>
+			<LandingPage />
+		</Layout>
 	);
 }

@@ -1,6 +1,11 @@
-import AboutPage from "../about/page"
+// import "@/global.css"; 
+import Page from "@/about/page";
+import { Layout } from "@layout/Layout";
 
-export function Page() {
-	return (<AboutPage/>
+export default function AboutPage() {
+	return (
+		<Layout>
+			<Page />
+		</Layout>
 	);
 }

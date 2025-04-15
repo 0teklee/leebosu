@@ -1,10 +1,11 @@
-import { MoonIconPath, SunIconPath } from "@/utils/icon-paths.ts";
-import React, { useEffect } from "react";
-import { useLocalStorage } from "../../hooks/useLocalStorage.ts";
-import { Button } from "../atom/Button.tsx";
-import MorphIcon from "../atom/MorphIcon.tsx";
+import { Button } from "@components/atom/Button.tsx";
+import MorphIcon from "@components/atom/MorphIcon.tsx";
+import { MoonIconPath, SunIconPath } from "@components/icons/icon-paths.ts";
+import { useLocalStorage } from "@hooks/useLocalStorage.ts";
+import { useEffect } from "react";
 
-const DarkModeToggle: React.FC = () => {
+// 기본 컴포넌트 정의
+function DarkModeToggle() {
 	const [isDarkMode, setIsDarkMode] = useLocalStorage("darkMode", false);
 
 	useEffect(() => {
@@ -39,7 +40,6 @@ const DarkModeToggle: React.FC = () => {
 			variant="ghost"
 			onClick={toggleDarkMode}
 			aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-			className="dark:hover:text-orange-300 hover:text-theme transition-colors duration-400"
 		>
 			<MorphIcon
 				from={MoonIconPath}
@@ -50,6 +50,6 @@ const DarkModeToggle: React.FC = () => {
 			/>
 		</Button>
 	);
-};
+}
 
 export default DarkModeToggle;

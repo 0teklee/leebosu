@@ -9,9 +9,12 @@
 		@apply text-3xl font-bold text-primary md:text-4xl;
 	}
 
-	.paragraph,
-	p {
-		@apply text-2xl font-semibold text-secondary;
+	h3 {
+		@apply text-2xl font-semibold text-primary md:text-3xl;
+	}
+
+	h4 {
+		@apply text-xl font-semibold text-primary md:text-2xl;
 	}
 
 	.link,

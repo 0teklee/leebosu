@@ -1,23 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import {BrowserRouter} from "react-router-dom";
-import App from "./App";
-import "./global.css";
+import { hydrateRoot } from "react-dom/client";
 
-// Client-side render
-if (typeof window !== "undefined") {
-	const root = document.getElementById("root");
-	if (!root) {
-		throw new Error("Root element not found");
+import NotFoundPage from "@/pages/404.page";
+import AboutPage from "@/pages/about.page";
+import ErrorPage from "@/pages/error.page";
+import IndexPage from "@/pages/index.page";
+
+const root = document.getElementById("root");
+
+if (root) {
+	const path = window.location.pathname;
+	let Page = IndexPage;
+
+	if (path === "/about") {
+		Page = AboutPage;
+	} else if (path === "/error") {
+		Page = ErrorPage;
+	} else if (path !== "/" && !path.startsWith("/booking")) {
+		Page = NotFoundPage;
 	}
-
-	// Use hydrateRoot for SSR
-	ReactDOM.hydrateRoot(
-		root,
-		<React.StrictMode>
-			<BrowserRouter>
-					<App />
-			</BrowserRouter>
-		</React.StrictMode>
-	);
+	hydrateRoot(root, <Page />);
 }
