@@ -1,11 +1,8 @@
-import { Button } from "@components/atom/Button";
+import BookingButton from "@/components/BookingButton";
 import { PageLayout } from "@components/layout/PageLayout";
-import { useBooking } from "@hooks/useBooking";
 import { LANDING_TEXT } from "./constants";
 
 function LandingPage() {
-	const { openBooking } = useBooking();
-
 	return (
 		<PageLayout>
 			{/* Hero Section */}
@@ -18,14 +15,13 @@ function LandingPage() {
 						</span>
 					</h1>
 					<p className="paragraph text-lg mb-8">{LANDING_TEXT.description}</p>
-					<Button
+					<BookingButton
 						fullWidth
-						onClick={() => openBooking()}
-						className="inline-block sm:max-w-sm transition-transform hover:scale-105"
+						className="inline-block sm:max-w-sm hover:scale-105 duration-200"
 						size="lg"
 					>
 						{LANDING_TEXT.cta}
-					</Button>
+					</BookingButton>
 				</div>
 			</section>
 

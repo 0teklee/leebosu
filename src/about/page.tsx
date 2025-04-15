@@ -1,12 +1,8 @@
 import { PriceTable } from "@/about/PriceTable";
-import { Button } from "@components/atom/Button";
+import BookingButton from "@components/BookingButton";
 import { PageLayout } from "@components/layout/PageLayout";
-import { useBooking } from "@hooks/useBooking";
 import { ABOUT_TEXT } from "./constants";
-
 function AboutPage() {
-	const { openBooking } = useBooking();
-
 	return (
 		<PageLayout>
 			{/* Top CTA Section */}
@@ -14,9 +10,7 @@ function AboutPage() {
 				<h1 className="text-theme mb-4">{ABOUT_TEXT.subtitle}</h1>
 			</section>
 			<section className="justify-self-center mb-8">
-				<Button onClick={() => openBooking()} size="lg">
-					{ABOUT_TEXT.cta}
-				</Button>
+				<BookingButton size="lg">{ABOUT_TEXT.cta}</BookingButton>
 			</section>
 
 			<section className="mb-12">
@@ -61,9 +55,7 @@ function AboutPage() {
 
 			{/* Bottom CTA Section */}
 			<section className="justify-self-center mb-8">
-				<Button onClick={() => openBooking()} size="lg">
-					{ABOUT_TEXT.cta}
-				</Button>
+				<BookingButton size="lg">{ABOUT_TEXT.cta}</BookingButton>
 			</section>
 		</PageLayout>
 	);

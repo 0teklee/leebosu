@@ -10,8 +10,6 @@ export const documentPropsAbout = {
 		"30년간 안양 지역에서 주거 수리 및 인테리어를 전문으로 해온 이보수를 소개합니다. 투명한 가격 정책과 전문적인 서비스를 제공합니다.",
 };
 
-export const clientOnlyBooking = true;
-
 export const documentPropsBooking = {
 	title: "이보수 예약하기 - 간편한 주거 수리 예약",
 	description:
