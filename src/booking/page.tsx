@@ -83,8 +83,6 @@ export default function BookingDialog() {
 		currentStep === 0,
 		currentStep === BOOKING_TEXT.steps.length - 1,
 	];
-	// TODO : Refactor 페이지 스텝 맵핑 + 선언적 방식
-	const STEPS_MAP = [];
 
 	// 현재 단계와 이전 단계의 비교로 이동 방향 결정
 	const enteringTransition =

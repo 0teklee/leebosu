@@ -1,6 +1,8 @@
+import { MainCategoryKey, SubCategoryKey } from "@/business";
+
 export interface FormState {
-	mainCategory: string;
-	subCategory: string;
+	mainCategory: MainCategoryKey | null;
+	subCategory: SubCategoryKey | null;
 	date: string;
 	location: string;
 	contact: string;

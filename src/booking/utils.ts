@@ -1,10 +1,4 @@
-import { FORM_INPUT_KEY_MAP, SERVICES } from "./constants";
-import { FormState } from "./types";
-
-export function hasStateChanged(prevState: FormState, newState: FormData) {
-	const newStateObj = Object.fromEntries(newState.entries());
-	return JSON.stringify(prevState) !== JSON.stringify(newStateObj);
-}
+import { FORM_INPUT_KEY_MAP } from "./constants";
 
 export function extractFormData(formData: FormData): string {
 	const currentStep = getStepFromUrl();
@@ -27,19 +21,19 @@ export function getCurrentKey() {
 	return FORM_INPUT_KEY_MAP[currentStep];
 }
 
-export function calculateEstimatedPrice(
-	mainCategory: string | null,
-	subCategory: string | null
-): number {
-	const fallback = { subCategories: [], baseMinPrice: 0 };
+// export function calculateEstimatedPrice(
+// 	mainCategory: string | null,
+// 	subCategory: string | null
+// ): number {
+// 	const fallback = { subCategories: [], baseMinPrice: 0 };
 
-	const category = mainCategory
-		? SERVICES[mainCategory as keyof typeof SERVICES]
-		: fallback;
+// 	const category = mainCategory
+// 		? SERVICES[mainCategory as keyof typeof SERVICES]
+// 		: fallback;
 
-	const subCategoryPrice = subCategory
-		? category.subCategories.find((sub) => sub.id === subCategory)?.basePrice
-		: undefined;
+// 	const subCategoryPrice = subCategory
+// 			? category.subCategories.find((sub) => sub.id === subCategory)?.basePrice
+// 		: undefined;
 
-	return subCategoryPrice ?? category.baseMinPrice;
-}
+// 	return subCategoryPrice ?? category.baseMinPrice;
+// }
