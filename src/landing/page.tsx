@@ -1,6 +1,6 @@
 import BookingButton from "@/components/BookingButton";
-import { PageLayout } from "@components/layout/PageLayout";
-import { LANDING_TEXT } from "./constants";
+import {PageLayout} from "@components/layout/PageLayout";
+import {LANDING_TEXT} from "./constants";
 
 function LandingPage() {
 	return (
@@ -28,17 +28,16 @@ function LandingPage() {
 			{/* Price Sample Section */}
 			<section className="mb-12 bg-background rounded-xl p-6 shadow-sm">
 				<h2 className="text-xl sm:text-2xl font-semibold mb-6 text-theme border-b pb-3">
-					{LANDING_TEXT.priceTitle}
+					{LANDING_TEXT.serviceTitle}
 				</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-					{LANDING_TEXT.prices.map((item, index) => (
+					{LANDING_TEXT.serviceList.map((item, index) => (
 						<div
 							key={index}
 							className="p-4 rounded-lg bg-background-secondary border border-secondary"
 						>
 							<p className="text-lg font-medium">
 								{item.service}:{" "}
-								<span className="text-theme font-bold">{item.price}</span>
 							</p>
 						</div>
 					))}
