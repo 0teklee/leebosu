@@ -10,7 +10,9 @@
 		"build:ssg": "tsx --tsconfig tsconfig.node.json ssg.ts",
 		"lint": "eslint .",
 		"preview": "vite preview",
-		"test": "jest"
+		"test": "jest",
+		"wrangler:dev": "wrangler pages dev ./dist --binding $(cat .env.local | grep -v \"#\" | xargs)",
+		"dev:preview": "yarn build:clean && yarn wrangler:dev"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.8.0",
@@ -28,6 +30,7 @@
 		"sirv": "^3.0.1",
 		"tailwindcss": "^4.1.3",
 		"tsx": "^4.19.3",
+		"twilio": "^5.5.2",
 		"vite-plugin-mcp": "^0.0.3",
 		"vite-plugin-mpa-plus": "^0.6.0",
 		"vite-plugin-ssr": "^0.4.142"
@@ -62,6 +65,7 @@
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "~5.7.2",
 		"typescript-eslint": "^8.24.1",
-		"vite": "^6.2.0"
+		"vite": "^6.2.0",
+		"wrangler": "^4.11.1"
 	}
 }

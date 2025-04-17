@@ -26,6 +26,18 @@ require.cache["node_modules/flubber/index.js"] = {
 	},
 } as unknown as NodeJS.Module;
 
+require.cache["node_modules/twilio/index.js"] = {
+	id: "node_modules/twilio/index.js",
+	filename: "node_modules/twilio/index.js",
+	loaded: true,
+	exports: {
+		twiml: () => ({
+			say: () => ({
+				toString: () => "",
+			}),
+		}),
+	},
+} as unknown as NodeJS.Module;
 console.info("[1-모킹_설정_완료]: ✅ flubber 모듈 모킹 설정 완료.");
 
 async function main() {
@@ -162,6 +174,7 @@ main()
 		try {
 			// 모듈 캐시에서 flubber 모킹 제거
 			delete require.cache["node_modules/flubber/index.js"];
+			delete require.cache["node_modules/twilio/index.js"];
 			console.info(
 				"[4-모킹_정리]: ✅ flubber 모듈 캐시 정리 완료. 실제 라이브러리 사용 가능."
 			);
