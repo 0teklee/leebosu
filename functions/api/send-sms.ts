@@ -25,25 +25,25 @@ export async function onRequestPost({
     `;
 
 		// Twilio API 호출
-		const twilioEndpoint = `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Messages.json`;
+		// const twilioEndpoint = `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Messages.json`;
 
-		const twilioResponse = await fetch(twilioEndpoint, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
-				Authorization:
-					"Basic " + btoa(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`),
-			},
-			body: new URLSearchParams({
-				To: env.BUSINESS_PHONE_NUMBER,
-				From: env.TWILIO_PHONE_NUMBER,
-				Body: message,
-			}).toString(),
-		});
+		// const twilioResponse = await fetch(twilioEndpoint, {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/x-www-form-urlencoded",
+		// 		Authorization:
+		// 			"Basic " + btoa(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`),
+		// 	},
+		// 	body: new URLSearchParams({
+		// 		To: env.BUSINESS_PHONE_NUMBER,
+		// 		From: env.TWILIO_PHONE_NUMBER,
+		// 		Body: message,
+		// 	}).toString(),
+		// });
 
-		if (!twilioResponse.ok) {
-			throw new Error("Twilio API 호출 실패");
-		}
+		// if (!twilioResponse.ok) {
+		// 	throw new Error("Twilio API 호출 실패");
+		// }
 
 		return new Response(
 			JSON.stringify({
