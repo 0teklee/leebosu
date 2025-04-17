@@ -15,6 +15,7 @@ export const FORM_INPUT_KEY_MAP: FormStateKey[] = [
 	"subCategory",
 	"date",
 	"location",
+	"contact",
 ];
 
 // 예약 프로세스 텍스트

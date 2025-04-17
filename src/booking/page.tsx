@@ -21,22 +21,52 @@ export default function BookingDialog() {
 	const { closeBooking, setStep } = useBooking();
 
 	const [formState, formAction] = useActionState<FormState, FormData>(
-		(prevState, formData) => {
-			const direction = formData.get("direction");
-			const updateKey = getCurrentKey();
-			const updateValue = extractFormData(formData);
+		async (prevState, formData) => {
+			try {
+				// Check if this is an error reset action
+				if (formData.get("reset_error")) {
+					return { ...prevState, isError: false, isSuccess: false };
+				}
 
-			const nextState = {
-				...prevState,
-				[updateKey]: updateValue,
-			};
-			if (direction === "next") {
-				handleNextStep();
-			} else {
-				handlePrevStep();
+				const direction = formData.get("direction");
+				const updateKey = getCurrentKey();
+				const updateValue = extractFormData(formData);
+
+				const nextState = {
+					...prevState,
+					[updateKey]: updateValue,
+				};
+
+				if (currentStep === BOOKING_TEXT.steps.length - 1) {
+					const response = await fetch("/api/send-sms", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(nextState),
+					});
+
+					const result = await response.json();
+					return {
+						...nextState,
+						isSuccess: result.success,
+						isError: !result.success,
+					};
+				}
+
+				if (direction === "next") {
+					handleNextStep();
+				} else {
+					handlePrevStep();
+				}
+
+				return { ...nextState, isError: false };
+			} catch (error) {
+				console.error(error);
+				return {
+					...prevState,
+					isSuccess: false,
+					isError: true,
+				};
 			}
-
-			return nextState;
 		},
 		INIT_STATE
 	);
@@ -76,6 +106,9 @@ export default function BookingDialog() {
 		triggerAnim(() => {
 			startTransition(() => {
 				setStep(4);
+				const resetFormData = new FormData();
+				resetFormData.append("reset_error", "true");
+				formAction(resetFormData);
 			});
 		});
 	}
@@ -172,8 +205,8 @@ export default function BookingDialog() {
 								<Button
 									variant="primary"
 									className={`${animStyle}`}
-									//   formAction={sendBookingSMS}
 									disabled={isPending}
+									type="submit"
 									size="md"
 								>
 									{BOOKING_TEXT.submit}
