@@ -10,6 +10,7 @@ import StepComplete from "./steps/StepComplete";
 import StepContact from "./steps/StepContact";
 import StepDate from "./steps/StepDate";
 import StepError from "./steps/StepError";
+import StepFinal from "./steps/StepFinal";
 import StepLocation from "./steps/StepLocation";
 import StepMainCategory from "./steps/StepMainCategory";
 import StepSubCategory from "./steps/StepSubCategory";
@@ -85,14 +86,14 @@ export default function BookingDialog() {
 	];
 
 	// 현재 단계와 이전 단계의 비교로 이동 방향 결정
-	const enteringTransition =
+	const [enteringTransition, exitingTransition] = [
 		direction === "prev"
 			? "animate-slide-fade-in-left"
-			: "animate-slide-fade-in-right";
-	const exitingTransition =
+			: "animate-slide-fade-in-right",
 		direction === "prev"
 			? "animate-slide-fade-out-right"
-			: "animate-slide-fade-out-left";
+			: "animate-slide-fade-out-left",
+	];
 
 	const slideTransition = isAnimating ? exitingTransition : enteringTransition;
 
@@ -129,6 +130,7 @@ export default function BookingDialog() {
 							{currentStep === 4 && (
 								<StepContact state={formState} isPending={isPending} />
 							)}
+							{currentStep === 5 && <StepFinal />}
 							<BookingPreview formState={formState} formRef={formRef} />
 						</>
 					)}
@@ -150,22 +152,33 @@ export default function BookingDialog() {
 									이전
 								</Button>
 							)}
-							<Button
-								variant="primary"
-								name="direction"
-								value="next"
-								data-direction="forward"
-								className={`
-								${animStyle}
-								${isFirstStep ? slideTransition : ""}
-							`}
-								type="submit"
-								disabled={isPending}
-								fullWidth={isFirstStep}
-								size="md"
-							>
-								{isLastStep ? BOOKING_TEXT.submit : "다음"}
-							</Button>
+							{!isLastStep ? (
+								<Button
+									variant="primary"
+									name="direction"
+									value="next"
+									data-direction="forward"
+									className={`${animStyle} ${
+										isFirstStep ? slideTransition : ""
+									}`}
+									type="submit"
+									disabled={isPending}
+									fullWidth={isFirstStep}
+									size="md"
+								>
+									다음
+								</Button>
+							) : (
+								<Button
+									variant="primary"
+									className={`${animStyle}`}
+									//   formAction={sendBookingSMS}
+									disabled={isPending}
+									size="md"
+								>
+									{BOOKING_TEXT.submit}
+								</Button>
+							)}
 						</>
 					)}
 					{isSuccess && (

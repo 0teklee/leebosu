@@ -15,7 +15,6 @@ export const FORM_INPUT_KEY_MAP: FormStateKey[] = [
 	"subCategory",
 	"date",
 	"location",
-	"contact",
 ];
 
 // 예약 프로세스 텍스트
@@ -26,12 +25,14 @@ export const BOOKING_TEXT = {
 		"날짜 선택",
 		"지역 입력",
 		"연락처 입력",
+		"예약 확인",
 	],
 	locationDescription:
 		"경기, 안양 지역 외 예약 시 추가 비용이 발생할 수 있습니다.",
 	locationPlaceholder: "안양시 동안구",
 	contactPlaceholder: "010-1234-5678",
-	estimatePrefix: "예상 견적: 약 ",
+	// estimatePrefix: "예상 견적: 약 ",
+	finalStep: "예약 확인",
 	submit: "예약 확정하기",
 	confirmation: "예약 내용은 문자 또는 카카오톡으로 전달됩니다.",
 	success: "예약이 완료되었습니다!",

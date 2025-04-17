@@ -1,13 +1,22 @@
+import clsx from "clsx";
+
 interface StepIndicatorProps {
 	steps: string[];
 	currentStep: number;
 }
 
-export default function BookingStepIndicator({ steps, currentStep }: StepIndicatorProps) {
+export default function BookingStepIndicator({
+	steps,
+	currentStep,
+}: StepIndicatorProps) {
+	const beforeFinal = steps.slice(0, steps.length - 1);
+
 	return (
-		<div className="mb-6 w-full">
+		<div
+			className={clsx("mb-6 w-full", "transition-all duration-300 ease-in-out")}
+		>
 			<div className="flex justify-between">
-				{steps.map((step, index) => {
+				{beforeFinal.map((step, index) => {
 					const [isCurrentStep, isPreviousStep, isNextStep] = [
 						index === currentStep,
 						index < currentStep,
