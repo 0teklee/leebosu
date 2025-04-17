@@ -37,3 +37,6 @@ coverage
 *.cursor.*
 /.cursor
 /mcp
+
+# Cloudflare Wrangler
+.wrangler
