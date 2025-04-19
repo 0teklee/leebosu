@@ -1,4 +1,4 @@
-import BookingButton from "../BookingButton";
+import BookingButton from "../CTAButton";
 import DarkModeToggle from "./DarkModeToggle";
 import MobileNav from "./MobileNav";
 
