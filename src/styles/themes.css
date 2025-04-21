@@ -5,7 +5,7 @@
 	--font-family-sans: "Noto Sans KR", system-ui, sans-serif;
 
 	--color-theme: #3b82f6;
-	--color-destructive:#fa6a42;
+	--color-destructive: #fa6a42;
 
 	--color-primary: #1c1c1c;
 	--color-secondary: #1f1f1f;
@@ -30,7 +30,6 @@
 
 /* Animation theme */
 @theme {
-
 	--animate-fade-in: fadeIn;
 	--animate-fade-out: fadeOut;
 	--animate-glow: glow;
@@ -58,7 +57,6 @@
 	--animate-slide-fade-out-down: slideOutToDown, fadeOut;
 	--animate-slide-fade-in-up: slideInFromUp, fadeIn;
 	--animate-slide-fade-out-up: slideOutToUp, fadeOut;
-
 
 	--anim-timing-linear: linear;
 	--anim-timing-ease: ease;
@@ -104,10 +102,4 @@
 	--anim-delay-400: 400ms;
 	--anim-delay-500: 500ms;
 	--anim-delay-700: 700ms;
-	--anim-delay-1000: 1000ms;
-	--anim-delay-1500: 1500ms;
-	--anim-delay-2000: 2000ms;
-	--anim-delay-3000: 3000ms;
-	--anim-delay-4000: 4000ms;
-	--anim-delay-5000: 5000ms;
 }
