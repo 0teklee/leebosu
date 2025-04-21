@@ -19,19 +19,13 @@ export const SERVICES = {
 	},
 	electric: {
 		name: "전기",
-		subCategories: [
-			"조명 수리/교체",
-			"콘센트 수리/교체",
-		],
+		subCategories: ["조명 수리/교체", "콘센트 수리/교체"],
 		material: [],
-		custom: false,
+		custom: true,
 	},
 	boiler: {
 		name: "난방/누수",
-		subCategories: [
-			"바닥 난방 수리",
-			"상하수도 누수 수리",
-		],
+		subCategories: ["바닥 난방/누수 수리 ", "상하수도 누수 수리"],
 		material: [],
 		custom: false,
 	},
