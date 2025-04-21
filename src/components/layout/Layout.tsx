@@ -1,8 +1,8 @@
-import BookingDialog from "@/booking/page.tsx";
-import { useBooking } from "@/hooks/useBooking.ts";
+import BookingDialog from "@/domains/booking/page";
+import { useBooking } from "@/hooks/useBooking";
+import Footer from "@components/Footer";
+import { Header } from "@/components/header";
 import { ReactNode } from "react";
-import Footer from "../Footer.tsx";
-import { Header } from "../header/Header.tsx";
 
 if (typeof window !== "undefined") {
 	import("@/global.css");

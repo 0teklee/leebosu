@@ -1,6 +1,6 @@
 import { StackIconPath, XIconPath } from "@/components/icons/icon-paths";
+import MorphIcon from "@/components/icons/MorphIcon";
 import { Button } from "@components/atom/Button";
-import MorphIcon from "@components/atom/MorphIcon";
 import useAnimateDelay from "@hooks/useAnimateDelay";
 import { useBooking } from "@hooks/useBooking";
 import useOutsideClick from "@hooks/useOutsideClick";
@@ -8,7 +8,7 @@ import React, { useRef, useState } from "react";
 
 const MobileNav: React.FC = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [isAnimating, setAnimate] = useAnimateDelay(100);
+	const [isExitAnimate, setAnimate] = useAnimateDelay(100);
 	const navRef = useRef<HTMLElement>(null);
 
 	const handleClose = () => {
@@ -65,7 +65,7 @@ const MobileNav: React.FC = () => {
 				ring-1 ring-background-secondary
 				anim-duration-300
 				anim-fill-both
-				${isAnimating ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"}
+				${isExitAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"}
 				 `}
 				>
 					<div className="py-1 *:block *:px-4 *:py-2 *:text-sm *:text-primary *:hover:bg-background-secondary">

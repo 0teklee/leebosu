@@ -1,4 +1,4 @@
-import useAnimateDelay from "@/hooks/useAnimateDelay";
+import useAnimateDelay, { DurationKeyType } from "@/hooks/useAnimateDelay";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
 import { ChevronIcon } from "../icons/ChevronIcon";
@@ -11,12 +11,14 @@ interface DatePickerProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	error?: string;
 	defaultValue?: string;
+	transitionDelay?: DurationKeyType;
 }
 
 export function DatePicker({
 	className = "",
 	error,
 	label,
+	transitionDelay = 250,
 	...props
 }: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +31,9 @@ export function DatePicker({
 	const inputRef = useRef<HTMLInputElement>(null);
 	const displayRef = useRef<HTMLInputElement>(null);
 
-	const [isAnimate, triggerAnimate, duration] = useAnimateDelay(300);
-	const animStyle = `anim-duration-${duration} anim-ease-in-out anim-fill-both`;
+	const [isExitAnimate, triggerAnimate, duration] =
+		useAnimateDelay(transitionDelay);
+	const animStyle = `${duration} anim-ease-in-out anim-fill-both`;
 
 	const handleClick = () => {
 		triggerAnimate(() => {
@@ -91,7 +94,7 @@ export function DatePicker({
 						relative
 						${isOpen ? "*:opacity-0" : ""}
 						${animStyle}
-						${isAnimate ? "animate-slide-fade-out-down" : "animate-slide-fade-in-up"}
+						${isExitAnimate ? "animate-slide-fade-out-down" : "animate-slide-fade-in-up"}
 					`}
 			>
 				<Input
@@ -128,7 +131,7 @@ export function DatePicker({
 				<DatePickerPopup
 					selectedDate={selectedDate}
 					animStyle={animStyle}
-					isAnimate={isAnimate}
+					isExitAnimate={isExitAnimate}
 					changeMonth={changeMonth}
 					handleOutSideClick={handleOutsideClick}
 					handleDateSelect={handleDateSelect}
@@ -140,14 +143,14 @@ export function DatePicker({
 
 function DatePickerPopup({
 	animStyle,
-	isAnimate,
+	isExitAnimate,
 	changeMonth,
 	selectedDate,
 	handleDateSelect,
 	handleOutSideClick,
 }: {
 	animStyle: string;
-	isAnimate: boolean;
+	isExitAnimate: boolean;
 	changeMonth: (delta: number) => void;
 	selectedDate: Date | null;
 	handleDateSelect: (date: Date, today: Date) => void;
@@ -168,7 +171,7 @@ function DatePickerPopup({
 					w-full pb-1 rounded
 				  bg-background-secondary
 					${animStyle}
-				 	${isAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"}`}
+				 	${isExitAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"}`}
 		>
 			<div className={`flex justify-between items-center mb-2`}>
 				<Button

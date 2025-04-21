@@ -33,7 +33,7 @@ interface DialogProps {
 }
 
 function Dialog({ isOpen, onClose, children }: DialogProps) {
-	const [isAnimating, setAnimate] = useAnimateDelay(300);
+	const [isExitAnimate, setAnimate] = useAnimateDelay(300);
 
 	const handleClose = () => {
 		setAnimate(() => {
@@ -60,7 +60,7 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 						 anim-duration-300
 						 anim-fill-both
 						 anim-timing-ease-in-out
-						 ${isAnimating ? "animate-fade-out" : "animate-fade-in"}`}
+						 ${isExitAnimate ? "animate-fade-out" : "animate-fade-in"}`}
 					onClick={handleClose}
 					data-testid="dialog-backdrop"
 					aria-hidden={!isOpen}
@@ -79,7 +79,7 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 						anim-duration-300
 						anim-fill-both
 						anim-timing-ease-in-out
-						${isAnimating ? "animate-slide-fade-out-down" : "animate-slide-fade-in-down"}
+						${isExitAnimate ? "animate-slide-fade-out-down" : "animate-slide-fade-in-down"}
 					`}
 				>
 					{children}

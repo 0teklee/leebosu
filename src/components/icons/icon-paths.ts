@@ -11,4 +11,6 @@ export const [
 	ChevronUpIconPath,
 ] = ["M6 9l6 6 6-6", "M6 15l6-6 6 6", ];
 
+export const spinnerPath = "M12 2L2 22h20L12 2z";
+
 export const [CheckFromPath, CheckToPath] = ["M4 13", "M4 13L9 18L18 8"];

@@ -1,5 +1,5 @@
+import MorphIcon from "@/components/icons/MorphIcon";
 import { Button } from "@components/atom/Button.tsx";
-import MorphIcon from "@components/atom/MorphIcon.tsx";
 import { MoonIconPath, SunIconPath } from "@components/icons/icon-paths.ts";
 import { useLocalStorage } from "@hooks/useLocalStorage.ts";
 import { useEffect } from "react";
