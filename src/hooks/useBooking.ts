@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 
 import { useMounted } from "./useMounted";
-
 export function useBooking() {
 	const isMounted = useMounted();
 	const [isBookingOpen, setIsBookingOpen] = useState(false);
 
-	// Sync isBookingOpen state from URL
 	useEffect(() => {
 		if (!isMounted || typeof window === "undefined") return;
 
-		// Check URL and update state
 		const syncFromUrl = () => {
 			const isBookingPath = window.location.pathname.startsWith("/booking");
 			setIsBookingOpen(isBookingPath);
@@ -43,14 +40,12 @@ export function useBooking() {
 			url.toString()
 		);
 
-		// Dispatch event to trigger state update via the effect
 		window.dispatchEvent(new Event("urlchange"));
 	};
 
 	const closeBooking = () => {
 		if (!isMounted) return;
 
-		// Get previous URL or go to home
 		const state = history.state as { backgroundLocation?: string };
 		let targetUrl = state?.backgroundLocation || "/";
 
@@ -61,10 +56,8 @@ export function useBooking() {
 			targetUrl = url.toString();
 		}
 
-		// Update URL without page reload
 		window.history.pushState({}, "", targetUrl);
 
-		// Dispatch event to trigger state update via the effect
 		window.dispatchEvent(new Event("urlchange"));
 	};
 
