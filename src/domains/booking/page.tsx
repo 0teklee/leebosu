@@ -2,10 +2,13 @@ import useAnimateDelay from "@/hooks/useAnimateDelay";
 import { Button } from "@components/atom/Button";
 import { Dialog } from "@components/atom/Dialog";
 import { useBooking } from "@hooks/useBooking";
-import { useActionState, useRef, useState, useTransition } from "react";
+import clsx from "clsx";
+import { useRef } from "react";
 import BookingPreview from "./BookingPreview";
 import BookingStepIndicator from "./BookingStepIndicator";
-import { BOOKING_TEXT, INIT_STATE } from "./constants";
+import { BOOKING_TEXT } from "./constants";
+import { useBookFlow } from "./hooks/useBookFlow";
+import useBookFormAction from "./hooks/useBookFormAction";
 import StepComplete from "./steps/StepComplete";
 import StepContact from "./steps/StepContact";
 import StepDate from "./steps/StepDate";
@@ -14,124 +17,46 @@ import StepFinal from "./steps/StepFinal";
 import StepLocation from "./steps/StepLocation";
 import StepMainCategory from "./steps/StepMainCategory";
 import StepSubCategory from "./steps/StepSubCategory";
-import { FormState } from "./types";
-import { extractFormData, getCurrentKey, getStepFromUrl } from "./utils";
 
 export default function BookingDialog() {
-	const { closeBooking, setStep } = useBooking();
+	const { closeBooking, setStep, isBookingOpen } = useBooking();
+	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
+	const { currentStep, isFirstStep, isLastStep, go } = useBookFlow();
+	const { formState, formAction, isPending, startTransition, isLoading } =
+		useBookFormAction(currentStep, go, triggerAnim);
 
-	const [formState, formAction] = useActionState<FormState, FormData>(
-		async (prevState, formData) => {
-			try {
-				// Check if this is an error reset action
-				if (formData.get("reset_error")) {
-					return { ...prevState, isError: false, isSuccess: false };
-				}
+	const [STEP_BACK, STEP_FORWARD] = [-1, 1] as const;
 
-				const direction = formData.get("direction");
-				const updateKey = getCurrentKey();
-				const updateValue = extractFormData(formData);
-
-				const nextState = {
-					...prevState,
-					[updateKey]: updateValue,
-				};
-
-				if (currentStep === BOOKING_TEXT.steps.length - 1) {
-					const response = await fetch("/api/send-sms", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(nextState),
-					});
-
-					const result = await response.json();
-					return {
-						...nextState,
-						isSuccess: result.success,
-						isError: !result.success,
-					};
-				}
-
-				if (direction === "next") {
-					handleNextStep();
-				} else {
-					handlePrevStep();
-				}
-
-				return { ...nextState, isError: false };
-			} catch (error) {
-				console.error(error);
-				return {
-					...prevState,
-					isSuccess: false,
-					isError: true,
-				};
-			}
-		},
-		INIT_STATE
-	);
-
-	const { isSuccess, isError } = formState;
-
-	const [isPending, startTransition] = useTransition();
-	const [isAnimating, triggerAnim, animDuration] = useAnimateDelay(400);
-	const [direction, setDirection] = useState<"prev" | "next">("next");
-
-	const animStyle = `anim-duration-${animDuration} anim-ease-in-out anim-fill-both`;
-
+	const { isSuccess, isError, animDirection } = formState;
+	const isSettled = isSuccess || isError;
 	const formRef = useRef<HTMLFormElement>(null);
 
-	const isOpen = location.pathname === "/booking";
-	const currentStep = getStepFromUrl();
-
-	function handleNextStep(): void {
-		setDirection("next");
-		triggerAnim(() => {
-			startTransition(() => {
-				setStep(currentStep + 1);
-			});
-		});
-	}
-
-	function handlePrevStep(): void {
-		setDirection("prev");
-		triggerAnim(() => {
-			startTransition(() => {
-				setStep(currentStep - 1);
-			});
-		});
-	}
-
 	function handleErrorStep() {
+		const resetFormData = new FormData();
+		resetFormData.append("reset_error", "true");
+		formAction(resetFormData);
 		triggerAnim(() => {
 			startTransition(() => {
 				setStep(4);
-				const resetFormData = new FormData();
-				resetFormData.append("reset_error", "true");
-				formAction(resetFormData);
 			});
 		});
 	}
 
-	const [isFirstStep, isLastStep] = [
-		currentStep === 0,
-		currentStep === BOOKING_TEXT.steps.length - 1,
-	];
+	const animStyle = `${animDuration} anim-ease-in-out anim-fill-both`;
 
-	// 현재 단계와 이전 단계의 비교로 이동 방향 결정
-	const [enteringTransition, exitingTransition] = [
-		direction === "prev"
+	const slideTransition = (() => {
+		if (isExitAnimate) {
+			return animDirection === STEP_BACK
+				? "animate-slide-fade-out-right"
+				: "animate-slide-fade-out-left";
+		}
+		return animDirection === STEP_BACK
 			? "animate-slide-fade-in-left"
-			: "animate-slide-fade-in-right",
-		direction === "prev"
-			? "animate-slide-fade-out-right"
-			: "animate-slide-fade-out-left",
-	];
-
-	const slideTransition = isAnimating ? exitingTransition : enteringTransition;
+			: "animate-slide-fade-in-right";
+	})();
 
 	return (
-		<Dialog isOpen={isOpen} onClose={closeBooking}>
+		<Dialog isOpen={isBookingOpen} onClose={closeBooking}>
 			<form ref={formRef} action={formAction} className="overflow-x-hidden">
 				<Dialog.Header>
 					<h2 className="text-xl font-semibold">예약하기</h2>
@@ -141,12 +66,9 @@ export default function BookingDialog() {
 					/>
 				</Dialog.Header>
 				<Dialog.Content
-					className={`relative
-						${animStyle} anim-duration-400
-						${slideTransition}
-						`}
+					className={clsx("relative", animStyle, slideTransition)}
 				>
-					{!isSuccess && !isError && (
+					{isSettled && (
 						<>
 							{currentStep === 0 && (
 								<StepMainCategory state={formState} isPending={isPending} />
@@ -167,16 +89,16 @@ export default function BookingDialog() {
 							<BookingPreview formState={formState} formRef={formRef} />
 						</>
 					)}
-					{isSuccess && <StepComplete />}
-					{isError && <StepError />}
+					{!isSettled && isSuccess && <StepComplete />}
+					{!isSettled && isError && <StepError />}
 				</Dialog.Content>
 				<Dialog.Footer className="self-end flex justify-between w-full border-t border-secondary">
-					{!isSuccess && !isError && (
+					{isSettled && (
 						<>
-							{currentStep > 0 && (
+							{!isFirstStep && (
 								<Button
 									name="direction"
-									value="prev"
+									value={STEP_BACK}
 									data-direction="backward"
 									type="submit"
 									variant="outline"
@@ -185,43 +107,44 @@ export default function BookingDialog() {
 									이전
 								</Button>
 							)}
-							{!isLastStep ? (
+							{!isLastStep && (
 								<Button
 									variant="primary"
 									name="direction"
-									value="next"
+									value={STEP_FORWARD}
 									data-direction="forward"
-									className={`${animStyle} ${
+									className={clsx(
+										animStyle,
 										isFirstStep ? slideTransition : ""
-									}`}
+									)}
 									type="submit"
-									disabled={isPending}
+									disabled={isPending || isLoading}
 									fullWidth={isFirstStep}
 									size="md"
 								>
 									다음
 								</Button>
-							) : (
-								<Button
-									variant="primary"
-									className={`${animStyle}`}
-									disabled={isPending}
-									type="submit"
-									size="md"
-								>
-									{BOOKING_TEXT.submit}
-								</Button>
 							)}
 						</>
 					)}
-					{isSuccess && (
+					{isLastStep && (
+						<Button
+							className={animStyle}
+							disabled={isPending || isLoading}
+							type="submit"
+							size="md"
+						>
+							{isLoading ? "전송중..." : BOOKING_TEXT.submit}
+						</Button>
+					)}
+					{!isSettled && isSuccess && (
 						<Button fullWidth type="button" onClick={closeBooking}>
 							닫기
 						</Button>
 					)}
-					{isError && (
+					{!isSettled && isError && (
 						<Button
-							variant="secondary"
+							variant="outline"
 							fullWidth
 							type="button"
 							onClick={handleErrorStep}

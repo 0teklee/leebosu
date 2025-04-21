@@ -1,4 +1,4 @@
-import { BOOKING_TEXT } from "@/booking/constants";
+import { BOOKING_TEXT } from "@/domains/booking/constants";
 import { CheckIconPath } from "@/components/icons/icon-paths";
 
 export default function StepComplete() {

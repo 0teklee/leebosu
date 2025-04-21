@@ -6,6 +6,7 @@ export const INIT_STATE: FormState = {
 	date: "",
 	location: "",
 	contact: "",
+	animDirection: 1,
 	isSuccess: false,
 	isError: false,
 };

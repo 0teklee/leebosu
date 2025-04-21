@@ -1,6 +1,6 @@
-import { VALIDATION_ERRORS } from "@/booking/constants";
-import { StepProps } from "@/booking/types";
-import { getStepFromUrl } from "@/booking/utils";
+import { VALIDATION_ERRORS } from "@/domains/booking/constants";
+import { StepProps } from "@/domains/booking/types";
+import { getStepFromUrl } from "@/domains/booking/utils";
 import { DatePicker } from "@components/atom/DatePicker";
 import { FormField } from "@components/atom/FormField";
 

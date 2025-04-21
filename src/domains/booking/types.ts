@@ -9,6 +9,7 @@ export interface FormState {
 	lastSaved?: string;
 	isSuccess: boolean;
 	isError: boolean;
+	animDirection: -1 | 1; // -1: back, 1: forward
 }
 
 export type FormStateKey = keyof FormState;
