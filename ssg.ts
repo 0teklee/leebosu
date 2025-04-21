@@ -14,7 +14,7 @@ const require = module.createRequire(import.meta.url);
 // 외부 라이브러리(flubber) 모킹 설정
 console.info("[1-모킹_설정]: flubber 모듈 모킹 설정 시작...");
 
-// 훨씬 간단한 접근법: 노드 모듈 캐시에 직접 모의 구현 삽입
+// TODO : 동적으로 임포트 모킹 후 unlink 처리
 require.cache["node_modules/flubber/index.js"] = {
 	id: "node_modules/flubber/index.js",
 	filename: "node_modules/flubber/index.js",
@@ -47,10 +47,10 @@ async function main() {
 
 	// --- 페이지 정의 (경로 사용) ---
 	const pages = [
-		{ name: "index", path: "src/pages/index.page.tsx" },
-		{ name: "about", path: "src/pages/about.page.tsx" },
-		{ name: "error", path: "src/pages/error.page.tsx" },
-		{ name: "404", path: "src/pages/404.page.tsx" },
+		{ name: "index", path: "src/domains/main/page.tsx" },
+		{ name: "about", path: "src/domains/about/page.tsx" },
+		{ name: "error", path: "src/domains/fallbacks/error.page.tsx" },
+		{ name: "404", path: "src/domains/fallbacks/404.page.tsx" },
 	];
 
 	// --- 에셋 처리 ---
