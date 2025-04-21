@@ -3,33 +3,33 @@ import { Button } from "@components/atom/Button";
 import { Dialog } from "@components/atom/Dialog";
 import { useBooking } from "@hooks/useBooking";
 import clsx from "clsx";
-import { useRef } from "react";
-import BookingPreview from "./BookingPreview";
-import BookingStepIndicator from "./BookingStepIndicator";
 import { BOOKING_TEXT } from "./constants";
-import { useBookFlow } from "./hooks/useBookFlow";
-import useBookFormAction from "./hooks/useBookFormAction";
-import StepComplete from "./steps/StepComplete";
-import StepContact from "./steps/StepContact";
-import StepDate from "./steps/StepDate";
-import StepError from "./steps/StepError";
-import StepFinal from "./steps/StepFinal";
-import StepLocation from "./steps/StepLocation";
-import StepMainCategory from "./steps/StepMainCategory";
-import StepSubCategory from "./steps/StepSubCategory";
+import { useBookFlow, useBookFormAction } from "./hooks";
+import { ANIM_DIRECTION } from "./types";
+import Preview from "./ui/Preview";
+import StepIndicator from "./ui/StepIndicator";
+import {
+	StepComplete,
+	StepContact,
+	StepDate,
+	StepError,
+	StepFinal,
+	StepLocation,
+	StepMainCategory,
+	StepSubCategory,
+} from "./ui/steps";
 
 export default function BookingDialog() {
-	const { closeBooking, setStep, isBookingOpen } = useBooking();
 	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
-	const { currentStep, isFirstStep, isLastStep, go } = useBookFlow();
+	const [STEP_BACK, STEP_FORWARD] = ANIM_DIRECTION;
+
+	const { closeBooking, setStep, isBookingOpen } = useBooking();
+	const { currentStep, isFirstStep, isLastStep, go, lastStep } = useBookFlow();
 	const { formState, formAction, isPending, startTransition, isLoading } =
 		useBookFormAction(currentStep, go, triggerAnim);
 
-	const [STEP_BACK, STEP_FORWARD] = [-1, 1] as const;
-
 	const { isSuccess, isError, animDirection } = formState;
 	const isSettled = isSuccess || isError;
-	const formRef = useRef<HTMLFormElement>(null);
 
 	function handleErrorStep() {
 		const resetFormData = new FormData();
@@ -37,7 +37,7 @@ export default function BookingDialog() {
 		formAction(resetFormData);
 		triggerAnim(() => {
 			startTransition(() => {
-				setStep(4);
+				setStep(lastStep - 1);
 			});
 		});
 	}
@@ -57,18 +57,15 @@ export default function BookingDialog() {
 
 	return (
 		<Dialog isOpen={isBookingOpen} onClose={closeBooking}>
-			<form ref={formRef} action={formAction} className="overflow-x-hidden">
+			<form action={formAction} className="overflow-x-hidden">
 				<Dialog.Header>
 					<h2 className="text-xl font-semibold">예약하기</h2>
-					<BookingStepIndicator
-						steps={BOOKING_TEXT.steps}
-						currentStep={currentStep}
-					/>
+					<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
 				</Dialog.Header>
 				<Dialog.Content
 					className={clsx("relative", animStyle, slideTransition)}
 				>
-					{isSettled && (
+					{!isSettled && (
 						<>
 							{currentStep === 0 && (
 								<StepMainCategory state={formState} isPending={isPending} />
@@ -86,14 +83,15 @@ export default function BookingDialog() {
 								<StepContact state={formState} isPending={isPending} />
 							)}
 							{currentStep === 5 && <StepFinal />}
-							<BookingPreview formState={formState} formRef={formRef} />
+							<Preview formState={formState} />
 						</>
 					)}
-					{!isSettled && isSuccess && <StepComplete />}
-					{!isSettled && isError && <StepError />}
+					{isSettled && isSuccess && <StepComplete />}
+					{isSettled && isError && <StepError />}
 				</Dialog.Content>
 				<Dialog.Footer className="self-end flex justify-between w-full border-t border-secondary">
-					{isSettled && (
+					{/* BEFORE API CALLED */}
+					{!isSettled && (
 						<>
 							{!isFirstStep && (
 								<Button
@@ -107,7 +105,7 @@ export default function BookingDialog() {
 									이전
 								</Button>
 							)}
-							{!isLastStep && (
+							{!isLastStep ? (
 								<Button
 									variant="primary"
 									name="direction"
@@ -124,33 +122,37 @@ export default function BookingDialog() {
 								>
 									다음
 								</Button>
+							) : (
+								<Button
+									className={animStyle}
+									disabled={isPending || isLoading}
+									type="submit"
+									size="md"
+								>
+									{isLoading ? "전송중..." : BOOKING_TEXT.submit}
+								</Button>
 							)}
 						</>
 					)}
-					{isLastStep && (
-						<Button
-							className={animStyle}
-							disabled={isPending || isLoading}
-							type="submit"
-							size="md"
-						>
-							{isLoading ? "전송중..." : BOOKING_TEXT.submit}
-						</Button>
-					)}
-					{!isSettled && isSuccess && (
-						<Button fullWidth type="button" onClick={closeBooking}>
-							닫기
-						</Button>
-					)}
-					{!isSettled && isError && (
-						<Button
-							variant="outline"
-							fullWidth
-							type="button"
-							onClick={handleErrorStep}
-						>
-							이전 단계로 돌아가기
-						</Button>
+					{/* AFTER API CALLED */}
+					{isSettled && (
+						<>
+							{isSuccess && (
+								<Button fullWidth type="button" onClick={closeBooking}>
+									닫기
+								</Button>
+							)}
+							{isError && (
+								<Button
+									variant="outline"
+									fullWidth
+									type="button"
+									onClick={handleErrorStep}
+								>
+									이전 단계로 돌아가기
+								</Button>
+							)}
+						</>
 					)}
 				</Dialog.Footer>
 			</form>
