@@ -9,9 +9,34 @@ export default function useBookFormAction(
 	triggerAnim: (fn: VoidFunction) => void
 ) {
 	const [isPending, startTransition] = useTransition();
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false); // api 요청 로딩 상태
 
-	// FormState 업데이트 헬퍼 함수
+	const [formState, formAction] = useActionState<FormState, FormData>(
+		actionFn,
+		INIT_STATE
+	);
+
+	// 폼 상태 업데이트 폼 액션 + 사이드 이펙트 관리 통합 함수
+	async function actionFn(
+		prevState: FormState,
+		formData: FormData
+	): Promise<FormState> {
+		try {
+			const next = updateFormState(prevState, formData);
+			const effects = await handleSideEffects(next);
+			return { ...next, ...effects };
+		} catch (err) {
+			console.error(err);
+			return { ...prevState, isSuccess: false, isError: true };
+		}
+	}
+
+	/**
+	 * @desc 폼 상태 업데이트 헬퍼 함수 - formData 파싱 후 선택된 필드만 추가하여 반환 (요청 에러 이후 reset 포함)
+	 * @param prevState - 이전 폼 상태를 인자로 받음
+	 * @param formData - 폼 데이터를 인자로 받음
+	 * @returns 업데이트된 폼 상태
+	 */
 	function updateFormState(
 		prevState: FormState,
 		formData: FormData
@@ -19,11 +44,27 @@ export default function useBookFormAction(
 		if (formData.get("reset_error")) {
 			return { ...prevState, isError: false, isSuccess: false };
 		}
-		const key = getCurrentKey();
-		const value = extractFormData(formData);
-		const dir = Number(formData.get("direction")) as -1 | 1;
-		const field = key && value ? { [key]: value } : {};
-		return { ...prevState, ...field, animDirection: dir, isError: false };
+		const [key, value, dir] = [
+			getCurrentKey(),
+			extractFormData(formData),
+			Number(formData.get("direction")) as -1 | 1,
+		];
+
+		const updateField = (() => {
+			if (key === "mainCategory" && prevState.mainCategory !== value) {
+				return {
+					...prevState,
+					[key]: value,
+					subCategory: null,
+				};
+			}
+			if (key && value) {
+				return { [key]: value };
+			}
+			return {};
+		})() as Partial<FormState>;
+
+		return { ...prevState, ...updateField, animDirection: dir, isError: false };
 	}
 
 	/**
@@ -64,26 +105,6 @@ export default function useBookFormAction(
 		//  비어있는 필드를 반환 아래의 effects 변수에 할당
 		return {};
 	}
-
-	// 폼 상태 업데이트 폼 액션 + 사이드 이펙트 관리 통합 함수
-	const actionFn = async (
-		prevState: FormState,
-		formData: FormData
-	): Promise<FormState> => {
-		try {
-			const next = updateFormState(prevState, formData);
-			const effects = await handleSideEffects(next);
-			return { ...next, ...effects };
-		} catch (err) {
-			console.error(err);
-			return { ...prevState, isSuccess: false, isError: true };
-		}
-	};
-
-	const [formState, formAction] = useActionState<FormState, FormData>(
-		actionFn,
-		INIT_STATE
-	);
 
 	return { formState, formAction, isPending, startTransition, isLoading };
 }
