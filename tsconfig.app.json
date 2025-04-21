@@ -38,5 +38,5 @@
 			"@types/*": ["src/types/*"]
 		}
 	},
-	"include": ["src"]
+	"include": ["src", "vite.meta.ts"]
 }

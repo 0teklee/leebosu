@@ -22,5 +22,5 @@
 		"noImplicitThis": false,
 		"noEmitOnError": false
 	},
-	"include": ["vite.config.ts", "vite.wip.ssg.ts"]
+	"include": ["vite.config.ts", "ssg.ts"]
 }
