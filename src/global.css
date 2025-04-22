@@ -20,6 +20,10 @@
 		@apply bg-background text-primary;
 	}
 
+	details > summary::-webkit-details-marker {
+		display: none;
+	}
+
 	dialog {
 		@apply text-primary bg-background;
 		position: fixed;
