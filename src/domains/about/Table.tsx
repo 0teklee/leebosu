@@ -12,7 +12,7 @@ export default function AboutTable() {
 			<div className="overflow-hidden rounded-lg border border-secondary">
 				<table className="w-full text-left">
 					<thead>
-						<tr className="bg-theme border-b-2 border-secondary">
+						<tr className="bg-theme border-b border-secondary">
 							<th className="p-3 text-left text-white font-semibold w-2/5">
 								서비스 대분류
 							</th>
