@@ -28,12 +28,14 @@ jobs:
 
       - name: "BUILD: vite build && ssg.ts build"
         run: |
-          echo "::group::BUILD INIT"
-          echo "1-VITE: run vite build"
+          source .github/workflows/ci-helper.sh
+          sep
+          info "BUILD INIT"
+          info "1-VITE: run vite build"
           yarn build:vite
-          echo "2-SSG: run ssg.ts build"
+          info "2-SSG: run ssg.ts build"
           yarn build:ssg
-          echo "::endgroup::"
+          success "BUILD DONE"
 
       - name: "CONFIGURE: Git"
         run: |
@@ -42,16 +44,17 @@ jobs:
 
       - name: "DEPLOY: commit dist in production branch"
         run: |
-          echo "::group::DEPLOY INIT"
-          echo "CHECKOUT: production branch"
+          source .github/workflows/ci-helper.sh
+          sep
+          info "DEPLOY INIT"
+          info "CHECKOUT: production branch"
           git checkout -b production
-          echo "ADD: dist, wrangler.toml, functions"
+          info "ADD: dist, wrangler.toml, functions"
           git add -f dist wrangler.toml functions
-          echo "PRD-COMMIT: sha:${SHA} | ${SUBJECT}/ $DATE"
+          info "PRD-COMMIT: sha:${SHA} | ${SUBJECT}/ $DATE"
           SHA=$(git rev-parse --short HEAD)
           SUBJECT=$(git log -1 --pretty=format:'%s')
-          echo "PUSH: origin production"
+          info "PUSH: origin production"
           git commit -m "[DEPLOY] sha:${SHA} | ${SUBJECT}"
           git push -f origin production
-          echo "GA_DONE: Check Cloudflare Pages dashboard for deployment"
-          echo "::endgroup::"
+          success "GA_DONE: Check Cloudflare Pages dashboard for deployment"
