@@ -45,7 +45,7 @@ function AboutPage() {
 							<p className="text-lg text-theme font-medium mb-3">
 								{ABOUT_TEXT.pricing}
 							</p>
-							<ul className="list-item list-inside">
+							<ul className={`list-disc list-inside`}>
 								{ABOUT_TEXT.pricing_description.map((description, index) => (
 									<li
 										className={index === 0 ? "text-theme font-medium" : ""}
