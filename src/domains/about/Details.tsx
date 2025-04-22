@@ -11,7 +11,7 @@ export default function Details({
 	children: React.ReactNode;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
+	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(200);
 
 	return (
 		<details
@@ -28,18 +28,20 @@ export default function Details({
 				{title}
 				<ChevronIcon className="w-5 h-5 transition-transform duration-300 group-open:rotate-180" />
 			</summary>
-			<div
-				className={clsx(
-					"pt-4 px-2 sm:px-4",
-					"anim-direction-alternate anim-timing-ease-out",
-					animDuration,
-					isExitAnimate
-						? "animate-slide-fade-out-up"
-						: "animate-slide-fade-in-up"
-				)}
-			>
-				{children}
-			</div>
+			{isOpen && (
+				<div
+					className={clsx(
+						"pt-4 px-2 sm:px-4",
+						"origin-top anim-direction-alternate anim-timing-ease-in-out",
+						animDuration,
+						isExitAnimate
+							? "animate-slide-fade-out-up -z-10"
+							: "animate-slide-fade-in-up z-0"
+					)}
+				>
+					{children}
+				</div>
+			)}
 		</details>
 	);
 }
