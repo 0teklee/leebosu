@@ -8,7 +8,7 @@
 		"build:dev": "vite build && tsx --tsconfig tsconfig.app.json ssg.ts",
 		"build:clean": "rm -rf dist node_modules/.vite && yarn build:dev",
 		"build:vite": "vite build",
-		"build:ssg": "tsx --tsconfig tsconfig.node.json ssg.ts",
+		"build:ssg": "tsx --tsconfig tsconfig.app.json ssg.ts",
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"test": "jest",
