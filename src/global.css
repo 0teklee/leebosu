@@ -4,7 +4,14 @@
 @import "./styles/components.css";
 @import "./styles/utilities.css";
 
-/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"); */
+@font-face {
+	font-family: "Noto Sans KR";
+	font-style: normal;
+	font-weight: 400 500 700;
+	font-display: swap;
+	src: url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap")
+		format("woff2");
+}
 
 @layer base {
 	html {
