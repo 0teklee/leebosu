@@ -18,8 +18,9 @@ function MainPage() {
 				>
 					<img
 						className="w-full h-auto sm:max-w-lg rounded-lg shadow-md"
-						src="/main-hero.jpg"
+						src="/main-hero.JPG"
 						alt="main-hero"
+						fetchPriority="high"
 					/>
 					<div className="max-w-2xl mx-auto px-4 animate-slide-fade-in-down anim-duration-50">
 						<p className="mb-2 text-secondary text-lg">{LANDING_TEXT.intro}</p>
