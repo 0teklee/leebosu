@@ -1,15 +1,20 @@
 import { useActionState, useState, useTransition } from "react";
 import { BOOKING_TEXT, INIT_STATE } from "../constants";
-import type { FormState } from "../types";
+import type { FormState, TAnimDirection } from "../types";
 import { extractFormData, getCurrentKey } from "../utils";
 
+/**
+ * @desc 폼 상태 업데이트 폼 액션 + 사이드 이펙트 관리 통합 함수
+ * @param currentStep - 현재 폼 단계
+ * @param navigate - 폼 상태 업데이트 이후 반드시 다음 페이지로 이동
+ * @returns 폼 상태 업데이트 폼 액션 + useActionState + transition, api loading, 결과 반환
+ */
 export default function useBookFormAction(
 	currentStep: number,
-	go: (dir: -1 | 1) => void,
-	triggerAnim: (fn: VoidFunction) => void
+	navigate: () => void
 ) {
-	const [isPending, startTransition] = useTransition();
-	const [isLoading, setIsLoading] = useState(false); // api 요청 로딩 상태
+	const [isTransitionPending, startTransition] = useTransition();
+	const [isFetching, setIsFetching] = useState(false); // api 요청 로딩 상태
 
 	const [formState, formAction] = useActionState<FormState, FormData>(
 		actionFn,
@@ -24,6 +29,7 @@ export default function useBookFormAction(
 		try {
 			const next = updateFormState(prevState, formData);
 			const effects = await handleSideEffects(next);
+			navigate(); // 폼 상태 업데이트 이후 반드시 다음 페이지로 이동
 			return { ...next, ...effects };
 		} catch (err) {
 			console.error(err);
@@ -47,7 +53,7 @@ export default function useBookFormAction(
 		const [key, value, dir] = [
 			getCurrentKey(),
 			extractFormData(formData),
-			Number(formData.get("direction")) as -1 | 1,
+			Number(formData.get("animDirection")) as TAnimDirection, // 트랜지션 방향 FormState.animDirection 필드 값
 		];
 
 		const updateField = (() => {
@@ -75,10 +81,9 @@ export default function useBookFormAction(
 	async function handleSideEffects(
 		nextState: FormState
 	): Promise<Partial<FormState>> {
-		const dir = nextState.animDirection;
 		// NOTE: 마지막 단계에서 문자 전송 요청
 		if (currentStep === BOOKING_TEXT.steps.length - 1) {
-			setIsLoading(true);
+			setIsFetching(true);
 			try {
 				const response = await fetch("/api/send-sms", {
 					method: "POST",
@@ -91,20 +96,14 @@ export default function useBookFormAction(
 				console.error(err);
 				return { isSuccess: false, isError: true };
 			} finally {
-				setIsLoading(false);
+				// NOTE: isSuccess/isError 여부에 따라 네비게이션 없이 리렌더링 -> 후에 @pages에서 버튼 클릭으로 닫기/이전 단계로 이동
+				setIsFetching(false);
 			}
 		}
 
-		// 애니메이션 + 네비게이션 (setTimeout + startTransition으로 지연 실행)
-		// NOTE: 이벤트 루프로 아래의 return이 먼저 실행된 후 triggerAnim 실행
-		triggerAnim(() => {
-			startTransition(() => {
-				go(dir);
-			});
-		});
 		//  비어있는 필드를 반환 아래의 effects 변수에 할당
 		return {};
 	}
 
-	return { formState, formAction, isPending, startTransition, isLoading };
+	return { formState, formAction, isTransitionPending, startTransition, isFetching };
 }

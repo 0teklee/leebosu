@@ -10,7 +10,6 @@ function AboutPage() {
 	return (
 		<Layout>
 			<PageLayout className="flex flex-col container *:lg:w-4xl items-center">
-				{/* Hero Section - Updated Layout */}
 				<header className="w-full flex flex-col items-center gap-y-6 my-8 md:my-12 text-center">
 					<h1 className="text-theme text-2xl sm:text-3xl md:text-4xl font-bold break-after-auto">
 						{ABOUT_TEXT.subtitle}

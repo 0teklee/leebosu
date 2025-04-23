@@ -5,7 +5,7 @@ import { useBooking } from "@hooks/useBooking";
 import clsx from "clsx";
 import { BOOKING_TEXT } from "./constants";
 import { useBookFlow, useBookFormAction } from "./hooks";
-import { ANIM_DIRECTION } from "./types";
+import { STEP_BACK, STEP_FORWARD } from "./types";
 import Preview from "./ui/Preview";
 import StepIndicator from "./ui/StepIndicator";
 import {
@@ -18,30 +18,48 @@ import {
 	StepMainCategory,
 	StepSubCategory,
 } from "./ui/steps";
+import { setFormData } from "./utils";
 
 export default function BookingDialog() {
 	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
-	const [STEP_BACK, STEP_FORWARD] = ANIM_DIRECTION;
+	const { closeBooking, setStep, isBookingOpen, previousStep } = useBooking();
+	const { currentStep, isFirstStep, isLastStep, lastStep } = useBookFlow();
+	const {
+		formState,
+		formAction,
+		isTransitionPending,
+		startTransition,
+		isFetching,
+	} = useBookFormAction(currentStep, handleNextStep);
 
-	const { closeBooking, setStep, isBookingOpen } = useBooking();
-	const { currentStep, isFirstStep, isLastStep, go, lastStep } = useBookFlow();
-	const { formState, formAction, isPending, startTransition, isLoading } =
-		useBookFormAction(currentStep, go, triggerAnim);
-
-	const { isSuccess, isError, animDirection } = formState;
+	const { isSuccess, isError } = formState;
 	const isSettled = isSuccess || isError;
 
-	function handleErrorStep() {
-		const resetFormData = new FormData();
-		resetFormData.append("reset_error", "true");
-		formAction(resetFormData);
+	function transitionNavigate(step: number) {
 		triggerAnim(() => {
 			startTransition(() => {
-				setStep(lastStep - 1);
+				setStep(step);
 			});
 		});
 	}
 
+	function handleNextStep() {
+		transitionNavigate(currentStep + STEP_FORWARD);
+	}
+
+	function handlePrevStep() {
+		transitionNavigate(currentStep + STEP_BACK);
+	}
+
+	function handleErrorStep() {
+		const preFinalStep = lastStep - 1;
+		const resetFormData = setFormData("reset_error", "true");
+		formAction(resetFormData);
+		transitionNavigate(preFinalStep);
+	}
+
+	/**  history state 기반 transition 애니메이션 방향 결정 */
+	const animDirection = previousStep === currentStep ? STEP_BACK : STEP_FORWARD;
 	const animStyle = `${animDuration} anim-ease-in-out anim-fill-both`;
 
 	const slideTransition = (() => {
@@ -60,7 +78,11 @@ export default function BookingDialog() {
 			<form action={formAction} className="overflow-x-hidden">
 				<Dialog.Header>
 					<h2 className="text-xl font-semibold">예약하기</h2>
-					<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
+					<StepIndicator
+						onClick={transitionNavigate}
+						steps={BOOKING_TEXT.steps}
+						currentStep={currentStep}
+					/>
 				</Dialog.Header>
 				<Dialog.Content
 					className={clsx("relative", animStyle, slideTransition)}
@@ -68,19 +90,31 @@ export default function BookingDialog() {
 					{!isSettled && (
 						<>
 							{currentStep === 0 && (
-								<StepMainCategory state={formState} isPending={isPending} />
+								<StepMainCategory
+									state={formState}
+									isPending={isTransitionPending}
+								/>
 							)}
 							{currentStep === 1 && (
-								<StepSubCategory state={formState} isPending={isPending} />
+								<StepSubCategory
+									state={formState}
+									isPending={isTransitionPending}
+								/>
 							)}
 							{currentStep === 2 && (
-								<StepDate state={formState} isPending={isPending} />
+								<StepDate state={formState} isPending={isTransitionPending} />
 							)}
 							{currentStep === 3 && (
-								<StepLocation state={formState} isPending={isPending} />
+								<StepLocation
+									state={formState}
+									isPending={isTransitionPending}
+								/>
 							)}
 							{currentStep === 4 && (
-								<StepContact state={formState} isPending={isPending} />
+								<StepContact
+									state={formState}
+									isPending={isTransitionPending}
+								/>
 							)}
 							{currentStep === 5 && <StepFinal />}
 							<Preview formState={formState} />
@@ -95,10 +129,11 @@ export default function BookingDialog() {
 						<>
 							{!isFirstStep && (
 								<Button
-									name="direction"
+									name="animDirection"
 									value={STEP_BACK}
-									data-direction="backward"
-									type="submit"
+									onClick={handlePrevStep}
+									aria-label="backward"
+									type="button"
 									variant="outline"
 									size="md"
 								>
@@ -108,15 +143,15 @@ export default function BookingDialog() {
 							{!isLastStep ? (
 								<Button
 									variant="primary"
-									name="direction"
+									name="animDirection"
 									value={STEP_FORWARD}
-									data-direction="forward"
+									aria-label="forward"
 									className={clsx(
 										animStyle,
 										isFirstStep ? slideTransition : ""
 									)}
 									type="submit"
-									disabled={isPending || isLoading}
+									disabled={isTransitionPending || isFetching}
 									fullWidth={isFirstStep}
 									size="md"
 								>
@@ -125,11 +160,11 @@ export default function BookingDialog() {
 							) : (
 								<Button
 									className={animStyle}
-									disabled={isPending || isLoading}
+									disabled={isTransitionPending || isFetching}
 									type="submit"
 									size="md"
 								>
-									{isLoading ? "전송중..." : BOOKING_TEXT.submit}
+									{isFetching ? "전송중..." : BOOKING_TEXT.submit}
 								</Button>
 							)}
 						</>

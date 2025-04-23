@@ -9,6 +9,7 @@ export const INIT_STATE: FormState = {
 	animDirection: 1,
 	isSuccess: false,
 	isError: false,
+	reset_error: false,
 };
 
 export const FORM_INPUT_KEY_MAP: FormStateKey[] = [

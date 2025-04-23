@@ -3,11 +3,13 @@ import clsx from "clsx";
 interface StepIndicatorProps {
 	steps: string[];
 	currentStep: number;
+	onClick: (step: number) => void;
 }
 
 export default function BookingStepIndicator({
 	steps,
 	currentStep,
+	onClick,
 }: StepIndicatorProps) {
 	const beforeFinal = steps.slice(0, steps.length - 1);
 
@@ -23,7 +25,19 @@ export default function BookingStepIndicator({
 						index > currentStep,
 					];
 					return (
-						<div key={index} className="flex flex-col items-center">
+						<div
+							key={index}
+							className={clsx(
+								"flex flex-col items-center",
+								isPreviousStep && "cursor-pointer"
+							)}
+							onClick={() => {
+								if (!isPreviousStep) return;
+								onClick(index);
+							}}
+							role="button"
+							tabIndex={index}
+						>
 							<div
 								className={`
 								flex items-center justify-center 

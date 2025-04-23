@@ -1,6 +1,7 @@
 import { MainCategoryKey, SubCategoryKey } from "@/business";
 
 export const ANIM_DIRECTION = [-1, 1] as const;
+export const [STEP_BACK, STEP_FORWARD] = ANIM_DIRECTION;
 export type TAnimDirection = (typeof ANIM_DIRECTION)[number];
 
 export interface FormState {
@@ -13,6 +14,7 @@ export interface FormState {
 	isSuccess: boolean;
 	isError: boolean;
 	animDirection: TAnimDirection; // -1: back, 1: forward
+	reset_error: boolean;
 }
 
 export type FormStateKey = keyof FormState;

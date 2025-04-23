@@ -1,9 +1,19 @@
 import { FORM_INPUT_KEY_MAP } from "./constants";
+import { FormState } from "./types";
 
 export function extractFormData(formData: FormData): string {
 	const currentStep = getStepFromUrl();
 	const currentKey = FORM_INPUT_KEY_MAP[currentStep];
 	return formData.get(currentKey) as string;
+}
+
+export function setFormData(
+	key: keyof FormState,
+	value: FormState[keyof FormState]
+) {
+	const formData = new FormData();
+	formData.append(key, value as string);
+	return formData;
 }
 
 export function extractFormDataAll(formData: FormData): Record<string, string> {
@@ -19,6 +29,13 @@ export function getStepFromUrl() {
 export function getCurrentKey() {
 	const currentStep = getStepFromUrl();
 	return FORM_INPUT_KEY_MAP[currentStep];
+}
+
+export function getPreviousStepFromHistory(): number | undefined {
+	if (typeof window !== "undefined" && window.history?.state) {
+		return window.history.state.previousStep as number | undefined;
+	}
+	return undefined;
 }
 
 /**
