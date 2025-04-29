@@ -1,4 +1,4 @@
-import { makeSignature } from "./api.util";
+import { getSignature } from "./api.util";
 
 export interface Env {
 	NAVER_ACCESS_KEY: string;
@@ -36,7 +36,7 @@ export async function sendNaverSMS({
 		const secretKey = env.NAVER_SECRET_KEY;
 
 		// Signature 생성 @server/api.util.ts
-		const signature = makeSignature(
+		const signature = await getSignature(
 			method,
 			url,
 			timestamp,
