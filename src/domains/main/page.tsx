@@ -18,7 +18,7 @@ function MainPage() {
 				>
 					<img
 						className="w-full h-auto sm:max-w-lg rounded-lg shadow-md"
-						src="/main-hero.JPG"
+						src="/leebosu-main.png"
 						alt="main-hero"
 						fetchPriority="high"
 					/>
