@@ -20,7 +20,14 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": false,
 		"noImplicitThis": false,
-		"noEmitOnError": false
+		"noImplicitAny": false,	
+		"noEmitOnError": false,
+		/* Path Aliases */
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./*"],
+			"@server/*": ["./server/*"]
+		}
 	},
-	"include": ["vite.config.ts", "ssg.ts"]
+	"include": ["vite.config.ts", "server/**/*"]
 }
