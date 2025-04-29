@@ -51,7 +51,9 @@ export default defineConfig({
 			"@styles": path.resolve(__dirname, "./src/styles"),
 			"@assets": path.resolve(__dirname, "./src/assets"),
 			"@types": path.resolve(__dirname, "./src/types"),
+			"@server": path.resolve(__dirname, "./server"),
 		},
+		external: ["@server", "@server/*", "functions/**", "functions"],
 	},
 	plugins: [
 		react(),
