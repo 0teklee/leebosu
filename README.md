@@ -1,54 +1,42 @@
-# React + TypeScript + Vite
+# [LEEBOSU.COM](https://leebosu.com)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+https://leebosu.com
 
-Currently, two official plugins are available:
+> Website for my father's home repair business
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack / 기술 스택
 
-## Expanding the ESLint configuration
+- **Framework:** React ^19.0.0 (using `create-vite --template react-swc-ts`)
+- **Styling:** Tailwind CSS v4.1
+- **Build Tool: `Vite`**
+- **SSG(MPA)+CSR:** `vite-plugin-ssr` (Minimal CSR: only `/book` route is client-rendered)
+- **State Management:** React Hooks (incl. `useActionState`, `useTransition`), `localStorage` for form persistence
+- **Package Manager:** Yarn
+- **Deployment : Github Actions + Cloudflare Pages**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## USER FLOW / 사용자 흐름
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Landing Page (`/`) / 랜딩 페이지 (`/`)**:
+  - Introduces the service, shows pricing samples, and has a CTA ("지금 바로 예약하기") to the booking form.
+  - 서비스 소개, 가격 샘플 표시, 예약 폼으로 연결되는 CTA ("지금 바로 예약하기") 포함.
+- **About Page (`/about`) / 소개 페이지 (`/about`)**:
+  - Provides more detail about Lee Bosu, his experience, and pricing philosophy. Includes a CTA ("예약하러 가기") to the booking form.
+  - 이보수 상세 소개 (경험, 가격 정책). 예약 폼으로 연결되는 CTA ("예약하러 가기") 포함.
+- **Booking Form (`/book`) / 예약 폼 (`/book`)**:
+  - Accessible via CTAs on other pages. / 다른 페이지의 CTA를 통해 접근 가능.
+  - Mobile-first, dialog-style multi-step form. / 모바일 우선, 대화형 다단계 폼.
+  - Steps: Service Category -> Subcategory -> Date -> Location -> Contact Info. / 단계: 대분류 -> 소분류 -> 날짜 -> 지역 -> 연락처.
+  - Shows an estimated price before submission. / 제출 전 예상 견적 표시.
+  - No user login required. / 사용자 로그인 불필요.
+- **Submission / 제출**:
+  - User confirms the booking. A confirmation message is shown, indicating details will be sent via SMS(NAVER SENS).
+  - 사용자가 예약 확정. 예약 내용이 SMS(네이버 SENS)로 전송될 것임을 알리는 확인 메시지 표시.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## BUILD & DEPLOY PIPELINE / 빌드 및 배포 파이프라인
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```mermaid
+graph TD
+    A[Local Development (`yarn dev`)] --> B{Build (`yarn build`)};
+    B --> C[Static Site Generation (via vite-plugin-ssr)];
+    C --> D[Deploy `dist` folder];
 ```
