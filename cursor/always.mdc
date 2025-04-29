@@ -1,0 +1,17 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+1. RUN THE TESTS BEFORE SHOWING ME THE CODE OR YOU WILL BE FIRED.
+
+2. Before doing anything, assume you have just run the following command:
+   `tree -I "node_modules|.cursor|.vscode"`
+   you will read the files only u need to from this print.
+
+3. Before making any changes to code base, check which files were previously modified and its connected module files by using the result of the previous step. 
+
+4. use yarn for package managing 
+5. use tailwind v4.1 only https://tailwindcss.com/docs
+6. use React ^19.0.0 version patterns only https://react.dev/reference/react  
+7. maximize using React ^19's hooks and concurrency features (ex: useActionState, useTransition, etc.. ) 

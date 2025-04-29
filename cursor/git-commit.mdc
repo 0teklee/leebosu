@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+make multiple commits following Angular commit convention. 
+Targets are "modified" or "Untraked files" that are "git status".
+Group files based on related jobs and scope, related files in one commit. 
+exclude yarn.lock.
