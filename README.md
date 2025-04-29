@@ -40,7 +40,7 @@ stateDiagram-v2
 
 
     state "GitHub Actions" as GA {
-        MAIN --> Checkout_Code  : 워크플로우 시작 (Workflow starts) 
+        MAIN --> Checkout_Code  : 워크플로우 시작 (Workflow starts)
         Checkout_Code --> Setup_Node : 코드 체크아웃 완료 (Code checked out)
 
         Setup_Node : SETUP Node.js v22 + yarn (Node.js + yarn 설정)
@@ -78,4 +78,29 @@ stateDiagram-v2
          end note
     }
 ```
-  
+
+## CURSOR Rules
+
+- Cursor IDE의 rules를 적용하여 다음 원칙을 지키려 했습니다.
+  1. Ask 모드 위주로 사용한다.
+  2. 모르는 코드는 기술 부채다.
+  3. 주석을 작성한다.
+-  `cursor`를 사용하며 느낀 점과 자세한 LLM 사용 원칙과을 추후 블로그에 남기겠습니다.
+
+### Development Guidelines / 개발 가이드라인
+[always.mdc](https://github.com/0teklee/leebosu/tree/main/cursor/always.mdc)
+- **Test First:** Run tests before any code changes / 코드 변경 전 테스트 실행 필수
+- **File Structure:** Use `tree` command to understand codebase structure / `tree` 명령어로 코드베이스 구조 파악
+- **Dependency Management:** Use Yarn / Yarn 패키지 매니저 사용
+- **Frontend Stack:**
+  - Tailwind CSS v4.1 for styling / 스타일링
+  - React ^19.0.0 with modern patterns / 최신 React 패턴 적용
+  - Maximize usage of React 19's hooks and concurrency features / React 19 훅스와 동시성 기능 적극 활용
+
+### Git Commit Convention / 깃 커밋 규칙
+[git-commit.mdc](https://github.com/0teklee/leebosu/tree/main/cursor/git-commit.mdc)
+
+- **Format:** Follow Angular commit convention / Angular 커밋 컨벤션 준수
+- **Grouping:** Group related files and changes in single commit / 연관된 파일과 변경사항 하나의 커밋으로 그룹화
+- **Scope:** Target modified and untracked files from git status / git status의 수정 및 추적되지 않은 파일 대상
+- **Exclusion:** Exclude yarn.lock from commits / yarn.lock 파일 커밋에서 제외
