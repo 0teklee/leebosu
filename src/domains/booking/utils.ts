@@ -1,19 +1,12 @@
-import { FORM_INPUT_KEY_MAP } from "./constants";
-import { FormState } from "./types";
+import { FORM_FIELDS_MAP, FormState } from "./types";
 
-export function extractFormData(formData: FormData): string {
+export function extractFormData(formData: FormData) {
 	const currentStep = getStepFromUrl();
-	const currentKey = FORM_INPUT_KEY_MAP[currentStep];
-	return formData.get(currentKey) as string;
-}
-
-export function setFormData(
-	key: keyof FormState,
-	value: FormState[keyof FormState]
-) {
-	const formData = new FormData();
-	formData.append(key, value as string);
-	return formData;
+	const currentKey = FORM_FIELDS_MAP[currentStep];
+	return (
+		(formData.get(currentKey) as unknown as FormState[typeof currentKey]) ||
+		null
+	);
 }
 
 export function extractFormDataAll(formData: FormData): Record<string, string> {
@@ -24,11 +17,6 @@ export function extractFormDataAll(formData: FormData): Record<string, string> {
 export function getStepFromUrl() {
 	const stepParam = new URLSearchParams(location.search).get("step");
 	return Number(stepParam) || 0;
-}
-
-export function getCurrentKey() {
-	const currentStep = getStepFromUrl();
-	return FORM_INPUT_KEY_MAP[currentStep];
 }
 
 export function getPreviousStepFromHistory(): number | undefined {

@@ -1,109 +1,108 @@
 import { useActionState, useState, useTransition } from "react";
-import { BOOKING_TEXT, INIT_STATE } from "../constants";
-import type { FormState, TAnimDirection } from "../types";
-import { extractFormData, getCurrentKey } from "../utils";
+import { INIT_STATE } from "../constants";
+import {
+	FORM_FIELDS_MAP,
+	FORM_FIELDS_STEP_MAP,
+	type FormState,
+} from "../types";
 
 /**
- * @desc 폼 상태 업데이트 폼 액션 + 사이드 이펙트 관리 통합 함수
- * @param currentStep - 현재 폼 단계
- * @param navigate - 폼 상태 업데이트 이후 반드시 다음 페이지로 이동
- * @returns 폼 상태 업데이트 폼 액션 + useActionState + transition, api loading, 결과 반환
+ * @desc 폼 상태 업데이트 폼 액션 관리 통합 훅
  */
-export default function useBookFormAction(
-	currentStep: number,
-	navigate: () => void
-) {
+export default function useBookFormAction() {
 	const [isTransitionPending, startTransition] = useTransition();
-	const [isFetching, setIsFetching] = useState(false); // api 요청 로딩 상태
-
+	const [isFetching, setIsFetching] = useState(false); // API 요청 로딩 상태
 	const [formState, formAction] = useActionState<FormState, FormData>(
-		actionFn,
+		async (prevState: FormState, formData: FormData) => {
+			// 에러 초기화 처리
+			if (formData.get("reset_error")) {
+				return { ...prevState, isError: false, isSuccess: false };
+			}
+
+			// 폼 상태 업데이트
+			const updatedState = updateFormState(prevState, formData);
+
+			return { ...updatedState, isError: false };
+		},
 		INIT_STATE
 	);
 
-	// 폼 상태 업데이트 폼 액션 + 사이드 이펙트 관리 통합 함수
-	async function actionFn(
-		prevState: FormState,
-		formData: FormData
-	): Promise<FormState> {
-		try {
-			const next = updateFormState(prevState, formData);
-			const effects = await handleSideEffects(next);
-			navigate(); // 폼 상태 업데이트 이후 반드시 다음 페이지로 이동
-			return { ...next, ...effects };
-		} catch (err) {
-			console.error(err);
-			return { ...prevState, isSuccess: false, isError: true };
-		}
-	}
-
 	/**
-	 * @desc 폼 상태 업데이트 헬퍼 함수 - formData 파싱 후 선택된 필드만 추가하여 반환 (요청 에러 이후 reset 포함)
-	 * @param prevState - 이전 폼 상태를 인자로 받음
-	 * @param formData - 폼 데이터를 인자로 받음
-	 * @returns 업데이트된 폼 상태
+	 * @desc 폼 데이터 업데이트 처리 - FormState를 필드별로 reduce로 순회하며 변경된 값이 있는 필드만 업데이트
+	 * @param prevState - 이전 FormState
+	 * @param formData - 업데이트할 FormData
+	 * @returns 업데이트된 FormState
 	 */
 	function updateFormState(
 		prevState: FormState,
 		formData: FormData
 	): FormState {
-		if (formData.get("reset_error")) {
-			return { ...prevState, isError: false, isSuccess: false };
-		}
-		const [key, value, dir] = [
-			getCurrentKey(),
-			extractFormData(formData),
-			Number(formData.get("animDirection")) as TAnimDirection, // 트랜지션 방향 FormState.animDirection 필드 값
-		];
+		return FORM_FIELDS_MAP.reduce<FormState>(
+			(acc, key) => {
+				const val = formData.get(key);
 
-		const updateField = (() => {
-			if (key === "mainCategory" && prevState.mainCategory !== value) {
-				return {
-					...prevState,
-					[key]: value,
-					subCategory: null,
-				};
-			}
-			if (key && value) {
-				return { [key]: value };
-			}
-			return {};
-		})() as Partial<FormState>;
+				if (!formData.has(key) || val === prevState[key] || val === undefined) {
+					return acc;
+				}
 
-		return { ...prevState, ...updateField, animDirection: dir, isError: false };
+				(acc[key] as FormState[typeof key]) = val as FormState[typeof key];
+
+				if (key === "mainCategory" && prevState.mainCategory !== val) {
+					acc.subCategory = null;
+				}
+
+				return acc;
+			},
+			{ ...prevState }
+		);
 	}
 
 	/**
-	 * @desc API 호출, URL 네비게이션 + 애니메이션 딜레이 사이드 이펙트 관리 헬퍼 함수
-	 * @param nextState - 다음 폼 상태를 인자로 받음
-	 * @returns 사이드 이펙트 결과 (API 요청 성공/실패 필드만 업데이트 혹은 빈 객체)
+	 * @desc API 요청 처리 - 폼 데이터 제출 후 결과 반환
+	 * @param formState - 제출할 FormState
+	 * @returns API 응답의 isSuccess, isError 여부를 반영한 FormState 반환
 	 */
-	async function handleSideEffects(
-		nextState: FormState
-	): Promise<Partial<FormState>> {
-		// NOTE: 마지막 단계에서 문자 전송 요청
-		if (currentStep === BOOKING_TEXT.steps.length - 1) {
-			setIsFetching(true);
-			try {
-				const response = await fetch("/api/send-sms", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(nextState),
-				});
-				const result = await response.json();
-				return { isSuccess: result.success, isError: !result.success };
-			} catch (err) {
-				console.error(err);
-				return { isSuccess: false, isError: true };
-			} finally {
-				// NOTE: isSuccess/isError 여부에 따라 네비게이션 없이 리렌더링 -> 후에 @pages에서 버튼 클릭으로 닫기/이전 단계로 이동
-				setIsFetching(false);
-			}
+	async function postFormData(formState: FormData) {
+		setIsFetching(true);
+		try {
+			const response = await fetch("/api/send-sms", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(formState),
+			});
+			const result = await response.json();
+			return {
+				...formState,
+				isSuccess: result.success,
+				isError: !result.success,
+			};
+		} catch (err) {
+			console.error(`[useBookFormAction] API 요청 실패:${err}`);
+			return { ...formState, isSuccess: false, isError: true };
+		} finally {
+			setIsFetching(false);
 		}
-
-		//  비어있는 필드를 반환 아래의 effects 변수에 할당
-		return {};
 	}
 
-	return { formState, formAction, isTransitionPending, startTransition, isFetching };
+	/**
+	 * @desc navigate 여부를 결정하는 헬퍼 함수 - 훅 내부의 formState에 의존하는 외부효과 함수
+	 * @param currentStep - 현재 폼 단계
+	 * @returns navigate 여부 T/F
+	 */
+	function shouldNavigateToNext(currentStep: number): boolean {
+		const currentStepFields = FORM_FIELDS_STEP_MAP[currentStep];
+		return currentStepFields.every(
+			(field) => formState[field] ?? formState[field]
+		);
+	}
+
+	return {
+		formState,
+		formAction,
+		isTransitionPending,
+		isFetching,
+		startTransition,
+		shouldNavigateToNext,
+		postFormData,
+	};
 }

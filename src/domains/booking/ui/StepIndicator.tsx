@@ -11,14 +11,12 @@ export default function BookingStepIndicator({
 	currentStep,
 	onClick,
 }: StepIndicatorProps) {
-	const beforeFinal = steps.slice(0, steps.length - 1);
-
 	return (
 		<div
 			className={clsx("mb-6 w-full", "transition-all duration-300 ease-in-out")}
 		>
 			<div className="flex justify-between">
-				{beforeFinal.map((step, index) => {
+				{steps.map((step, index) => {
 					const [isCurrentStep, isPreviousStep, isNextStep] = [
 						index === currentStep,
 						index < currentStep,

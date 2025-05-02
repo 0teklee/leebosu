@@ -17,18 +17,31 @@ export interface FormState {
 	reset_error: boolean;
 }
 
+export const FORM_FIELDS_MAP: FormStateKey[] = [
+	"mainCategory",
+	"subCategory",
+	"date",
+	"location",
+	"contact",
+	"animDirection",
+] as const;
+
+export const FORM_FIELDS_STEP_MAP = [
+	["mainCategory", "subCategory"],
+	["date", "location", "contact"],
+	[],
+] as const;
+
 export type FormStateKey = keyof FormState;
 export type FormStateValue = FormState[FormStateKey];
+
+export type TypedFormData = Omit<FormData, "get"> & {
+	get(key: FormStateKey): string | null;
+	has(key: FormStateKey): boolean;
+};
 
 export interface StepProps {
 	state: FormState;
 	formAction?: (formData: FormData) => Promise<void> | void;
 	isPending: boolean;
-}
-
-export interface StepConfig {
-	id: string;
-	label: string;
-	component: React.ComponentType<StepProps>;
-	validate: (data: FormData) => Promise<boolean>;
 }

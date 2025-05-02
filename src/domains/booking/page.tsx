@@ -3,22 +3,18 @@ import { Button } from "@components/atom/Button";
 import { Dialog } from "@components/atom/Dialog";
 import { useBooking } from "@hooks/useBooking";
 import clsx from "clsx";
-import { BOOKING_TEXT } from "./constants";
+import { BOOKING_TEXT, SLIDE_ANIMATION } from "./constants";
 import { useBookFlow, useBookFormAction } from "./hooks";
 import { STEP_BACK, STEP_FORWARD } from "./types";
 import Preview from "./ui/Preview";
 import StepIndicator from "./ui/StepIndicator";
 import {
+	StepCategory,
 	StepComplete,
-	StepContact,
-	StepDate,
 	StepError,
 	StepFinal,
-	StepLocation,
-	StepMainCategory,
-	StepSubCategory,
+	StepInfo,
 } from "./ui/steps";
-import { setFormData } from "./utils";
 
 export default function BookingDialog() {
 	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
@@ -30,7 +26,9 @@ export default function BookingDialog() {
 		isTransitionPending,
 		startTransition,
 		isFetching,
-	} = useBookFormAction(currentStep, handleNextStep);
+		shouldNavigateToNext,
+		postFormData,
+	} = useBookFormAction();
 
 	const { isSuccess, isError } = formState;
 	const isSettled = isSuccess || isError;
@@ -43,8 +41,23 @@ export default function BookingDialog() {
 		});
 	}
 
-	function handleNextStep() {
-		transitionNavigate(currentStep + STEP_FORWARD);
+	async function handleFormAction(formData: FormData) {
+		const isPreFinalStep = currentStep === lastStep - 1;
+		// 마지막 스텝에서는 API 제출
+		if (isPreFinalStep) {
+			const result = await postFormData(formData);
+
+			if (result.isSuccess) {
+				transitionNavigate(currentStep + STEP_FORWARD);
+			}
+			return;
+		}
+		// 마지막 스텝에서 API 호출
+		formAction(formData);
+
+		if (shouldNavigateToNext(currentStep)) {
+			transitionNavigate(currentStep + STEP_FORWARD);
+		}
 	}
 
 	function handlePrevStep() {
@@ -52,30 +65,25 @@ export default function BookingDialog() {
 	}
 
 	function handleErrorStep() {
-		const preFinalStep = lastStep - 1;
-		const resetFormData = setFormData("reset_error", "true");
+		const resetFormData = new FormData();
+		resetFormData.append("reset_error", "true");
 		formAction(resetFormData);
-		transitionNavigate(preFinalStep);
+		transitionNavigate(lastStep - 1);
 	}
 
-	/**  history state 기반 transition 애니메이션 방향 결정 */
+	/**  URL history state 기반 transition 애니메이션 방향 결정 */
 	const animDirection = previousStep === currentStep ? STEP_BACK : STEP_FORWARD;
 	const animStyle = `${animDuration} anim-ease-in-out anim-fill-both`;
 
 	const slideTransition = (() => {
-		if (isExitAnimate) {
-			return animDirection === STEP_BACK
-				? "animate-slide-fade-out-right"
-				: "animate-slide-fade-out-left";
-		}
-		return animDirection === STEP_BACK
-			? "animate-slide-fade-in-left"
-			: "animate-slide-fade-in-right";
+		const moveDirection = animDirection === STEP_BACK ? "back" : "forward"; // URL history state 기반 애니메이션 방향
+		const animInOut = isExitAnimate ? "exit" : "enter"; // 진입/퇴장 애니메이션 상태
+		return SLIDE_ANIMATION[moveDirection][animInOut];
 	})();
 
 	return (
 		<Dialog isOpen={isBookingOpen} onClose={closeBooking}>
-			<form action={formAction} className="overflow-x-hidden">
+			<form action={handleFormAction} className="overflow-x-hidden">
 				<Dialog.Header>
 					<h2 className="text-xl font-semibold">예약하기</h2>
 					<StepIndicator
@@ -90,33 +98,21 @@ export default function BookingDialog() {
 					{!isSettled && (
 						<>
 							{currentStep === 0 && (
-								<StepMainCategory
+								<StepCategory
 									state={formState}
 									isPending={isTransitionPending}
+									formAction={formAction}
 								/>
 							)}
 							{currentStep === 1 && (
-								<StepSubCategory
+								<StepInfo
 									state={formState}
 									isPending={isTransitionPending}
+									formAction={formAction}
 								/>
 							)}
-							{currentStep === 2 && (
-								<StepDate state={formState} isPending={isTransitionPending} />
-							)}
-							{currentStep === 3 && (
-								<StepLocation
-									state={formState}
-									isPending={isTransitionPending}
-								/>
-							)}
-							{currentStep === 4 && (
-								<StepContact
-									state={formState}
-									isPending={isTransitionPending}
-								/>
-							)}
-							{currentStep === 5 && <StepFinal />}
+
+							{currentStep === 2 && <StepFinal />}
 							<Preview formState={formState} />
 						</>
 					)}
