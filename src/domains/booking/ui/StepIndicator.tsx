@@ -1,15 +1,13 @@
 import clsx from "clsx";
 
 interface StepIndicatorProps {
-	steps: string[];
+	steps: { title: string; labels?: string[] }[];
 	currentStep: number;
-	onClick: (step: number) => void;
 }
 
 export default function BookingStepIndicator({
 	steps,
 	currentStep,
-	onClick,
 }: StepIndicatorProps) {
 	return (
 		<div
@@ -23,41 +21,16 @@ export default function BookingStepIndicator({
 						index > currentStep,
 					];
 					return (
-						<div
-							key={index}
-							className={clsx(
-								"flex flex-col items-center",
-								isPreviousStep && "cursor-pointer"
-							)}
-							onClick={() => {
-								if (!isPreviousStep) return;
-								onClick(index);
-							}}
-							role="button"
-							tabIndex={index}
-						>
-							<div
-								className={`
-								flex items-center justify-center 
-               					h-8 w-8
-								text-sm font-medium
-								rounded-full ring-2  
-								transition-colors duration-300
-								anim-duration-1000 anim-iteration-infinite
-								anim-timing-ease-in-out
-								${isCurrentStep ? "animate-bounce ring-theme text-theme" : ""}
-								${isPreviousStep ? "ring-theme/80 bg-theme/95 text-background" : ""}
-								${isNextStep ? "ring-secondary text-secondary" : ""}
-								`}
-							>
-								{index + 1}
-							</div>
+						<div key={index} className={clsx("flex flex-col items-center")}>
 							<span
-								className={`mt-1 text-xs ${isCurrentStep && "text-theme"} ${
-									isPreviousStep && "text-theme/70"
-								}`}
+								className={clsx(
+									"mt-1 text-xs",
+									isCurrentStep && "text-theme",
+									isPreviousStep && "text-theme/60",
+									isNextStep && "text-secondary"
+								)}
 							>
-								{step}
+								{step.title}
 							</span>
 						</div>
 					);

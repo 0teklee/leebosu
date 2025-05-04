@@ -14,7 +14,12 @@ export const INIT_STATE: FormState = {
 
 // 예약 프로세스 텍스트
 export const BOOKING_TEXT = {
-	steps: ["서비스 선택", "예약 정보 입력", "예약 확인"],
+	dialogTitle: "상담 예약하기",
+	steps: [
+		{ title: "서비스 선택", labels: ["수리 내용", "세부 내용"] },
+		{ title: "예약 정보 입력", labels: ["날짜", "위치", "연락처"] },
+		{ title: "예약 확인", labels: ["예약 내용"] },
+	],
 	locationDescription:
 		"경기, 안양 지역 외 예약 시 추가 비용이 발생할 수 있습니다.",
 	locationPlaceholder: "안양시 동안구",
@@ -28,13 +33,13 @@ export const BOOKING_TEXT = {
 	errorDescription: "다시 시도해주세요.",
 };
 
-export const VALIDATION_ERRORS = [
-	"서비스를 선택해주세요.",
-	"작업 내용을 선택해주세요.",
-	"시공 날짜를 선택해주세요.",
-	"지역을 입력해주세요.",
-	"올바른 연락처를 입력해주세요.",
-] as const;
+export const VALIDATION_ERRORS = {
+	mainCategory: "서비스를 선택해주세요.",
+	subCategory: "작업 내용을 선택해주세요.",
+	date: "시공 날짜를 선택해주세요.",
+	location: "지역을 입력해주세요.",
+	contact: "올바른 연락처를 입력해주세요.",
+} as const;
 
 export const SLIDE_ANIMATION = {
 	back: {
@@ -46,3 +51,8 @@ export const SLIDE_ANIMATION = {
 		enter: "animate-slide-fade-in-right",
 	},
 } as const;
+
+export const PRICE_NOTICE = {
+	title: "재료비 안내",
+	description: "원하시는 재료를 미리 준비해주시면 공임비만 받습니다.",
+};

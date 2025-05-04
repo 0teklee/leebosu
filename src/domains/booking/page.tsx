@@ -6,7 +6,6 @@ import clsx from "clsx";
 import { BOOKING_TEXT, SLIDE_ANIMATION } from "./constants";
 import { useBookFlow, useBookFormAction } from "./hooks";
 import { STEP_BACK, STEP_FORWARD } from "./types";
-import Preview from "./ui/Preview";
 import StepIndicator from "./ui/StepIndicator";
 import {
 	StepCategory,
@@ -42,14 +41,13 @@ export default function BookingDialog() {
 	}
 
 	async function handleFormAction(formData: FormData) {
-		const isPreFinalStep = currentStep === lastStep - 1;
 		// 마지막 스텝에서는 API 제출
-		if (isPreFinalStep) {
+		if (isLastStep) {
 			const result = await postFormData(formData);
-
-			if (result.isSuccess) {
-				transitionNavigate(currentStep + STEP_FORWARD);
-			}
+			const updatedFormData = new FormData();
+			updatedFormData.set("isSuccess", `${result.isSuccess}`);
+			updatedFormData.set("isError", `${result.isError}`);
+			formAction(updatedFormData); // isSuccess/isError 여부에 따라 페이지 변경
 			return;
 		}
 		// 마지막 스텝에서 API 호출
@@ -68,7 +66,7 @@ export default function BookingDialog() {
 		const resetFormData = new FormData();
 		resetFormData.append("reset_error", "true");
 		formAction(resetFormData);
-		transitionNavigate(lastStep - 1);
+		transitionNavigate(lastStep);
 	}
 
 	/**  URL history state 기반 transition 애니메이션 방향 결정 */
@@ -85,12 +83,8 @@ export default function BookingDialog() {
 		<Dialog isOpen={isBookingOpen} onClose={closeBooking}>
 			<form action={handleFormAction} className="overflow-x-hidden">
 				<Dialog.Header>
-					<h2 className="text-xl font-semibold">예약하기</h2>
-					<StepIndicator
-						onClick={transitionNavigate}
-						steps={BOOKING_TEXT.steps}
-						currentStep={currentStep}
-					/>
+					<h2 className="text-xl font-semibold">{BOOKING_TEXT.dialogTitle}</h2>
+					<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
 				</Dialog.Header>
 				<Dialog.Content
 					className={clsx("relative", animStyle, slideTransition)}
@@ -111,9 +105,7 @@ export default function BookingDialog() {
 									formAction={formAction}
 								/>
 							)}
-
-							{currentStep === 2 && <StepFinal />}
-							<Preview formState={formState} />
+							{currentStep === 2 && <StepFinal formState={formState} />}
 						</>
 					)}
 					{isSettled && isSuccess && <StepComplete />}
