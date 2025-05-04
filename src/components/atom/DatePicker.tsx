@@ -169,7 +169,7 @@ function DatePickerPopup({
 				isExitAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"
 			)}
 		>
-			<div className={`flex justify-between items-center mb-6`}>
+			<div className={`flex justify-between items-center mb-4`}>
 				<Button
 					variant="ghost"
 					size="sm"
@@ -190,7 +190,7 @@ function DatePickerPopup({
 					<ChevronIcon direction="right" />
 				</Button>
 			</div>
-			<div className="grid grid-cols-7 gap-1 mb-4">
+			<div className="grid grid-cols-7 gap-1 mb-1">
 				{dayNames.map((day, index) => (
 					<div key={index} className="text-center text-sm font-medium">
 						{day}
