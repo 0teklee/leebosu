@@ -6,11 +6,7 @@ import { ChevronIcon } from "../icons/ChevronIcon";
 import { Button } from "./Button";
 import { dayNames, monthNames } from "./constants";
 import { Input } from "./Input";
-import {
-	formatDate,
-	generateCalendarData,
-	getInitialSelectedDate,
-} from "./utils";
+import { formatDate, generateCalendarData } from "./utils";
 interface DatePickerProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	error?: string;
@@ -27,7 +23,7 @@ export function DatePicker({
 }: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedDate, setSelectedDate] = useState<Date | null>(
-		props.defaultValue ? new Date(props.defaultValue) : getInitialSelectedDate()
+		props.defaultValue ? new Date(props.defaultValue) : null
 	);
 
 	const formattedDate = formatDate(selectedDate);
