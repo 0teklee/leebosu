@@ -120,14 +120,9 @@ function DatePickerPopup({
 	const animStyle = `${duration} anim-ease-in-out anim-fill-both`;
 
 	const changeMonth = (delta: number) => {
+		const baseDate = selectedDate ?? today;
 		setSelectedDate(
-			selectedDate
-				? new Date(
-						selectedDate.getFullYear(),
-						selectedDate.getMonth() + delta,
-						1
-				  )
-				: null
+			new Date(baseDate.getFullYear(), baseDate.getMonth() + delta, 1)
 		);
 	};
 
@@ -168,7 +163,7 @@ function DatePickerPopup({
 			ref={calendarRef}
 			className={clsx(
 				"fixed top-0 left-0 z-50",
-				"w-full h-full px-2 py-4",
+				"w-full h-max px-2 py-4",
 				"bg-background-secondary",
 				animStyle,
 				isExitAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"
