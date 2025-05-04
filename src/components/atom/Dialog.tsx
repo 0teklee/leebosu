@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {
 	createContext,
 	PropsWithChildren,
@@ -128,9 +129,11 @@ function DialogHeader({ children, className }: DialogContentProps) {
 function DialogContent({ children, className }: DialogContentProps) {
 	return (
 		<div
-			className={`bg-background h-[40dvh] px-4 pb-8 overflow-y-auto ${
-				className || ""
-			}`}
+			className={clsx(
+				"h-[40dvh] px-4 pb-8",
+				"bg-background overflow-y-auto",
+				className
+			)}
 		>
 			{children}
 		</div>
