@@ -163,7 +163,7 @@ function DatePickerPopup({
 			ref={calendarRef}
 			className={clsx(
 				"fixed top-0 left-0 z-50",
-				"w-full h-max px-2 py-4",
+				"w-full h-max px-2 py-4 overflow-y-visible",
 				"bg-background-secondary",
 				animStyle,
 				isExitAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"
