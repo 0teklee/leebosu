@@ -1,12 +1,16 @@
 import useAnimateDelay, { DurationKeyType } from "@/hooks/useAnimateDelay";
 import useOutsideClick from "@/hooks/useOutsideClick";
-import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
+import clsx from "clsx";
+import { InputHTMLAttributes, useRef, useState } from "react";
 import { ChevronIcon } from "../icons/ChevronIcon";
 import { Button } from "./Button";
 import { dayNames, monthNames } from "./constants";
 import { Input } from "./Input";
-import { generateCalendarData } from "./utils";
-
+import {
+	formatDate,
+	generateCalendarData,
+	getInitialSelectedDate,
+} from "./utils";
 interface DatePickerProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	error?: string;
@@ -23,7 +27,7 @@ export function DatePicker({
 }: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedDate, setSelectedDate] = useState<Date | null>(
-		props.defaultValue ? new Date(props.defaultValue) : null
+		props.defaultValue ? new Date(props.defaultValue) : getInitialSelectedDate()
 	);
 
 	const formattedDate = formatDate(selectedDate);
@@ -31,52 +35,10 @@ export function DatePicker({
 	const inputRef = useRef<HTMLInputElement>(null);
 	const displayRef = useRef<HTMLInputElement>(null);
 
-	const [isExitAnimate, triggerAnimate, duration] =
-		useAnimateDelay(transitionDelay);
-	const animStyle = `${duration} anim-ease-in-out anim-fill-both`;
-
-	const handleClick = () => {
-		triggerAnimate(() => {
-			setIsOpen(true);
-		});
+	const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+		e.stopPropagation();
+		setIsOpen(true);
 	};
-
-	const changeMonth = (delta: number) => {
-		setSelectedDate(
-			selectedDate
-				? new Date(
-						selectedDate.getFullYear(),
-						selectedDate.getMonth() + delta,
-						1
-				  )
-				: null
-		);
-	};
-
-	const handleOutsideClick = () => {
-		if (isOpen) {
-			triggerAnimate(() => {
-				setIsOpen(false);
-			});
-		}
-	};
-
-	const handleDateSelect = (date: Date, today: Date) => {
-		if (date < today) return;
-		setSelectedDate(date);
-
-		triggerAnimate(() => {
-			setIsOpen(false);
-		});
-	};
-
-	useEffect(() => {
-		if (inputRef.current && formattedDate) {
-			inputRef.current.value = formattedDate;
-			const event = new Event("change", { bubbles: true, cancelable: true });
-			inputRef.current.dispatchEvent(event);
-		}
-	}, [formattedDate, inputRef]);
 
 	return (
 		<div className={`w-full relative`}>
@@ -93,8 +55,6 @@ export function DatePicker({
 				className={`
 						relative
 						${isOpen ? "*:opacity-0" : ""}
-						${animStyle}
-						${isExitAnimate ? "animate-slide-fade-out-down" : "animate-slide-fade-in-up"}
 					`}
 			>
 				<Input
@@ -130,11 +90,11 @@ export function DatePicker({
 			{isOpen && (
 				<DatePickerPopup
 					selectedDate={selectedDate}
-					animStyle={animStyle}
-					isExitAnimate={isExitAnimate}
-					changeMonth={changeMonth}
-					handleOutSideClick={handleOutsideClick}
-					handleDateSelect={handleDateSelect}
+					setSelectedDate={setSelectedDate}
+					isOpen={isOpen}
+					setIsOpen={setIsOpen}
+					transitionDelay={transitionDelay}
+					props={props}
 				/>
 			)}
 		</div>
@@ -142,38 +102,83 @@ export function DatePicker({
 }
 
 function DatePickerPopup({
-	animStyle,
-	isExitAnimate,
-	changeMonth,
 	selectedDate,
-	handleDateSelect,
-	handleOutSideClick,
+	setSelectedDate,
+	isOpen,
+	setIsOpen,
+	transitionDelay,
+	props,
 }: {
-	animStyle: string;
-	isExitAnimate: boolean;
-	changeMonth: (delta: number) => void;
 	selectedDate: Date | null;
-	handleDateSelect: (date: Date, today: Date) => void;
-	handleOutSideClick: () => void;
+	setSelectedDate: (date: Date | null) => void;
+	isOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
+	transitionDelay: DurationKeyType;
+	props: DatePickerProps;
 }) {
 	const calendarRef = useRef<HTMLDivElement>(null);
 
 	const { today, year, month, daysArray } = generateCalendarData(selectedDate);
-	useOutsideClick(calendarRef, () => {
-		handleOutSideClick();
-	});
+	const [isExitAnimate, triggerAnimate, duration] =
+		useAnimateDelay(transitionDelay);
+	const animStyle = `${duration} anim-ease-in-out anim-fill-both`;
+
+	const changeMonth = (delta: number) => {
+		setSelectedDate(
+			selectedDate
+				? new Date(
+						selectedDate.getFullYear(),
+						selectedDate.getMonth() + delta,
+						1
+				  )
+				: null
+		);
+	};
+
+	const handleDateSelect = (date: Date, today: Date) => {
+		if (date < today) return;
+		setSelectedDate(date);
+
+		triggerAnimate(() => {
+			setIsOpen(false);
+		});
+
+		if (!props?.onChange) {
+			return;
+		}
+
+		// Props.onChange에 직접 이벤트 객체를 전달
+		const event = {
+			target: {
+				value: formatDate(date),
+				name: props.name,
+			},
+		} as React.ChangeEvent<HTMLInputElement>;
+		props?.onChange(event);
+	};
+
+	const handleOutsideClick = () => {
+		if (isOpen) {
+			triggerAnimate(() => {
+				setIsOpen(false);
+			});
+		}
+	};
+
+	useOutsideClick(calendarRef, handleOutsideClick);
 
 	return (
 		<div
 			ref={calendarRef}
-			className={`
-					absolute top-0 left-0
-					w-full pb-1 rounded
-				  bg-background-secondary
-					${animStyle}
-				 	${isExitAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"}`}
+			className={clsx(
+				"fixed top-0 left-0 z-50",
+				"w-full h-full px-2 py-4",
+				"bg-background-secondary",
+				animStyle,
+				isExitAnimate ? "animate-slide-fade-out-up" : "animate-slide-fade-in-up"
+			)}
 		>
-			<div className={`flex justify-between items-center mb-2`}>
+			<div className={`flex justify-between items-center mb-6`}>
 				<Button
 					variant="ghost"
 					size="sm"
@@ -194,7 +199,7 @@ function DatePickerPopup({
 					<ChevronIcon direction="right" />
 				</Button>
 			</div>
-			<div className="grid grid-cols-7 gap-1 mb-1">
+			<div className="grid grid-cols-7 gap-1 mb-4">
 				{dayNames.map((day, index) => (
 					<div key={index} className="text-center text-sm font-medium">
 						{day}
@@ -230,12 +235,4 @@ function DatePickerPopup({
 			</div>
 		</div>
 	);
-}
-// 날짜가 없으면 "" 반환
-function formatDate(date: Date | null): string | "" {
-	if (!date) return "";
-	return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-		2,
-		"0"
-	)}-${String(date.getDate()).padStart(2, "0")}`;
 }
