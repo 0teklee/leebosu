@@ -3,8 +3,7 @@ import { FormField } from "@components/atom/FormField";
 import { Select } from "@components/atom/Select";
 import { BOOKING_TEXT, VALIDATION_ERRORS } from "../../constants";
 import { FormState } from "../../types";
-import { getStepFromUrl } from "../../utils";
-
+import PriceNotice from "../PriceNotice";
 interface StepProps {
 	state: FormState;
 	formAction: (formData: FormData) => void;
@@ -24,8 +23,6 @@ export default function StepCategory({
 		  }))
 		: [];
 
-	const subStep = getStepFromUrl();
-
 	const handleCategoryChange = (
 		key: "mainCategory" | "subCategory",
 		value: string
@@ -37,9 +34,10 @@ export default function StepCategory({
 
 	return (
 		<>
+			<PriceNotice mainCategory={state.mainCategory} />
 			<FormField
 				className="group"
-				label={BOOKING_TEXT.steps[0]}
+				label={BOOKING_TEXT.steps[0].labels[0]}
 				htmlFor="mainCategory"
 			>
 				<Select
@@ -55,12 +53,12 @@ export default function StepCategory({
 					onChange={(e) => handleCategoryChange("mainCategory", e)}
 				/>
 				<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-300 text-destructive text-xs">
-					{VALIDATION_ERRORS[0]}
+					{VALIDATION_ERRORS.mainCategory}
 				</p>
 			</FormField>
 			<FormField
 				className="group"
-				label={BOOKING_TEXT.steps[1]}
+				label={BOOKING_TEXT.steps[0].labels[1]}
 				htmlFor="subCategory"
 			>
 				<Select
@@ -72,7 +70,7 @@ export default function StepCategory({
 					onChange={(e) => handleCategoryChange("subCategory", e)}
 				/>
 				<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-200 text-destructive text-xs">
-					{VALIDATION_ERRORS[subStep]}
+					{VALIDATION_ERRORS.subCategory}
 				</p>
 			</FormField>
 		</>

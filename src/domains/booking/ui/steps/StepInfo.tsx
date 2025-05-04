@@ -3,7 +3,6 @@ import { FormField } from "@/components/atom/FormField";
 import { Input } from "@/components/atom/Input";
 import { BOOKING_TEXT, VALIDATION_ERRORS } from "@/domains/booking/constants";
 import { FormState } from "@/domains/booking/types";
-import { getStepFromUrl } from "@/domains/booking/utils";
 
 interface StepProps {
 	state: FormState;
@@ -27,7 +26,8 @@ export default function StepInfo({ state, isPending, formAction }: StepProps) {
 	}
 
 	function handlePhoneNumberChange(e: React.ChangeEvent<HTMLInputElement>) {
-		if (e.target.value.length === 13) {
+		const MAX_LENGTH = 13;
+		if (e.target.value.length === MAX_LENGTH) {
 			e.target.blur();
 		}
 		const formatted = formatPhoneNumber(e.target.value);
@@ -49,9 +49,8 @@ export default function StepInfo({ state, isPending, formAction }: StepProps) {
 						formAction(formData);
 					}}
 				/>
-
 				<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-200 text-destructive text-xs">
-					{VALIDATION_ERRORS[getStepFromUrl()]}
+					{VALIDATION_ERRORS.date}
 				</p>
 			</FormField>
 
@@ -71,7 +70,7 @@ export default function StepInfo({ state, isPending, formAction }: StepProps) {
 					}}
 				/>
 				<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-200 text-destructive text-xs">
-					{VALIDATION_ERRORS[getStepFromUrl()]}
+					{VALIDATION_ERRORS.location}
 				</p>
 				<label
 					htmlFor="location"
@@ -98,16 +97,9 @@ export default function StepInfo({ state, isPending, formAction }: StepProps) {
 						formAction(formData);
 					}}
 				/>
-
 				<p className="mt-1 opacity-0 group-has-user-invalid:opacity-100 duration-200 text-destructive text-xs">
-					{VALIDATION_ERRORS[getStepFromUrl()]}
+					{VALIDATION_ERRORS.contact}
 				</p>
-				<label
-					htmlFor="location"
-					className="text-xs font-semibold text-destructive/90"
-				>
-					{BOOKING_TEXT.locationDescription}
-				</label>
 			</FormField>
 		</>
 	);
