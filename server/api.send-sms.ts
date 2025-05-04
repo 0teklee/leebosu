@@ -87,6 +87,7 @@ export async function sendNaverSMS({
 			}
 		);
 	} catch (error) {
+		console.error("[ERROR] sendNaverSMS:", error);
 		return new Response(
 			JSON.stringify({
 				success: false,

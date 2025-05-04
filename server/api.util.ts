@@ -49,8 +49,9 @@ async function getSignature(
 	);
 
 	// 3. (TEST) ArrayBuffer를 Base64 문자열로 인코딩.
-	const signatureBase64 = Buffer.from(signatureBuffer).toString("base64");
-
+	const signatureBase64 = btoa(
+		String.fromCharCode(...new Uint8Array(signatureBuffer))
+	);
 	return signatureBase64;
 }
 

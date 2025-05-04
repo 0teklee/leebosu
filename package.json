@@ -12,7 +12,7 @@
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"test": "jest",
-		"wrangler:dev": "wrangler pages dev ./dist --binding $(cat .env.local | grep -v \"#\" | xargs)",
+		"wrangler:dev": "wrangler pages dev ./dist --binding $(cat .env.local | grep -v \"#\" | xargs) --log-level debug",
 		"dev:preview": "yarn build:clean && yarn wrangler:dev"
 	},
 	"dependencies": {
