@@ -19,6 +19,15 @@ export default function useBookFormAction() {
 				return { ...prevState, isError: false, isSuccess: false };
 			}
 
+			// API 결과 반영
+			if (formData.has("isSuccess") || formData.has("isError")) {
+				return {
+					...prevState,
+					isSuccess: formData.get("isSuccess") === "true",
+					isError: formData.get("isError") === "true",
+				};
+			}
+
 			// 폼 상태 업데이트
 			const updatedState = updateFormState(prevState, formData);
 
@@ -62,26 +71,28 @@ export default function useBookFormAction() {
 	 * @param formState - 제출할 FormState
 	 * @returns API 응답의 isSuccess, isError 여부를 반영한 FormState 반환
 	 */
-	async function postFormData(formState: FormData) {
+	async function postFormData(payload: FormData) {
 		setIsFetching(true);
 		try {
+			const obj = Object.fromEntries(payload.entries());
+
 			const response = await fetch("/api/send-sms", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(formState),
+				body: JSON.stringify(obj),
 			});
 			const result = await response.json();
 			return {
-				...formState,
+				...payload,
 				isSuccess: result.success,
 				isError: !result.success,
 			};
 		} catch (err) {
 			console.error(`[useBookFormAction] API 요청 실패:${err}`);
-			return { ...formState, isSuccess: false, isError: true };
+			return { ...payload, isSuccess: false, isError: true };
 		} finally {
 			setIsFetching(false);
-		}
+		} /*  */
 	}
 
 	/**
