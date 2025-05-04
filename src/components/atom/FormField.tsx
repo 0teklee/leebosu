@@ -14,7 +14,7 @@ export function FormField({
 	className,
 }: FormFieldProps) {
 	return (
-		<div className={`mb-4 ${className || ""}`}>
+		<div className={`${className || ""}`}>
 			<label htmlFor={htmlFor} className="block text-base font-medium mb-1">
 				{label}
 			</label>
