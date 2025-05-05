@@ -1,7 +1,7 @@
 export const LANDING_TEXT = {
 	intro: "주거 보수의 전문가,",
 	title: "이보수입니다",
-	cta: "지금 바로 예약하기",
+	cta: "지금 상담 예약하기",
 	description: [
 		"항상 고객의 만족을 최우선으로 합니다.",
 		"30년 동안 경기 안양 지역에서 집을 수리했습니다.",
