@@ -1,4 +1,4 @@
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useTransition } from "react";
 import { INIT_STATE } from "../constants";
 import {
 	FORM_FIELDS_MAP,
@@ -11,30 +11,29 @@ import {
  */
 export default function useBookFormAction() {
 	const [isTransitionPending, startTransition] = useTransition();
-	const [isFetching, setIsFetching] = useState(false); // API 요청 로딩 상태
-	const [formState, formAction] = useActionState<FormState, FormData>(
-		async (prevState: FormState, formData: FormData) => {
-			// 에러 초기화 처리
-			if (formData.get("reset_error")) {
-				return { ...prevState, isError: false, isSuccess: false };
-			}
+	const [formState, formAction, isFetching] = useActionState<
+		FormState,
+		FormData
+	>(async (prevState: FormState, formData: FormData) => {
+		// 에러 초기화 처리
+		if (formData.get("reset_error")) {
+			return { ...prevState, isError: false, isSuccess: false };
+		}
 
-			// API 결과 반영
-			if (formData.has("isSuccess") || formData.has("isError")) {
-				return {
-					...prevState,
-					isSuccess: formData.get("isSuccess") === "true",
-					isError: formData.get("isError") === "true",
-				};
-			}
+		// API 결과 반영
+		if (formData.has("isSuccess") || formData.has("isError")) {
+			return {
+				...prevState,
+				isSuccess: formData.get("isSuccess") === "true",
+				isError: formData.get("isError") === "true",
+			};
+		}
 
-			// 폼 상태 업데이트
-			const updatedState = updateFormState(prevState, formData);
+		// 폼 상태 업데이트
+		const updatedState = updateFormState(prevState, formData);
 
-			return { ...updatedState, isError: false };
-		},
-		INIT_STATE
-	);
+		return { ...updatedState, isError: false };
+	}, INIT_STATE);
 
 	/**
 	 * @desc 폼 데이터 업데이트 처리 - FormState를 필드별로 reduce로 순회하며 변경된 값이 있는 필드만 업데이트
@@ -72,7 +71,6 @@ export default function useBookFormAction() {
 	 * @returns API 응답의 isSuccess, isError 여부를 반영한 FormState 반환
 	 */
 	async function postFormData(payload: FormData) {
-		setIsFetching(true);
 		try {
 			const obj = Object.fromEntries(payload.entries());
 
@@ -90,9 +88,7 @@ export default function useBookFormAction() {
 		} catch (err) {
 			console.error(`[useBookFormAction] API 요청 실패:${err}`);
 			return { ...payload, isSuccess: false, isError: true };
-		} finally {
-			setIsFetching(false);
-		} /*  */
+		}
 	}
 
 	/**

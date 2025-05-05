@@ -31,6 +31,31 @@ export default function BookingDialog() {
 
 	const { isSuccess, isError } = formState;
 	const isSettled = isSuccess || isError;
+	const stepProps = {
+		state: formState,
+		isPending: isTransitionPending,
+		formAction,
+	};
+
+	/** @description 각 스텝 컴포넌트 목록
+	 * - currentStep을 인덱스로 O(1) 접근
+	 * - React Compiler로 최적화
+	 *  */
+	const STEPS_COMPONENTS = [
+		<StepCategory {...stepProps} />,
+		<StepInfo {...stepProps} />,
+		<StepFinal formState={formState} />,
+	];
+
+	/**  URL history state 기반 transition 애니메이션 방향 결정 */
+	const animDirection = previousStep === currentStep ? STEP_BACK : STEP_FORWARD;
+	const animStyle = `${animDuration} anim-ease-in-out anim-fill-both`;
+
+	const slideTransition = (() => {
+		const moveDirection = animDirection === STEP_BACK ? "back" : "forward"; // URL history state 기반 애니메이션 방향
+		const animInOut = isExitAnimate ? "exit" : "enter"; // 진입/퇴장 애니메이션 상태
+		return SLIDE_ANIMATION[moveDirection][animInOut];
+	})();
 
 	function transitionNavigate(step: number) {
 		triggerAnim(() => {
@@ -69,16 +94,6 @@ export default function BookingDialog() {
 		transitionNavigate(lastStep);
 	}
 
-	/**  URL history state 기반 transition 애니메이션 방향 결정 */
-	const animDirection = previousStep === currentStep ? STEP_BACK : STEP_FORWARD;
-	const animStyle = `${animDuration} anim-ease-in-out anim-fill-both`;
-
-	const slideTransition = (() => {
-		const moveDirection = animDirection === STEP_BACK ? "back" : "forward"; // URL history state 기반 애니메이션 방향
-		const animInOut = isExitAnimate ? "exit" : "enter"; // 진입/퇴장 애니메이션 상태
-		return SLIDE_ANIMATION[moveDirection][animInOut];
-	})();
-
 	return (
 		<Dialog isOpen={isBookingOpen} onClose={closeBooking}>
 			<form action={handleFormAction} className="overflow-x-hidden">
@@ -89,25 +104,7 @@ export default function BookingDialog() {
 				<Dialog.Content
 					className={clsx("relative", animStyle, slideTransition)}
 				>
-					{!isSettled && (
-						<>
-							{currentStep === 0 && (
-								<StepCategory
-									state={formState}
-									isPending={isTransitionPending}
-									formAction={formAction}
-								/>
-							)}
-							{currentStep === 1 && (
-								<StepInfo
-									state={formState}
-									isPending={isTransitionPending}
-									formAction={formAction}
-								/>
-							)}
-							{currentStep === 2 && <StepFinal formState={formState} />}
-						</>
-					)}
+					{!isSettled && STEPS_COMPONENTS[currentStep]}
 					{isSettled && isSuccess && <StepComplete />}
 					{isSettled && isError && <StepError />}
 				</Dialog.Content>
