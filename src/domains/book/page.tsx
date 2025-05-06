@@ -1,13 +1,19 @@
-import useAnimateDelay from "@/hooks/useAnimateDelay";
-import {Button} from "@components/atom/Button";
-import {Dialog} from "@components/atom/Dialog";
-import {useBooking} from "@hooks/useBooking";
-import clsx from "clsx";
-import {BOOKING_TEXT, SLIDE_ANIMATION} from "./constants";
-import {useBookFlow, useBookFormAction} from "./hooks";
-import {STEP_BACK, STEP_FORWARD} from "./types";
 import StepIndicator from "@/domains/book/components/StepIndicator";
-import {StepCategory, StepComplete, StepError, StepFinal, StepInfo,} from "@/domains/book/components/steps";
+import {
+	StepCategory,
+	StepComplete,
+	StepError,
+	StepFinal,
+	StepInfo,
+} from "@/domains/book/components/steps";
+import useAnimateDelay from "@/hooks/useAnimateDelay";
+import { Button } from "@components/atom/Button";
+import { Dialog } from "@components/atom/Dialog";
+import { useBooking } from "@hooks/useBooking";
+import clsx from "clsx";
+import { BOOKING_TEXT, SLIDE_ANIMATION } from "./constants";
+import { useBookFlow, useBookFormAction } from "./hooks";
+import { STEP_BACK, STEP_FORWARD } from "./types";
 
 export default function BookingDialog() {
 	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
@@ -96,7 +102,7 @@ export default function BookingDialog() {
 					<StepIndicator steps={BOOKING_TEXT.steps} currentStep={currentStep} />
 				</Dialog.Header>
 				<Dialog.Content
-					className={clsx("relative", animStyle, slideTransition)}
+					className={clsx("relative", "h-[50dvh]", animStyle, slideTransition)}
 				>
 					{!isSettled && STEPS_COMPONENTS[currentStep]}
 					{isSettled && isSuccess && <StepComplete />}

@@ -130,19 +130,10 @@ function DialogHeader({ children, className }: DialogContentProps) {
 	);
 }
 
-function DialogContent({
-	children,
-	className,
-	height = "h-[40dvh]",
-}: DialogContentProps) {
+function DialogContent({ children, className }: DialogContentProps) {
 	return (
 		<div
-			className={clsx(
-				"px-4 pb-8",
-				"bg-background overflow-y-auto",
-				className,
-				height
-			)}
+			className={clsx("px-4 pb-8", "bg-background overflow-y-auto", className)}
 		>
 			{children}
 		</div>
