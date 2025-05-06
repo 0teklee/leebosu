@@ -1,7 +1,5 @@
 import { ChevronIcon } from "@/components/icons/ChevronIcon";
-import useAnimateDelay from "@/hooks/useAnimateDelay";
 import clsx from "clsx";
-import { useState } from "react";
 
 export default function Details({
 	title,
@@ -9,30 +7,24 @@ export default function Details({
 	detailsClassName,
 	summaryClassName,
 	height = "h-30",
+	props,
 }: {
 	title: string;
 	children: React.ReactNode;
 	height?: `h-${number | string}`;
 	detailsClassName?: string;
 	summaryClassName?: string;
+	props?: React.ComponentProps<"details">;
 }) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(200);
-
 	return (
 		<details
-			open={isOpen}
-			onClick={(e) => {
-				e.preventDefault();
-				triggerAnim(() => {
-					setIsOpen((prev) => !prev);
-				});
-			}}
 			className={clsx(
-				"group after:content-[''] after:block after:h-0 after:border-b after:border-theme/20 after:pb-4",
+				"group",
+				"after:content-[''] after:block after:h-0 after:border-b after:border-theme/20 after:pb-4",
 				height,
 				detailsClassName
 			)}
+			{...props}
 		>
 			<summary
 				className={clsx(
@@ -43,21 +35,11 @@ export default function Details({
 				{title}
 				<ChevronIcon className="w-5 h-5 transition-transform duration-300 group-open:rotate-180" />
 			</summary>
-			{isOpen && (
-				<div
-					className={clsx(
-						"overflow-y-auto",
-						"pt-4 px-2 sm:px-4",
-						"origin-top anim-direction-alternate anim-timing-ease-in-out",
-						animDuration,
-						isExitAnimate
-							? "animate-slide-fade-out-up -z-10"
-							: "animate-slide-fade-in-up z-0"
-					)}
-				>
-					{children}
-				</div>
-			)}
+			<div
+				className={clsx("overflow-y-auto", "pt-4 px-2 sm:px-4", "origin-top")}
+			>
+				{children}
+			</div>
 		</details>
 	);
 }
