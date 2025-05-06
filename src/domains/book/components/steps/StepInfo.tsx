@@ -1,8 +1,8 @@
-import { DatePicker } from "@/components/atom/DatePicker";
-import { FormField } from "@/components/atom/FormField";
-import { Input } from "@/components/atom/Input";
-import { BOOKING_TEXT, VALIDATION_ERRORS } from "@/domains/booking/constants";
-import { FormState } from "@/domains/booking/types";
+import {DatePicker} from "@/components/atom/DatePicker";
+import {FormField} from "@/components/atom/FormField";
+import {Input} from "@/components/atom/Input";
+import {BOOKING_TEXT, VALIDATION_ERRORS} from "@/domains/book/constants";
+import {FormState} from "@/domains/book/types";
 
 interface StepProps {
 	state: FormState;

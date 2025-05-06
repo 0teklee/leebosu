@@ -1,4 +1,4 @@
-import { hydrateRoot } from "react-dom/client";
+import {hydrateRoot} from "react-dom/client";
 
 import NotFoundPage from "@/domains/fallbacks/404.page";
 import AboutPage from "@/domains/about/page";
@@ -15,7 +15,7 @@ if (root) {
 		Page = AboutPage;
 	} else if (path === "/error") {
 		Page = ErrorPage;
-	} else if (path !== "/" && !path.startsWith("/booking")) {
+	} else if (path !== "/" && !path.startsWith("/book")) {
 		Page = NotFoundPage;
 	}
 	hydrateRoot(root, <Page />);

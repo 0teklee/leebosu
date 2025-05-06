@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
-import { useMounted } from "./useMounted";
+import {useMounted} from "./useMounted";
 
 type HistoryState = {
 	previousStep?: number;
@@ -25,7 +25,7 @@ export function useBooking() {
 		if (!isMounted || typeof window === "undefined") return;
 
 		const syncFromUrl = () => {
-			const isBookingPath = window.location.pathname.startsWith("/booking");
+			const isBookingPath = window.location.pathname.startsWith("/book");
 			setIsBookingOpen(isBookingPath);
 			setPreviousStep(getHistoryState()?.previousStep || -1);
 		};
@@ -45,7 +45,7 @@ export function useBooking() {
 		if (!isMounted) return;
 
 		const url = new URL(window.location.href);
-		url.pathname = "/booking";
+		url.pathname = "/book";
 		url.searchParams.set("step", String(initialStep));
 
 		// 다이얼로그 열리기 전 히스토리 상태 설정

@@ -1,5 +1,5 @@
-import { BOOKING_TEXT } from "@/domains/booking/constants";
-import { CheckIconPath } from "@/components/icons/icon-paths";
+import {BOOKING_TEXT} from "@/domains/book/constants";
+import {CheckIconPath} from "@/components/icons/icon-paths";
 
 export default function StepComplete() {
 	return (

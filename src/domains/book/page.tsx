@@ -1,19 +1,13 @@
 import useAnimateDelay from "@/hooks/useAnimateDelay";
-import { Button } from "@components/atom/Button";
-import { Dialog } from "@components/atom/Dialog";
-import { useBooking } from "@hooks/useBooking";
+import {Button} from "@components/atom/Button";
+import {Dialog} from "@components/atom/Dialog";
+import {useBooking} from "@hooks/useBooking";
 import clsx from "clsx";
-import { BOOKING_TEXT, SLIDE_ANIMATION } from "./constants";
-import { useBookFlow, useBookFormAction } from "./hooks";
-import { STEP_BACK, STEP_FORWARD } from "./types";
-import StepIndicator from "./ui/StepIndicator";
-import {
-	StepCategory,
-	StepComplete,
-	StepError,
-	StepFinal,
-	StepInfo,
-} from "./ui/steps";
+import {BOOKING_TEXT, SLIDE_ANIMATION} from "./constants";
+import {useBookFlow, useBookFormAction} from "./hooks";
+import {STEP_BACK, STEP_FORWARD} from "./types";
+import StepIndicator from "@/domains/book/components/StepIndicator";
+import {StepCategory, StepComplete, StepError, StepFinal, StepInfo,} from "@/domains/book/components/steps";
 
 export default function BookingDialog() {
 	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
