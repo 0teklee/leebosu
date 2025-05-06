@@ -63,12 +63,13 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 						 anim-timing-ease-in-out
 						 ${isExitAnimate ? "animate-fade-out" : "animate-fade-in"}`}
 					onClick={handleClose}
-					data-testid="dialog-backdrop"
 					aria-hidden={!isOpen}
-					aria-label="Dialog backdrop"
+					aria-label="dialog-backdrop"
+					data-testid="dialog-backdrop"
 				/>
 				<div
-					aria-label="Dialog content"
+					aria-label="dialog-popup"
+					data-testid="dialog-popup"
 					className={clsx(
 						"relative",
 						"self-end sm:self-center",
@@ -76,7 +77,7 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 						"overflow-x-hidden",
 						"sm:overflow-y-hidden",
 						"bg-background shadow-xl",
-						"rounded-t-lg sm:rounded-lg",  
+						"rounded-t-lg sm:rounded-lg",
 						"anim-duration-300",
 						"anim-fill-both",
 						"anim-timing-ease-in-out",
