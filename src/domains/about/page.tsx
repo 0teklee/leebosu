@@ -1,10 +1,10 @@
+import Table from "@/components/atom/Table";
 import BookingButton from "@/components/CTAButton";
 import { Layout } from "@/components/layout/Layout";
-import Table from "@/domains/about/Table";
 import { PageLayout } from "@components/layout/PageLayout";
 import clsx from "clsx";
-import { ABOUT_TEXT } from "./constants";
-import Details from "./Details";
+import Details from "../../components/atom/Details";
+import { ABOUT_TEXT, SERVICE_TABLE_ITEMS } from "./constants";
 
 function AboutPage() {
 	return (
@@ -37,7 +37,30 @@ function AboutPage() {
 					)}
 				>
 					<section className="w-full my-4">
-						<Table />
+						<Table>
+							<Table.Head>
+								<Table.Row>
+									<Table.Cell header>서비스 대분류</Table.Cell>
+									<Table.Cell header>서비스 소분류</Table.Cell>
+								</Table.Row>
+							</Table.Head>
+							<Table.Body>
+								{SERVICE_TABLE_ITEMS.map((item, idx) => (
+									<Table.Row key={idx}>
+										<Table.Cell>{item.service}</Table.Cell>
+										<Table.Cell>
+											<div className="flex flex-col gap-1">
+												{item.subCategories.map((sub) => (
+													<span key={sub} className="text-sm">
+														{sub}
+													</span>
+												))}
+											</div>
+										</Table.Cell>
+									</Table.Row>
+								))}
+							</Table.Body>
+						</Table>
 					</section>
 					<section className="w-full">
 						<Details title="가격 안내">
