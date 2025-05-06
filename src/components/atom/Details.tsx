@@ -28,7 +28,7 @@ export default function Details({
 		>
 			<summary
 				className={clsx(
-					"flex justify-between items-center cursor-pointer list-none py-2 text-xl sm:text-2xl font-semibold text-theme transition-colors",
+					"flex justify-between items-center cursor-pointer list-none py-2 font-semibold text-theme transition-colors",
 					summaryClassName
 				)}
 			>
