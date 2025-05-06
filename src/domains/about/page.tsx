@@ -63,7 +63,7 @@ function AboutPage() {
 						</Table>
 					</section>
 					<section className="w-full">
-						<Details title="가격 안내">
+						<Details title="가격 안내" height="h-full" props={{ open: true }}>
 							<p className="text-lg text-theme font-medium mb-3">
 								{ABOUT_TEXT.pricing}
 							</p>
@@ -80,7 +80,7 @@ function AboutPage() {
 						</Details>
 					</section>
 					<section className="w-full">
-						<Details title="서비스 지역">
+						<Details title="서비스 지역" height="h-full" props={{ open: true }}>
 							<p className="text-lg text-theme font-medium mb-3">
 								{ABOUT_TEXT.service_area}
 							</p>
