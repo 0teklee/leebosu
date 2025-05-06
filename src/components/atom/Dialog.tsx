@@ -69,19 +69,21 @@ function Dialog({ isOpen, onClose, children }: DialogProps) {
 				/>
 				<div
 					aria-label="Dialog content"
-					className={`
-						relative 
-						self-end sm:self-center
-						w-full max-w-md
-						overflow-x-hidden
-						sm:overflow-y-hidden
-						bg-background shadow-xl
-						rounded-t-lg sm:rounded-lg
-						anim-duration-300
-						anim-fill-both
-						anim-timing-ease-in-out
-						${isExitAnimate ? "animate-slide-fade-out-down" : "animate-slide-fade-in-down"}
-					`}
+					className={clsx(
+						"relative",
+						"self-end sm:self-center",
+						"w-full max-w-md",
+						"overflow-x-hidden",
+						"sm:overflow-y-hidden",
+						"bg-background shadow-xl",
+						"rounded-t-lg sm:rounded-lg",  
+						"anim-duration-300",
+						"anim-fill-both",
+						"anim-timing-ease-in-out",
+						isExitAnimate
+							? "animate-slide-fade-out-down"
+							: "animate-slide-fade-in-down"
+					)}
 				>
 					{children}
 				</div>
