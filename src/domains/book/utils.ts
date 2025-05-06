@@ -1,19 +1,3 @@
-import { FORM_FIELDS_MAP, FormState } from "./types";
-
-export function extractFormData(formData: FormData) {
-	const currentStep = getStepFromUrl();
-	const currentKey = FORM_FIELDS_MAP[currentStep];
-	return (
-		(formData.get(currentKey) as unknown as FormState[typeof currentKey]) ||
-		null
-	);
-}
-
-export function extractFormDataAll(formData: FormData): Record<string, string> {
-	const entries = Object.fromEntries(formData.entries());
-	return entries as Record<string, string>;
-}
-
 export function getStepFromUrl() {
 	const stepParam = new URLSearchParams(location.search).get("step");
 	return Number(stepParam) || 0;

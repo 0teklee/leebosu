@@ -1,8 +1,9 @@
 import { useActionState, useTransition } from "react";
 import { INIT_STATE } from "../constants";
 import {
-	FORM_FIELDS_MAP,
 	FORM_FIELDS_STEP_MAP,
+	FormStateKey,
+	FormStateValue,
 	type FormState,
 } from "../types";
 
@@ -30,7 +31,7 @@ export default function useBookFormAction() {
 		}
 
 		// 폼 상태 업데이트
-		const updatedState = updateFormState(prevState, formData);
+		const updatedState = getNextFormState(prevState, formData);
 
 		return { ...updatedState, isError: false };
 	}, INIT_STATE);
@@ -41,28 +42,28 @@ export default function useBookFormAction() {
 	 * @param formData - 업데이트할 FormData
 	 * @returns 업데이트된 FormState
 	 */
-	function updateFormState(
+	function getNextFormState(
 		prevState: FormState,
 		formData: FormData
 	): FormState {
-		return FORM_FIELDS_MAP.reduce<FormState>(
-			(acc, key) => {
-				const val = formData.get(key);
+		const nextState: FormState = { ...prevState };
+		const formDataEntries = formData.entries();
 
-				if (!formData.has(key) || val === prevState[key] || val === undefined) {
-					return acc;
-				}
+		for (const field of formDataEntries) {
+			const [key, value] = field as [FormStateKey, FormStateValue];
+			// 타입 가드: FormState의 key만 허용
+			if (!(key in prevState)) continue;
+			if (value === prevState[key]) continue;
 
-				(acc[key] as FormState[typeof key]) = val as FormState[typeof key];
+			(nextState[key] as FormStateValue) = value;
 
-				if (key === "mainCategory" && prevState.mainCategory !== val) {
-					acc.subCategory = null;
-				}
+			// mainCategory 변경 시 subCategory 초기화
+			if (key === "mainCategory" && prevState.mainCategory !== value) {
+				nextState.subCategory = null;
+			}
+		}
 
-				return acc;
-			},
-			{ ...prevState }
-		);
+		return nextState;
 	}
 
 	/**

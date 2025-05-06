@@ -10,13 +10,21 @@ export const INIT_STATE: FormState = {
 	isSuccess: false,
 	isError: false,
 	reset_error: false,
+	description: "",
 };
 
 // 예약 프로세스 텍스트
 export const BOOKING_TEXT = {
 	dialogTitle: "상담 예약하기",
 	steps: [
-		{ title: "서비스 선택", labels: ["수리 내용", "세부 내용"] },
+		{
+			title: "서비스 선택",
+			labels: [
+				"어떤 서비스가 필요하신가요?",
+				"구체적인 내용을 선택해주세요.",
+				"추가 내용이 있으시다면 적어주세요. (선택)",
+			],
+		},
 		{ title: "예약 정보 입력", labels: ["날짜", "위치", "연락처"] },
 		{ title: "예약 확인", labels: ["예약 내용"] },
 	],

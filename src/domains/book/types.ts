@@ -15,33 +15,22 @@ export interface FormState {
 	isError: boolean;
 	animDirection: TAnimDirection; // -1: back, 1: forward
 	reset_error: boolean;
+	description?: string;
 }
+/** @desc FormState 키 타입
+ *  - 폼 인풋: `mainCategory`, `subCategory`, `date`, `location`, `contact`, `description`
+ *  - 폼 상태(http, animation): `isSuccess`, `isError`, `reset_error`, `animDirection`
+ */
+export type FormStateKey = keyof FormState;
 
-export const FORM_FIELDS_MAP: FormStateKey[] = [
-	"mainCategory",
-	"subCategory",
-	"date",
-	"location",
-	"contact",
-	"animDirection",
-] as const;
+/** @desc FormState 값 타입 */
+export type FormStateValue = FormState[FormStateKey];
 
+/**
+ * @desc 폼 필드 그룹 맵 - 다음 페이지 이동 시 required 필드 검증 시 사용
+ */
 export const FORM_FIELDS_STEP_MAP = [
 	["mainCategory", "subCategory"],
 	["date", "location", "contact"],
 	[],
 ] as const;
-
-export type FormStateKey = keyof FormState;
-export type FormStateValue = FormState[FormStateKey];
-
-export type TypedFormData = Omit<FormData, "get"> & {
-	get(key: FormStateKey): string | null;
-	has(key: FormStateKey): boolean;
-};
-
-export interface StepProps {
-	state: FormState;
-	formAction?: (formData: FormData) => Promise<void> | void;
-	isPending: boolean;
-}
