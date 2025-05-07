@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-import {useMounted} from "./useMounted";
+import { useMounted } from "./useMounted";
 
 type HistoryState = {
 	previousStep?: number;
@@ -10,9 +10,6 @@ type HistoryState = {
 export function useBooking() {
 	const isMounted = useMounted();
 	const [isBookingOpen, setIsBookingOpen] = useState(false);
-	const [previousStep, setPreviousStep] = useState<number>(
-		getHistoryState()?.previousStep || -1
-	);
 
 	function getHistoryState(): HistoryState {
 		if (!isMounted || typeof window === "undefined") return {};
@@ -20,28 +17,13 @@ export function useBooking() {
 		return state;
 	}
 
-	// 예약 모달 열림, 닫힘 이벤트 핸들러 등록 및 제거
-	useEffect(() => {
-		if (!isMounted || typeof window === "undefined") return;
+	// previousStep을 window.history.state에서 직접 읽음
+	function getPreviousStep(): number {
+		if (!isMounted || typeof window === "undefined") return -1;
+		return window.history.state?.previousStep ?? -1;
+	}
 
-		const syncFromUrl = () => {
-			const isBookingPath = window.location.pathname.startsWith("/book");
-			setIsBookingOpen(isBookingPath);
-			setPreviousStep(getHistoryState()?.previousStep || -1);
-		};
-
-		syncFromUrl();
-
-		window.addEventListener("urlchange", syncFromUrl);
-		window.addEventListener("popstate", syncFromUrl);
-
-		return () => {
-			window.removeEventListener("urlchange", syncFromUrl);
-			window.removeEventListener("popstate", syncFromUrl);
-		};
-	}, [isMounted, getHistoryState]);
-
-	const openBooking = (initialStep = 0) => {
+	function openBooking(initialStep = 0) {
 		if (!isMounted) return;
 
 		const url = new URL(window.location.href);
@@ -56,9 +38,9 @@ export function useBooking() {
 		);
 
 		window.dispatchEvent(new Event("urlchange"));
-	};
+	}
 
-	const closeBooking = () => {
+	function closeBooking() {
 		if (!isMounted) return;
 
 		let targetUrl = getHistoryState()?.backgroundLocation || "/";
@@ -68,9 +50,9 @@ export function useBooking() {
 
 		window.history.pushState({}, "", targetUrl);
 		window.dispatchEvent(new Event("urlchange"));
-	};
+	}
 
-	const setStep = (step: number) => {
+	function setStep(step: number) {
 		if (!isMounted || typeof window === "undefined") return;
 
 		const url = new URL(window.location.href);
@@ -83,13 +65,33 @@ export function useBooking() {
 
 		history.pushState(newState, "", url.toString());
 		window.dispatchEvent(new Event("urlchange"));
-	};
+	}
+
+	// 예약 모달 열림, 닫힘 이벤트 핸들러 등록 및 제거
+	useEffect(() => {
+		if (!isMounted || typeof window === "undefined") return;
+
+		const syncFromUrl = () => {
+			const isBookingPath = window.location.pathname.startsWith("/book");
+			setIsBookingOpen(isBookingPath);
+		};
+
+		syncFromUrl();
+
+		window.addEventListener("urlchange", syncFromUrl);
+		window.addEventListener("popstate", syncFromUrl);
+
+		return () => {
+			window.removeEventListener("urlchange", syncFromUrl);
+			window.removeEventListener("popstate", syncFromUrl);
+		};
+	}, [isMounted]);
 
 	return {
 		openBooking,
 		closeBooking,
 		setStep,
 		isBookingOpen,
-		previousStep,
+		getPreviousStep,
 	};
 }
