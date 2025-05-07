@@ -17,7 +17,8 @@ import { STEP_BACK, STEP_FORWARD } from "./types";
 
 export default function BookingDialog() {
 	const [isExitAnimate, triggerAnim, animDuration] = useAnimateDelay(400);
-	const { closeBooking, setStep, isBookingOpen, previousStep } = useBooking();
+	const { closeBooking, setStep, isBookingOpen, getPreviousStep } =
+		useBooking();
 	const { currentStep, isFirstStep, isLastStep, lastStep } = useBookFlow();
 	const {
 		formState,
@@ -36,6 +37,8 @@ export default function BookingDialog() {
 		isPending: isTransitionPending,
 		formAction,
 	};
+
+	const previousStep = getPreviousStep();
 
 	/** @description 각 스텝 컴포넌트 목록
 	 * - currentStep을 인덱스로 O(1) 접근
