@@ -16,10 +16,11 @@ export interface FormState {
 	animDirection: TAnimDirection; // -1: back, 1: forward
 	reset_error: boolean;
 	description?: string;
+	agreement: boolean;
 }
 /** @desc FormState 키 타입
- *  - 폼 인풋: `mainCategory`, `subCategory`, `date`, `location`, `contact`, `description`
- *  - 폼 상태(http, animation): `isSuccess`, `isError`, `reset_error`, `animDirection`
+ *  - 폼 API 데이터: `mainCategory`, `subCategory`, `date`, `location`, `contact`, `description`
+ *  - 폼 UI 상태 관련(http, animation, 동의): `isSuccess`, `isError`, `reset_error`, `animDirection`, `agreement`
  */
 export type FormStateKey = keyof FormState;
 

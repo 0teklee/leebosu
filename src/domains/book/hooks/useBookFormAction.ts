@@ -54,8 +54,12 @@ export default function useBookFormAction() {
 			// 타입 가드: FormState의 key만 허용
 			if (!(key in prevState)) continue;
 			if (value === prevState[key]) continue;
-
-			(nextState[key] as FormStateValue) = value;
+			// TODO formData 기반 타입 변환 문제
+			if (key === "agreement") {
+				nextState[key] = value === "true";
+			} else {
+				(nextState[key] as FormStateValue) = value;
+			}
 
 			// mainCategory 변경 시 subCategory 초기화
 			if (key === "mainCategory" && prevState.mainCategory !== value) {

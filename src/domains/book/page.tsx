@@ -44,7 +44,7 @@ export default function BookingDialog() {
 	const STEPS_COMPONENTS = [
 		<StepCategory {...stepProps} />,
 		<StepInfo {...stepProps} />,
-		<StepFinal formState={formState} />,
+		<StepFinal formState={formState} formAction={formAction} />,
 	];
 
 	/**  URL history state 기반 transition 애니메이션 방향 결정 */
@@ -145,7 +145,9 @@ export default function BookingDialog() {
 							) : (
 								<Button
 									className={animStyle}
-									disabled={isTransitionPending || isFetching}
+									disabled={
+										isTransitionPending || isFetching || !formState.agreement
+									}
 									type="submit"
 									size="md"
 								>
