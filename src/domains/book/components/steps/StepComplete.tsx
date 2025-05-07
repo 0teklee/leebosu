@@ -26,6 +26,7 @@ export default function StepComplete() {
 				{BOOKING_TEXT.success}
 			</h3>
 			<p className="text-base mb-6 text-primary">{BOOKING_TEXT.confirmation}</p>
+			<p className="text-base mb-6 text-primary">{BOOKING_TEXT.confirmation}</p>
 		</div>
 	);
 }
