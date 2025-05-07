@@ -11,6 +11,7 @@ export const INIT_STATE: FormState = {
 	isError: false,
 	reset_error: false,
 	description: "",
+	agreement: false,
 };
 
 // 예약 프로세스 텍스트
@@ -34,11 +35,12 @@ export const BOOKING_TEXT = {
 	contactPlaceholder: "010-1234-5678",
 	// estimatePrefix: "예상 견적: 약 ",
 	finalStep: "예약 확인",
-	submit: "예약 확정하기",
+	submit: "상담 예약하기",
 	confirmation: "예약 내용은 문자 또는 카카오톡으로 전달됩니다.",
-	success: "예약이 완료되었습니다!",
-	error: "예약 실패 했습니다.",
-	errorDescription: "다시 시도해주세요.",
+	confirm_desc: "빠른 시일 내에 연락드리겠습니다.",
+	success: "예약이 완료되었습니다",
+	error: "예약 실패 했습니다",
+	errorDescription: "다시 시도해주세요",
 };
 
 export const VALIDATION_ERRORS = {

@@ -9,7 +9,6 @@ export default function PriceNotice({
 }) {
 	const mainService = mainCategory ? SERVICES[mainCategory] : null;
 	const isCustomService = mainService?.custom;
-
 	return (
 		<>
 			{
