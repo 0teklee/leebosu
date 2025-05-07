@@ -42,3 +42,41 @@ export const SERVICES = {
 export type MainCategoryKey = keyof typeof SERVICES;
 export type SubCategoryKey =
 	(typeof SERVICES)[MainCategoryKey]["subCategories"][number];
+
+export const BUSINESS_NUMBER = "123-20-46160";
+
+export const PROTECTION_AGREEMENT = {
+	title: "개인정보 수집 및 이용 동의서",
+	label: "개인정보 처리 동의 여부",
+	description: "동의 내용을 확인하고 동의 버튼을 클릭해주세요.",
+	items: [
+		{
+			title: "수집 항목",
+			description: "주소, 전화번호",
+		},
+		{
+			title: "수집·이용 목적",
+			description: "사용자가 입력한 전화번호로 상담 안내 전화를 드리기 위함",
+		},
+		{
+			title: "보유 및 이용 기간",
+			description: "SMS 발송 즉시 폐기하며 서버에 저장하지 않습니다.",
+		},
+		{
+			title: "제3자 제공",
+			description: "없음",
+		},
+		{
+			title: "동의 거부 권리 및 불이익 안내",
+			description:
+				"귀하는 개인정보 수집·이용에 동의하지 않을 권리가 있으며, 동의하지 않을 경우 서비스 이용이 제한될 수 있습니다.",
+		},
+		{
+			title: "개인정보 처리자 정보",
+			description: `사업자명:리종합보수 \n 
+					사업자등록번호: ${BUSINESS_NUMBER} \n 
+					이메일: contact@leebosu.com`,
+		},
+	],
+	confirm: "위 내용을 충분히 이해했으며 동의합니다.",
+} as const;
